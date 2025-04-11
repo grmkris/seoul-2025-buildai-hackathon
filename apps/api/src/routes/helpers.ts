@@ -56,12 +56,15 @@ export const checkOrganizationAccess = createMiddleware<{
     path: c.req.path,
   });
 
-  logger.info({ "checkOrganizationAccess": session }); 
+  logger.info({ checkOrganizationAccess: session });
 
   // Check if the organizationId has the correct format
   if (!OrganizationId.safeParse(organizationId).success) {
     return c.json(
-      { message: `Organization not found - invalid organizationId - ${organizationId}`, requestId },
+      {
+        message: `Organization not found - invalid organizationId - ${organizationId}`,
+        requestId,
+      },
       404,
     );
   }

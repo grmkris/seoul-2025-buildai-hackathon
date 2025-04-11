@@ -7,7 +7,7 @@ import type { messageRoutes } from "./messageRoutes";
 import type { conversationRoutes } from "./conversationRoutes";
 
 export const workspaceClient = hc<typeof workspaceRouter>(
-  `${SERVICE_URLS[clientEnvs.NEXT_PUBLIC_ENV].api}`,
+  `${SERVICE_URLS[clientEnvs.NEXT_PUBLIC_ENV].api}/api`,
   {
     init: {
       credentials: "include",
@@ -20,7 +20,7 @@ export const workspaceClient = hc<typeof workspaceRouter>(
 );
 
 export const customerClient = hc<typeof customerRouter>(
-  SERVICE_URLS[clientEnvs.NEXT_PUBLIC_ENV].api,
+  `${SERVICE_URLS[clientEnvs.NEXT_PUBLIC_ENV].api}/api`,
   {
     init: {
       credentials: "include",
@@ -33,7 +33,7 @@ export const customerClient = hc<typeof customerRouter>(
 );
 
 export const messageClient = hc<typeof messageRoutes>(
-  SERVICE_URLS[clientEnvs.NEXT_PUBLIC_ENV].api,
+  `${SERVICE_URLS[clientEnvs.NEXT_PUBLIC_ENV].api}/api`,
   {
     init: {
       credentials: "include",
@@ -47,7 +47,7 @@ export const messageClient = hc<typeof messageRoutes>(
   
 
 export const conversationClient = hc<typeof conversationRoutes>(
-  SERVICE_URLS[clientEnvs.NEXT_PUBLIC_ENV].api,
+  `${SERVICE_URLS[clientEnvs.NEXT_PUBLIC_ENV].api}/api`,
   {
     init: {
       credentials: "include",

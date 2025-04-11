@@ -401,7 +401,7 @@ const listCustomersRoute = createOpenAPIRoute().openapi(
           401,
         );
       }
-      
+
       const customerService = createCustomersService({
         workspaceId,
         memberId: session.memberId,

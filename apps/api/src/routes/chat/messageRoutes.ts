@@ -442,8 +442,14 @@ const sendNewMessageRoute = createOpenAPIRoute().openapi(
 // Create and export the message routes
 const messageRoutes = new OpenAPIHono()
   .basePath(`${WORKSPACE_PATH}/chat/conversations/:conversationId/messages`)
-  .use(`${WORKSPACE_PATH}/chat/conversations/:conversationId/messages`, checkWorkspaceAccess)
-  .use(`${WORKSPACE_PATH}/chat/conversations/:conversationId/messages`, checkOrganizationAccess)
+  .use(
+    `${WORKSPACE_PATH}/chat/conversations/:conversationId/messages`,
+    checkWorkspaceAccess,
+  )
+  .use(
+    `${WORKSPACE_PATH}/chat/conversations/:conversationId/messages`,
+    checkOrganizationAccess,
+  )
   .route("/", getMessagesRoute)
   .route("/", sendNewMessageRoute)
   .route("/:messageId", updateMessageRoute)

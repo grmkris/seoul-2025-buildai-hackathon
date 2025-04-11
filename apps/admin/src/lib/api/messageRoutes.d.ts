@@ -15,7 +15,7 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
 } & {
     Variables: import("../../types").ContextVariables;
 }, {
-    "/api/admin/organizations/:organizationId/workspaces/:workspaceId/chat/conversations/:conversationId/messages/api/admin/organizations/:organizationId/workspaces/:workspaceId/chat/conversations/:conversationId/messages": {};
+    "/admin/organizations/:organizationId/workspaces/:workspaceId/chat/conversations/:conversationId/messages/admin/organizations/:organizationId/workspaces/:workspaceId/chat/conversations/:conversationId/messages": {};
 } | import("hono/types").MergeSchemaPath<{
     "/conversations/:conversationId/messages": {
         $get: {
@@ -251,7 +251,7 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
             status: 200;
         };
     };
-}, "/api/admin/organizations/:organizationId/workspaces/:workspaceId/chat/conversations/:conversationId/messages"> | import("hono/types").MergeSchemaPath<{
+}, "/admin/organizations/:organizationId/workspaces/:workspaceId/chat/conversations/:conversationId/messages"> | import("hono/types").MergeSchemaPath<{
     "/": {
         $post: {
             input: {
@@ -384,7 +384,7 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
             status: 200;
         };
     };
-}, "/api/admin/organizations/:organizationId/workspaces/:workspaceId/chat/conversations/:conversationId/messages"> | import("hono/types").MergeSchemaPath<{
+}, "/admin/organizations/:organizationId/workspaces/:workspaceId/chat/conversations/:conversationId/messages"> | import("hono/types").MergeSchemaPath<{
     "/conversations/:conversationId/messages/:messageId": {
         $patch: {
             input: {
@@ -619,7 +619,7 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
             status: 200;
         };
     };
-}, "/api/admin/organizations/:organizationId/workspaces/:workspaceId/chat/conversations/:conversationId/messages/:messageId"> | import("hono/types").MergeSchemaPath<{
+}, "/admin/organizations/:organizationId/workspaces/:workspaceId/chat/conversations/:conversationId/messages/:messageId"> | import("hono/types").MergeSchemaPath<{
     "/conversations/:conversationId/messages/:messageId": {
         $delete: {
             input: {
@@ -736,5 +736,5 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
             status: 200;
         };
     };
-}, "/api/admin/organizations/:organizationId/workspaces/:workspaceId/chat/conversations/:conversationId/messages/:messageId">, "/api/admin/organizations/:organizationId/workspaces/:workspaceId/chat/conversations/:conversationId/messages">;
+}, "/admin/organizations/:organizationId/workspaces/:workspaceId/chat/conversations/:conversationId/messages/:messageId">, "/admin/organizations/:organizationId/workspaces/:workspaceId/chat/conversations/:conversationId/messages">;
 export { messageRoutes };

@@ -3,7 +3,7 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
 } & {
     Variables: import("../../types").ContextVariables;
 }, {
-    "/api/admin/organizations/:organizationId/workspaces/:workspaceId/customers": {};
+    "/admin/organizations/:organizationId/workspaces/:workspaceId/customers": {};
 } | import("hono/types").MergeSchemaPath<{
     "/": {
         $post: {
@@ -160,7 +160,7 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             status: 201;
         };
     };
-}, "/api/admin/organizations/:organizationId/workspaces/:workspaceId/customers"> | import("hono/types").MergeSchemaPath<{
+}, "/admin/organizations/:organizationId/workspaces/:workspaceId/customers"> | import("hono/types").MergeSchemaPath<{
     "/": {
         $get: {
             input: {
@@ -330,7 +330,7 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             status: 200;
         };
     };
-}, "/api/admin/organizations/:organizationId/workspaces/:workspaceId/customers"> | import("hono/types").MergeSchemaPath<{
+}, "/admin/organizations/:organizationId/workspaces/:workspaceId/customers"> | import("hono/types").MergeSchemaPath<{
     "/": {
         $delete: {
             input: {
@@ -441,7 +441,7 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             status: 200;
         };
     };
-}, "/api/admin/organizations/:organizationId/workspaces/:workspaceId/customers/:customerId"> | import("hono/types").MergeSchemaPath<{
+}, "/admin/organizations/:organizationId/workspaces/:workspaceId/customers/:customerId"> | import("hono/types").MergeSchemaPath<{
     "/": {
         $put: {
             input: {
@@ -603,7 +603,7 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             status: 200;
         };
     };
-}, "/api/admin/organizations/:organizationId/workspaces/:workspaceId/customers/:customerId"> | import("hono/types").MergeSchemaPath<{
+}, "/admin/organizations/:organizationId/workspaces/:workspaceId/customers/:customerId"> | import("hono/types").MergeSchemaPath<{
     "/": {
         $get: {
             input: {
@@ -723,4 +723,4 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             status: 200;
         };
     };
-}, "/api/admin/organizations/:organizationId/workspaces/:workspaceId/customers/:customerId">, "/api/admin/organizations/:organizationId/workspaces/:workspaceId/customers">;
+}, "/admin/organizations/:organizationId/workspaces/:workspaceId/customers/:customerId">, "/admin/organizations/:organizationId/workspaces/:workspaceId/customers">;

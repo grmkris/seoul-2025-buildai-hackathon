@@ -9,6 +9,7 @@ import { and, eq } from "drizzle-orm";
 import { OrganizationId, RequestId, WorkspaceId } from "typeid";
 import { z } from "zod";
 import {
+  checkOrganizationAccess,
   commonHeaderSchema,
   createCommonErrorSchema,
   createJsonSchema,
@@ -294,7 +295,7 @@ const deleteWorkspaceRoute = createOpenAPIRoute().openapi(
 const getAllWorkspacesRoute = createOpenAPIRoute().openapi(
   createRoute({
     method: "get",
-    path: "",
+    path: "/",
     tags: ["Workspaces"],
     summary: "Get All Workspaces",
     request: {
@@ -314,7 +315,6 @@ const getAllWorkspacesRoute = createOpenAPIRoute().openapi(
     },
   }),
   async (c) => {
-
     const { organizationId } = c.req.valid("param");
     const db = c.get("db");
     validateAuth(c);
@@ -411,10 +411,12 @@ const getWorkspaceRoute = new OpenAPIHono<{
 export const workspaceRouter = new OpenAPIHono<{
   Variables: ContextVariables;
 }>()
-  .route(`${ORGANIZATION_PATH}/workspaces/`, createWorkspaceRoute)
-  .route(`${ORGANIZATION_PATH}/workspaces/:workspaceId`, updateWorkspaceRoute)
-  .route(`${ORGANIZATION_PATH}/workspaces/:workspaceId`, deleteWorkspaceRoute)
-  .route(`${ORGANIZATION_PATH}/workspaces/`, getAllWorkspacesRoute)
-  .route(`${ORGANIZATION_PATH}/workspaces/:workspaceId`, getWorkspaceRoute);
+  .use(`${ORGANIZATION_PATH}/workspaces`, checkOrganizationAccess)
+  .basePath(`${ORGANIZATION_PATH}/workspaces`)
+  .route("/", getAllWorkspacesRoute)
+  .route("/", createWorkspaceRoute)
+  .route("/:workspaceId", updateWorkspaceRoute)
+  .route("/:workspaceId", deleteWorkspaceRoute)
+  .route("/:workspaceId", getWorkspaceRoute);
 
 export type WorkspaceRouter = typeof workspaceRouter;

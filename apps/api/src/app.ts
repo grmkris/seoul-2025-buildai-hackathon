@@ -152,7 +152,7 @@ export const createApp = async (props: {
         logger: props.logger,
       }),
     )
-    .route("/", apiRoutes)
+    .route("/api", apiRoutes)
     .on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw))
 
     .onError(createAppOnErrorHandler({ logger: props.logger }));
