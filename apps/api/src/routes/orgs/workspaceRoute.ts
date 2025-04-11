@@ -9,7 +9,6 @@ import { and, eq } from "drizzle-orm";
 import { OrganizationId, RequestId, WorkspaceId } from "typeid";
 import { z } from "zod";
 import {
-  checkOrganizationAccess,
   commonHeaderSchema,
   createCommonErrorSchema,
   createJsonSchema,
@@ -412,12 +411,10 @@ const getWorkspaceRoute = new OpenAPIHono<{
 export const workspaceRouter = new OpenAPIHono<{
   Variables: ContextVariables;
 }>()
-  .basePath(`${ORGANIZATION_PATH}/workspaces`)
-  .use(`${ORGANIZATION_PATH}/workspaces`, checkOrganizationAccess)
-  .route("/", createWorkspaceRoute)
-  .route("/:workspaceId", updateWorkspaceRoute)
-  .route("/:workspaceId", deleteWorkspaceRoute)
-  .route("/", getAllWorkspacesRoute)
-  .route("/:workspaceId", getWorkspaceRoute);
+  .route(`${ORGANIZATION_PATH}/workspaces/`, createWorkspaceRoute)
+  .route(`${ORGANIZATION_PATH}/workspaces/:workspaceId`, updateWorkspaceRoute)
+  .route(`${ORGANIZATION_PATH}/workspaces/:workspaceId`, deleteWorkspaceRoute)
+  .route(`${ORGANIZATION_PATH}/workspaces/`, getAllWorkspacesRoute)
+  .route(`${ORGANIZATION_PATH}/workspaces/:workspaceId`, getWorkspaceRoute);
 
 export type WorkspaceRouter = typeof workspaceRouter;

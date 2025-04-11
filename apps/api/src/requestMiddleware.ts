@@ -64,22 +64,21 @@ export const createRequestMiddleware = (props: {
     const userId = UserId.parse(session.user.id);
     const memberId = MemberId.nullable().parse(member?.id);
 
-    logger.debug({
-      msg: "Active member",
-      memberId,
-      sessionRole,
+    const sessionData = {
       sessionId,
-      organizationId,
-      userId,
-    });
-    // Set user with proper type
-    c.set("session", {
       activeOrganizationId: organizationId,
       organizationRole: organizationRole,
       systemRole: sessionRole,
       userId: userId,
       memberId: memberId,
+    };
+
+    logger.debug({
+      msg: "Session data",
+      sessionData,
     });
+    // Set user with proper type
+    c.set("session", sessionData);
 
     return next();
   });
