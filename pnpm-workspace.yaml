@@ -1,9 +1,10 @@
 packages:
   - packages/*
-  - apps/**
+  - apps/*
   - '!**/test/**'
 onlyBuiltDependencies:
   - '@biomejs/biome'
   - bun
   - esbuild
   - redis-memory-server
+  - sharp

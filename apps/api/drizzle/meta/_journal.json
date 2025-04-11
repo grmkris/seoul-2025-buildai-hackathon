@@ -5,43 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1742038759111,
-      "tag": "0000_good_husk",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1742038771384,
-      "tag": "0001_audit",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1742322928749,
-      "tag": "0002_wealthy_titanium_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1742728888337,
-      "tag": "0003_easy_groot",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1742734038052,
-      "tag": "0004_grant-select-to-roles",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1742739138914,
-      "tag": "0005_groovy_logan",
+      "when": 1744391014556,
+      "tag": "0000_watery_xavin",
       "breakpoints": true
     }
   ]

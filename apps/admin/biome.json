@@ -1,0 +1,78 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "organizeImports": {
+    "enabled": true
+  },
+  "linter": {
+    "enabled": true,
+
+    "ignore": ["api.d.ts"],
+    "rules": {
+      "recommended": true,
+      "correctness": {
+        "noUnusedVariables": "warn"
+      },
+      "suspicious": {
+        "noEmptyInterface": {
+          "level": "error"
+        }
+      },
+      "complexity": {
+        "noUselessConstructor": "error",
+        "useSimplifiedLogicExpression": "error"
+      },
+      "style": {
+        "noNegationElse": "error",
+        "useShorthandArrayType": "error"
+      }
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 80,
+    "formatWithErrors": false,
+    "include": [
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.js",
+      "**/*.jsx",
+      "**/*.json",
+      "**/*.md",
+      "**/*.mdx"
+    ],
+    "ignore": ["node_modules", ".next", "out", "public", "api.d.ts"]
+  },
+  "javascript": {
+    "formatter": {
+      "arrowParentheses": "always",
+      "quoteStyle": "double",
+      "jsxQuoteStyle": "double",
+      "semicolons": "always",
+      "trailingCommas": "all",
+      "quoteProperties": "asNeeded"
+    }
+  },
+  "files": {
+    "include": [
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.js",
+      "**/*.jsx",
+      "**/*.json",
+      "**/*.md",
+      "**/*.mdx"
+    ],
+    "ignore": [
+      "node_modules",
+      ".next",
+      "out",
+      "public",
+      "next.config.mjs",
+      "postcss.config.js",
+      "tailwind.config.ts",
+      "api.d.ts"
+    ]
+  }
+}

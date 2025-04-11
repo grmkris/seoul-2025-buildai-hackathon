@@ -12,7 +12,7 @@ export const SystemRole = z.enum(SYSTEM_ROLES);
 export type SystemRole = z.infer<typeof SystemRole>;
 
 // coming from import type { RequestIdVariables } from "hono/request-id";
-// but with the requestId type from shared/typeid
+// but with the requestId type from typeid
 type RequestIdVariables = {
   requestId: RequestId;
 };

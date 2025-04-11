@@ -10,6 +10,7 @@ export function createDb(props: {
   logger: DrizzleLogger;
   dbUrl: string;
 }) {
+  console.log("dbUrl", props.dbUrl);
   const { logger, dbUrl } = props;
 
   if (!dbUrl) throw new Error("DATABASE_URL is not set");
