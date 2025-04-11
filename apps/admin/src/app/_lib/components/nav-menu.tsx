@@ -58,10 +58,6 @@ export const NavMenu = () => {
   >[] = [
     { href: `${baseUrl}`, label: t("home"), icon: Home },
     { href: `${baseUrl}/customers`, label: t("customers"), icon: Home },
-    { href: `${baseUrl}/items`, label: t("items"), icon: Boxes },
-    { href: `${baseUrl}/orders`, label: t("orders"), icon: ShoppingCart },
-    { href: `${baseUrl}/charts`, label: t("analysis"), icon: BarChart },
-    { href: `${baseUrl}/taskforce`, label: t("taskforce"), icon: Briefcase },
   ];
 
   const workspaces = [

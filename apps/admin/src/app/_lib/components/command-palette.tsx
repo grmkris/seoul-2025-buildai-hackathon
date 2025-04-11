@@ -207,18 +207,6 @@ export function CommandPalette({ open, setOpen }: CommandPaletteProps) {
               <BarChart3 className="mr-2 h-4 w-4" />
               <span>{t("analytics")}</span>
             </CommandItem>
-            <CommandItem
-              onSelect={() =>
-                runCommand(() =>
-                  router.push(
-                    `/${activeOrganization}/${activeWorkspace}/taskforce`,
-                  ),
-                )
-              }
-            >
-              <CheckSquare className="mr-2 h-4 w-4" />
-              <span>{t("tasks")}</span>
-            </CommandItem>
           </CommandGroup>
         )}
 
