@@ -19,9 +19,9 @@ type RequestIdVariables = {
 
 type Session = {
   userId: UserId;
-  memberId: MemberId;
-  activeOrganizationId: OrganizationId;
-  organizationRole: OrganizationRole;
+  memberId: MemberId | null;
+  activeOrganizationId: OrganizationId | null;
+  organizationRole: OrganizationRole | null;
   systemRole: SystemRole;
 };
 

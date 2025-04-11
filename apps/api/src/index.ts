@@ -32,8 +32,3 @@ export default {
   fetch: app.fetch,
   idleTimeout: 60,
 };
-
-process.on("SIGTERM", () => {
-  // close all db connections
-  db.$client.close();
-});

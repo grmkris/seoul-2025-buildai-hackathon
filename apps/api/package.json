@@ -9,7 +9,7 @@
     "check": "pnpm lint && pnpm typecheck",
     "check:knip": "bunx --bun knip",
     "typecheck": "tsc --noEmit",
-    "type:generate": "rm -rf generated_types && tsc --project tsconfig.types.json || true && [ -d generated_types ]",
+    "type:generate": "tsc --project tsconfig.types.json",
     "db:start": "docker compose -f postgres.yml up -d",
     "db:stop": "docker compose -f postgres.yml down",
     "db:clean": "docker compose -f postgres.yml down -v",
@@ -21,6 +21,7 @@
   "dependencies": {
     "@faker-js/faker": "^9.6.0",
     "@hono/zod-openapi": "^0.19.4",
+    "@neondatabase/serverless": "^1.0.0",
     "@scalar/hono-api-reference": "^0.8.0",
     "ai": "workspace:*",
     "better-auth": "^1.2.5",

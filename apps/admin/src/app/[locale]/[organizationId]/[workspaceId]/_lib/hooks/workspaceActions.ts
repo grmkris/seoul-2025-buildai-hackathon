@@ -4,12 +4,12 @@ import type { OrganizationId, WorkspaceId } from "typeid";
 
 // Workspace API endpoints
 const workspacePostEndpoint =
-  workspaceClient.api.organizations[":organizationId"].workspaces.$post;
+  workspaceClient.api.admin.organizations[":organizationId"].workspaces.$post;
 const workspacePutEndpoint =
-  workspaceClient.api.organizations[":organizationId"].workspaces[":workspaceId"]
+  workspaceClient.api.admin.organizations[":organizationId"].workspaces[":workspaceId"]
     .$put;
 const workspacesGetEndpoint =
-  workspaceClient.api.organizations[":organizationId"].workspaces.$get;
+  workspaceClient.api.admin.organizations[":organizationId"].workspaces.$get;
 
 // Export types inferred from API client
 export type InsertWorkspaceSchema = InferRequestType<
@@ -36,7 +36,7 @@ export const createWorkspace = async (props: {
   organizationId: OrganizationId;
   data: InsertWorkspaceSchema;
 }) => {
-  const response = await workspaceClient.api.organizations[
+  const response = await workspaceClient.api.admin.organizations[
     ":organizationId"
   ].workspaces.$post({
     param: { organizationId: props.organizationId },
@@ -57,7 +57,7 @@ export const updateWorkspace = async (props: {
   workspaceId: WorkspaceId;
   data: UpdateWorkspaceSchema;
 }) => {
-  const response = await workspaceClient.api.organizations[
+  const response = await workspaceClient.api.admin.organizations[
     ":organizationId"
   ].workspaces[":workspaceId"].$put({
     param: {
@@ -79,7 +79,7 @@ export const updateWorkspace = async (props: {
 export const getWorkspaces = async (props: {
   organizationId: OrganizationId;
 }) => {
-  const response = await workspaceClient.api.organizations[
+  const response = await workspaceClient.api.admin.organizations[
     ":organizationId"
   ].workspaces.$get({
     param: { organizationId: props.organizationId },

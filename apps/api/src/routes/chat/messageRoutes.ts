@@ -352,6 +352,12 @@ const sendNewMessageRoute = createOpenAPIRoute().openapi(
       contentPreview: userMessage.content.substring(0, 50),
     });
 
+    if (!session.memberId) {
+      return c.json(
+        { message: "Unauthorized", requestId: c.get("requestId") },
+        401,
+      );
+    }
     try {
       // 1. Initialize Chat History Service
       const chatHistoryService = createChatHistoryService({
@@ -435,9 +441,9 @@ const sendNewMessageRoute = createOpenAPIRoute().openapi(
 
 // Create and export the message routes
 const messageRoutes = new OpenAPIHono()
-  .use("*", checkOrganizationAccess)
-  .use("*", checkWorkspaceAccess)
   .basePath(`${WORKSPACE_PATH}/chat/conversations/:conversationId/messages`)
+  .use(`${WORKSPACE_PATH}/chat/conversations/:conversationId/messages`, checkWorkspaceAccess)
+  .use(`${WORKSPACE_PATH}/chat/conversations/:conversationId/messages`, checkOrganizationAccess)
   .route("/", getMessagesRoute)
   .route("/", sendNewMessageRoute)
   .route("/:messageId", updateMessageRoute)

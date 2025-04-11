@@ -55,37 +55,30 @@ export const createRequestMiddleware = (props: {
       headers,
     });
 
-    const organizationRole = OrganizationRole.nullish().parse(member?.role);
-    /**
-     * Deprecated use either systemRole or organizationRole
-     */
-    const role = organizationRole;
-    const sessionRole = session.user.role;
+    const organizationRole = OrganizationRole.nullable().parse(member?.role);
+    const sessionRole = SystemRole.parse(session.user.role);
     const sessionId = SessionId.parse(session.session.id);
-    const organizationId = OrganizationId.nullish().parse(
+    const organizationId = OrganizationId.nullable().parse(
       session.session.activeOrganizationId,
     );
     const userId = UserId.parse(session.user.id);
-    const memberId = MemberId.nullish().parse(member?.id);
+    const memberId = MemberId.nullable().parse(member?.id);
 
     logger.debug({
       msg: "Active member",
       memberId,
       sessionRole,
-      role,
       sessionId,
       organizationId,
       userId,
     });
     // Set user with proper type
     c.set("session", {
-      activeOrganizationId: OrganizationId.parse(
-        session.session.activeOrganizationId,
-      ),
-      organizationRole: OrganizationRole.parse(member?.role),
-      systemRole: SystemRole.parse(session.user.role),
-      userId: UserId.parse(session.user.id),
-      memberId: MemberId.parse(member?.id),
+      activeOrganizationId: organizationId,
+      organizationRole: organizationRole,
+      systemRole: sessionRole,
+      userId: userId,
+      memberId: memberId,
     });
 
     return next();

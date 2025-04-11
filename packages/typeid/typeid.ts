@@ -114,6 +114,7 @@ export const typeIdFromUUID = <const T extends IdTypePrefixNames>(
 export const typeIdToUUID = <const T extends IdTypePrefixNames>(
   input: TypeId<T>,
 ) => {
+  console.log("input", input);
   const id = fromString(input);
   return {
     uuid: toUUID(id).toString(),

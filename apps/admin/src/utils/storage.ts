@@ -1,4 +1,4 @@
-import { OrganizationId, WorkspaceId } from "typeid";
+import type { OrganizationId, WorkspaceId } from "typeid";
 
 const STORAGE_KEYS = {
   lastOrganization: "lastOrganizationId",
@@ -8,15 +8,13 @@ const STORAGE_KEYS = {
 
 export const organizationStorage = {
   save: (organizationId: OrganizationId) => {
-    const parsedOrganizationId = OrganizationId.parse(organizationId);
+    const parsedOrganizationId = organizationId as OrganizationId;
     localStorage.setItem(STORAGE_KEYS.lastOrganization, parsedOrganizationId);
   },
 
   get: (): OrganizationId | null => {
     return (
-      OrganizationId.nullish().parse(
-        localStorage.getItem(STORAGE_KEYS.lastOrganization),
-      ) ?? null
+      localStorage.getItem(STORAGE_KEYS.lastOrganization) as OrganizationId | null
     );
   },
 
@@ -27,10 +25,10 @@ export const organizationStorage = {
 
 export const workspaceStorage = {
   save: (organizationId: OrganizationId, workspaceId: WorkspaceId) => {
-    WorkspaceId.parse(workspaceId);
+    const parsedWorkspaceId = workspaceId as WorkspaceId;
     localStorage.setItem(
       STORAGE_KEYS.lastWorkspace(organizationId),
-      workspaceId,
+      parsedWorkspaceId,
     );
   },
 
@@ -41,7 +39,7 @@ export const workspaceStorage = {
     if (!storedValue) return null;
 
     try {
-      return WorkspaceId.parse(storedValue);
+      return storedValue as WorkspaceId;
     } catch {
       return null;
     }

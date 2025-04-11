@@ -1,13 +1,12 @@
-import type { db } from "@/db/db";
+import { migrateDb, type db } from "@/db/db";
 import { env } from "@/env";
 import type { ContextVariables } from "@/types";
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { apiReference } from "@scalar/hono-api-reference";
 import { APIError } from "better-auth/api";
-import { BunSQLDatabase } from "drizzle-orm/bun-sql";
-import { migrate as migrateBunSQL } from "drizzle-orm/bun-sql/migrator";
 import { PgliteDatabase } from "drizzle-orm/pglite";
 import { migrate as migratePgLite } from "drizzle-orm/pglite/migrator";
+import { migrate as migrateNeonHttp } from "drizzle-orm/neon-http/migrator";
 import type { Context, ErrorHandler } from "hono";
 import { cors } from "hono/cors";
 import { HTTPException } from "hono/http-exception";
@@ -18,6 +17,7 @@ import { typeIdGenerator } from "typeid";
 import { apiRoutes } from "./api";
 import { createAuth } from "./auth";
 import { createRequestMiddleware } from "./requestMiddleware";
+import { NeonHttpDatabase } from "drizzle-orm/neon-http";
 
 const createAppOnErrorHandler = (deps: {
   logger: Logger;
@@ -91,14 +91,15 @@ export const createApp = async (props: {
   db: db;
   logger: Logger;
 }) => {
+  migrateDb();
   const auth = createAuth({
     db: props.db,
     logger: props.logger,
   });
   props.logger.info("Creating app");
   props.logger.info("Running migrations");
-  if (props.db instanceof BunSQLDatabase) {
-    await migrateBunSQL(props.db, { migrationsFolder: "./drizzle" });
+  if (props.db instanceof NeonHttpDatabase) {
+    await migrateNeonHttp(props.db, { migrationsFolder: "./drizzle" });
   } else if (props.db instanceof PgliteDatabase) {
     await migratePgLite(props.db, { migrationsFolder: "./drizzle" });
   } else {

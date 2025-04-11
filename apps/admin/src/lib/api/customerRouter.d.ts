@@ -3,34 +3,10 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
 } & {
     Variables: import("../../types").ContextVariables;
 }, {
-    "/api/organizations/:organizationId/workspaces/:workspaceId/customers": {};
+    "/api/admin/organizations/:organizationId/workspaces/:workspaceId/customers": {};
 } | import("hono/types").MergeSchemaPath<{
     "/": {
         $post: {
-            input: {
-                param: {
-                    organizationId: string;
-                    workspaceId: string;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            } & {
-                json: {
-                    firstName: string;
-                    email?: string | undefined;
-                    lastName?: string | undefined;
-                    phoneNumber?: string | undefined;
-                };
-            };
-            output: {
-                message: string;
-                requestId: `req_${string}`;
-            };
-            outputFormat: "json";
-            status: 404;
-        } | {
             input: {
                 param: {
                     organizationId: string;
@@ -102,6 +78,30 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             };
             outputFormat: "json";
             status: 403;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            } & {
+                json: {
+                    firstName: string;
+                    email?: string | undefined;
+                    lastName?: string | undefined;
+                    phoneNumber?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 404;
         } | {
             input: {
                 param: {
@@ -160,7 +160,7 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             status: 201;
         };
     };
-}, "/api/organizations/:organizationId/workspaces/:workspaceId/customers"> | import("hono/types").MergeSchemaPath<{
+}, "/api/admin/organizations/:organizationId/workspaces/:workspaceId/customers"> | import("hono/types").MergeSchemaPath<{
     "/": {
         $get: {
             input: {
@@ -171,33 +171,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             } & {
                 query: {
                     search?: string | undefined;
-                    limit?: number | undefined;
                     orderBy?: "email" | "createdAt" | "updatedAt" | "firstName" | "lastName" | "phoneNumber" | undefined;
-                    page?: number | undefined;
-                    orderDirection?: "asc" | "desc" | undefined;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            };
-            output: {
-                message: string;
-                requestId: `req_${string}`;
-            };
-            outputFormat: "json";
-            status: 404;
-        } | {
-            input: {
-                param: {
-                    organizationId: string;
-                    workspaceId: string;
-                };
-            } & {
-                query: {
-                    search?: string | undefined;
                     limit?: number | undefined;
-                    orderBy?: "email" | "createdAt" | "updatedAt" | "firstName" | "lastName" | "phoneNumber" | undefined;
                     page?: number | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
                 };
@@ -221,8 +196,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             } & {
                 query: {
                     search?: string | undefined;
-                    limit?: number | undefined;
                     orderBy?: "email" | "createdAt" | "updatedAt" | "firstName" | "lastName" | "phoneNumber" | undefined;
+                    limit?: number | undefined;
                     page?: number | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
                 };
@@ -246,8 +221,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             } & {
                 query: {
                     search?: string | undefined;
-                    limit?: number | undefined;
                     orderBy?: "email" | "createdAt" | "updatedAt" | "firstName" | "lastName" | "phoneNumber" | undefined;
+                    limit?: number | undefined;
                     page?: number | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
                 };
@@ -271,8 +246,33 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             } & {
                 query: {
                     search?: string | undefined;
-                    limit?: number | undefined;
                     orderBy?: "email" | "createdAt" | "updatedAt" | "firstName" | "lastName" | "phoneNumber" | undefined;
+                    limit?: number | undefined;
+                    page?: number | undefined;
+                    orderDirection?: "asc" | "desc" | undefined;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 404;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                };
+            } & {
+                query: {
+                    search?: string | undefined;
+                    orderBy?: "email" | "createdAt" | "updatedAt" | "firstName" | "lastName" | "phoneNumber" | undefined;
+                    limit?: number | undefined;
                     page?: number | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
                 };
@@ -296,8 +296,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             } & {
                 query: {
                     search?: string | undefined;
-                    limit?: number | undefined;
                     orderBy?: "email" | "createdAt" | "updatedAt" | "firstName" | "lastName" | "phoneNumber" | undefined;
+                    limit?: number | undefined;
                     page?: number | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
                 };
@@ -330,27 +330,9 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             status: 200;
         };
     };
-}, "/api/organizations/:organizationId/workspaces/:workspaceId/customers"> | import("hono/types").MergeSchemaPath<{
+}, "/api/admin/organizations/:organizationId/workspaces/:workspaceId/customers"> | import("hono/types").MergeSchemaPath<{
     "/": {
         $delete: {
-            input: {
-                param: {
-                    organizationId: string;
-                    workspaceId: string;
-                    customerId: string;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            };
-            output: {
-                message: string;
-                requestId: `req_${string}`;
-            };
-            outputFormat: "json";
-            status: 404;
-        } | {
             input: {
                 param: {
                     organizationId: string;
@@ -421,6 +403,24 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 requestId: `req_${string}`;
             };
             outputFormat: "json";
+            status: 404;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                    customerId: string;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
             status: 500;
         } | {
             input: {
@@ -441,7 +441,7 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             status: 200;
         };
     };
-}, "/api/organizations/:organizationId/workspaces/:workspaceId/customers/:customerId"> | import("hono/types").MergeSchemaPath<{
+}, "/api/admin/organizations/:organizationId/workspaces/:workspaceId/customers/:customerId"> | import("hono/types").MergeSchemaPath<{
     "/": {
         $put: {
             input: {
@@ -467,31 +467,6 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 requestId: `req_${string}`;
             };
             outputFormat: "json";
-            status: 404;
-        } | {
-            input: {
-                param: {
-                    organizationId: string;
-                    workspaceId: string;
-                    customerId: string;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            } & {
-                json: {
-                    email?: string | undefined;
-                    firstName?: string | undefined;
-                    lastName?: string | undefined;
-                    phoneNumber?: string | undefined;
-                };
-            };
-            output: {
-                message: string;
-                requestId: `req_${string}`;
-            };
-            outputFormat: "json";
             status: 400;
         } | {
             input: {
@@ -567,6 +542,31 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 requestId: `req_${string}`;
             };
             outputFormat: "json";
+            status: 404;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                    customerId: string;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            } & {
+                json: {
+                    email?: string | undefined;
+                    firstName?: string | undefined;
+                    lastName?: string | undefined;
+                    phoneNumber?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
             status: 500;
         } | {
             input: {
@@ -603,7 +603,7 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             status: 200;
         };
     };
-}, "/api/organizations/:organizationId/workspaces/:workspaceId/customers/:customerId"> | import("hono/types").MergeSchemaPath<{
+}, "/api/admin/organizations/:organizationId/workspaces/:workspaceId/customers/:customerId"> | import("hono/types").MergeSchemaPath<{
     "/": {
         $get: {
             input: {
@@ -622,24 +622,6 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 requestId: `req_${string}`;
             };
             outputFormat: "json";
-            status: 404;
-        } | {
-            input: {
-                param: {
-                    organizationId: string;
-                    workspaceId: string;
-                    customerId: string;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            };
-            output: {
-                message: string;
-                requestId: `req_${string}`;
-            };
-            outputFormat: "json";
             status: 400;
         } | {
             input: {
@@ -694,6 +676,24 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 requestId: `req_${string}`;
             };
             outputFormat: "json";
+            status: 404;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                    customerId: string;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
             status: 500;
         } | {
             input: {
@@ -723,4 +723,4 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             status: 200;
         };
     };
-}, "/api/organizations/:organizationId/workspaces/:workspaceId/customers/:customerId">, "/api/organizations/:organizationId/workspaces/:workspaceId/customers">;
+}, "/api/admin/organizations/:organizationId/workspaces/:workspaceId/customers/:customerId">, "/api/admin/organizations/:organizationId/workspaces/:workspaceId/customers">;

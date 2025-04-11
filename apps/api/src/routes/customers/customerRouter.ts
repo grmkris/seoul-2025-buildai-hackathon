@@ -59,6 +59,13 @@ const updateCustomerRoute = createOpenAPIRoute().openapi(
       const session = validateAuth(c);
       const role = getRole(c);
 
+      if (!session.memberId) {
+        return c.json(
+          { message: "Unauthorized", requestId: c.get("requestId") },
+          401,
+        );
+      }
+
       const customerService = createCustomersService({
         workspaceId,
         memberId: session.memberId,
@@ -138,6 +145,13 @@ const deleteCustomerRoute = createOpenAPIRoute().openapi(
       const session = validateAuth(c);
       const role = getRole(c);
 
+      if (!session.memberId) {
+        return c.json(
+          { message: "Unauthorized", requestId: c.get("requestId") },
+          401,
+        );
+      }
+
       const customerService = createCustomersService({
         workspaceId,
         memberId: session.memberId,
@@ -216,6 +230,13 @@ const createCustomerRoute = createOpenAPIRoute().openapi(
       const logger = c.get("logger");
       const role = getRole(c);
 
+      if (!session.memberId) {
+        return c.json(
+          { message: "Unauthorized", requestId: c.get("requestId") },
+          401,
+        );
+      }
+
       const customerService = createCustomersService({
         workspaceId,
         memberId: session.memberId,
@@ -284,6 +305,13 @@ const getCustomerRoute = createOpenAPIRoute().openapi(
       const session = validateAuth(c);
       const logger = c.get("logger");
       const role = getRole(c);
+
+      if (!session.memberId) {
+        return c.json(
+          { message: "Unauthorized", requestId: c.get("requestId") },
+          401,
+        );
+      }
 
       const customerService = createCustomersService({
         workspaceId,
@@ -367,6 +395,13 @@ const listCustomersRoute = createOpenAPIRoute().openapi(
       const { workspaceId, organizationId } = c.req.valid("param");
       const role = getRole(c);
 
+      if (!session.memberId) {
+        return c.json(
+          { message: "Unauthorized", requestId: c.get("requestId") },
+          401,
+        );
+      }
+      
       const customerService = createCustomersService({
         workspaceId,
         memberId: session.memberId,

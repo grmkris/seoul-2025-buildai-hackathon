@@ -103,6 +103,13 @@ const createConversationRoute = createOpenAPIRoute().openapi(
       const requestId = c.get("requestId");
       const logger = c.get("logger");
 
+      if (!session.memberId) {
+        return c.json(
+          { message: "Unauthorized", requestId: c.get("requestId") },
+          401,
+        );
+      }
+
       // Create the conversation
       const newConversation = await db
         .insert(conversations)
@@ -393,6 +400,13 @@ const updateConversationRoute = createOpenAPIRoute().openapi(
             requestId: c.get("requestId"),
           },
           404,
+        );
+      }
+
+      if (!session.memberId) {
+        return c.json(
+          { message: "Unauthorized", requestId: c.get("requestId") },
+          401,
         );
       }
 

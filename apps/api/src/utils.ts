@@ -11,6 +11,6 @@ export const getRole = (c: Context<{ Variables: ContextVariables }>) => {
 };
 
 // Define common route paths
-export const ORGANIZATION_PATH = "/api/organizations/:organizationId" as const;
+export const ORGANIZATION_PATH = "/api/admin/organizations/:organizationId" as const;
 export const WORKSPACE_PATH =
   `${ORGANIZATION_PATH}/workspaces/:workspaceId` as const;

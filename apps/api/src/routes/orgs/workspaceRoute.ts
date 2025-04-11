@@ -315,12 +315,16 @@ const getAllWorkspacesRoute = createOpenAPIRoute().openapi(
     },
   }),
   async (c) => {
+
     const { organizationId } = c.req.valid("param");
     const db = c.get("db");
     validateAuth(c);
     const requestId = c.get("requestId");
     const logger = c.get("logger");
-
+    logger.debug({
+      msg: "Getting all workspaces",
+      organizationId,
+    });
     try {
       const allWorkspaces = await db.query.workspaces.findMany({
         where: eq(workspaces.organizationId, organizationId),
@@ -408,8 +412,8 @@ const getWorkspaceRoute = new OpenAPIHono<{
 export const workspaceRouter = new OpenAPIHono<{
   Variables: ContextVariables;
 }>()
-  .use("*", checkOrganizationAccess)
   .basePath(`${ORGANIZATION_PATH}/workspaces`)
+  .use(`${ORGANIZATION_PATH}/workspaces`, checkOrganizationAccess)
   .route("/", createWorkspaceRoute)
   .route("/:workspaceId", updateWorkspaceRoute)
   .route("/:workspaceId", deleteWorkspaceRoute)

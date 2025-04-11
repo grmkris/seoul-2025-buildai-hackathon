@@ -78,26 +78,6 @@ export function OrganizationSetup({ user }: { user: CurrentUser }) {
   const invitationIdFromUrl = searchParams.get("invitationId");
   const workspaceInputRef = useRef<HTMLInputElement>(null);
 
-  // Get pending invitations
-  const { data: invitationsData = [], isLoading: isLoadingInvitations } = {
-    data: [],
-    isLoading: false,
-  }; // TODO: Re-implement useInvitations hook
-
-  // Fetch invitation details if an invitation ID is provided in the URL
-  const invitationEnabled =
-    !!invitationIdFromUrl && invitationIdFromUrl.startsWith("ivt");
-
-  // Always call the hook, but we'll use a dummy ID "ivt_disabled" when not enabled
-  // The actual invitationId will start with "ivt" as per the type requirement
-  const dummyInvitationId = "ivt_disabled" as `ivt${string}`;
-  const { data: invitationData, isLoading: isLoadingInvitation } =
-    useInvitation(
-      invitationEnabled
-        ? (invitationIdFromUrl as `ivt${string}`)
-        : dummyInvitationId,
-    );
-
   const { mutate: createOrganization } = useCreateOrganization({
     onSuccess: (data) => {
       toast.success("Organization created successfully!");
@@ -206,37 +186,6 @@ export function OrganizationSetup({ user }: { user: CurrentUser }) {
     },
     [acceptInvitation],
   );
-
-  // Set active tab based on invitations or URL parameter
-  useEffect(() => {
-    if (invitationIdFromUrl) {
-      setActiveTab("join");
-      if (!isLoadingInvitation && invitationData) {
-        // Auto-fill the invitation code if provided via URL
-        joinOrgForm.setValue("invitationId", invitationIdFromUrl);
-      }
-    } else if (invitationsData.length > 0) {
-      setActiveTab("join");
-    }
-  }, [invitationIdFromUrl, invitationData, isLoadingInvitation, joinOrgForm]);
-
-  // If there's an invitation ID in the URL and we're not already processing, handle it automatically
-  useEffect(() => {
-    if (
-      invitationIdFromUrl &&
-      invitationData &&
-      !isPending &&
-      activeTab === "join"
-    ) {
-      handleAcceptInvitation(invitationIdFromUrl);
-    }
-  }, [
-    invitationIdFromUrl,
-    invitationData,
-    isPending,
-    activeTab,
-    handleAcceptInvitation,
-  ]);
 
   // Focus workspace input when step changes to workspace
   useEffect(() => {
@@ -384,99 +333,39 @@ export function OrganizationSetup({ user }: { user: CurrentUser }) {
           </Form>
         ) : (
           <>
-            {isLoadingInvitations ||
-            (invitationIdFromUrl && isLoadingInvitation) ? (
-              <div className="flex justify-center py-4">
-                <Loader2 className="h-6 w-6 animate-spin" />
-              </div>
-            ) : invitationsData && invitationsData.length > 0 ? (
-              <div className="mt-4 space-y-4">
-                <h3 className="text-sm font-medium">
-                  You have pending invitations:
-                </h3>
-                <div className="space-y-2">
-                  {invitationsData.map((invitation: Invitation) => (
-                    <Card key={invitation.id} className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="font-medium">
-                            {invitation.organizationName || "Organization"}
-                          </p>
-                          <p className="text-muted-foreground text-sm">
-                            Role: {invitation.role}
-                          </p>
-                        </div>
-                        <Button
-                          onClick={() => handleAcceptInvitation(invitation.id)}
-                          disabled={isPending}
-                        >
-                          {isPending ? (
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          ) : null}
-                          Accept
-                        </Button>
-                      </div>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            ) : invitationIdFromUrl && invitationData ? (
-              <div className="mt-4 space-y-4">
-                <Card className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">
-                        {invitationData.organizationName || "Organization"}
-                      </p>
-                      <p className="text-muted-foreground text-sm">
-                        Role: {invitationData.role}
-                      </p>
-                    </div>
-                    <Button
-                      onClick={() =>
-                        handleAcceptInvitation(invitationIdFromUrl)
-                      }
-                      disabled={isPending}
-                    >
+            {
+              (
+                <Form {...joinOrgForm}>
+                  <form
+                    onSubmit={joinOrgForm.handleSubmit(handleJoinOrg)}
+                    className="mt-4 space-y-4"
+                  >
+                    <FormField
+                      control={joinOrgForm.control}
+                      name="invitationId"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Invitation Code</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Enter invitation code"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <Button type="submit" className="w-full" disabled={isPending}>
                       {isPending ? (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       ) : null}
-                      Accept
+                      Join Organization
                     </Button>
-                  </div>
-                </Card>
-              </div>
-            ) : (
-              <Form {...joinOrgForm}>
-                <form
-                  onSubmit={joinOrgForm.handleSubmit(handleJoinOrg)}
-                  className="mt-4 space-y-4"
-                >
-                  <FormField
-                    control={joinOrgForm.control}
-                    name="invitationId"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Invitation Code</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="Enter invitation code"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <Button type="submit" className="w-full" disabled={isPending}>
-                    {isPending ? (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    ) : null}
-                    Join Organization
-                  </Button>
-                </form>
-              </Form>
-            )}
+                  </form>
+                </Form>
+              )
+            }
           </>
         )}
       </CardContent>
