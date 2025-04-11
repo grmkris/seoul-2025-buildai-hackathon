@@ -1,13 +1,46 @@
 {
   "name": "api",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "bun run --watch src/index.ts | pino-pretty",
+    "test": "bun test",
+    "lint": "pnpm biome check",
+    "lint:fix": "pnpm biome check --fix --unsafe",
+    "format": "pnpm biome format --write",
+    "check": "pnpm lint && pnpm typecheck",
+    "check:knip": "bunx --bun knip",
+    "typecheck": "tsc --noEmit",
+    "type:generate": "rm -rf generated_types && tsc --project tsconfig.types.json || true && [ -d generated_types ]",
+    "db:start": "docker compose -f postgres.yml up -d",
+    "db:stop": "docker compose -f postgres.yml down",
+    "db:clean": "docker compose -f postgres.yml down -v",
+    "db:generate": "bun --bun drizzle-kit generate",
+    "db:auth:generate": "npx @better-auth/cli generate --config ./auth.config.ts -y && pnpm run format",
+    "db:migrate": "bun --bun drizzle-kit migrate",
+    "db:studio": "bun drizzle-kit studio"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.5.2"
+  "dependencies": {
+    "@faker-js/faker": "^9.6.0",
+    "@hono/zod-openapi": "^0.19.2",
+    "@scalar/hono-api-reference": "^0.7.4",
+    "ai": "workspace:*",
+    "typeid": "workspace:*",
+    "service-registry": "workspace:*",
+    "better-auth": "^1.2.5",
+    "drizzle-orm": "^0.41.0",
+    "drizzle-zod": "^0.7.1",
+    "hono": "^4.7.5",
+    "logger": "workspace:*",
+    "neverthrow": "^8.2.0",
+    "zod": "^3.24.2",
+    "zod-validation-error": "^3.4.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/bun": "^1.2.8",
+    "@types/lodash": "^4.17.16",
+    "@types/nodemailer": "^6.4.17",
+    "drizzle-kit": "^0.30.6",
+    "pino-pretty": "^13.0.0",
+    "test-utils": "workspace:*"
+  }
 }

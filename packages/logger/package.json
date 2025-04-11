@@ -1,0 +1,29 @@
+{
+	"name": "logger",
+	"version": "1.0.0",
+	"description": "",
+	"main": "src/logger.ts",
+	"types": "src/logger.ts",
+	"exports": {
+		".": "./src/logger.ts"
+	},
+	"scripts": {
+		"lint": "biome check",
+		"lint:fix": "biome check --fix --unsafe && pnpm lint --write --unsafe",
+		"test": "bun test",
+		"typecheck": "tsc --noEmit",
+		"format": "biome format --write",
+		"check": "pnpm lint && pnpm typecheck"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"zod": "^3.24.2",
+		"pino": "^9.6.0",
+		"pino-std-serializers": "^7.0.0"
+	},
+	"devDependencies": {
+		"pino-pretty": "^13.0.0"
+	}
+}

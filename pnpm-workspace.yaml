@@ -1,0 +1,9 @@
+packages:
+  - packages/*
+  - apps/**
+  - '!**/test/**'
+onlyBuiltDependencies:
+  - '@biomejs/biome'
+  - bun
+  - esbuild
+  - redis-memory-server

@@ -1,0 +1,42 @@
+{
+	"name": "test-utils",
+	"version": "1.0.0",
+	"description": "",
+	"main": "src/testUtils.ts",
+	"types": "src/testUtils.ts",
+	"exports": {
+		"./pgGatewayServer": "./src/pgGatewayServer.ts",
+		"./s3TestServer": "./src/s3TestServer.ts",
+		"./pgLite": "./src/pgLite.ts",
+		"./pgDrizzle": "./src/pgDrizzle.ts"
+	},
+	"scripts": {
+		"lint": "biome check",
+		"lint:fix": "biome check --fix --unsafe && pnpm lint --write --unsafe",
+		"test": "bun test",
+		"typecheck": "tsc --noEmit",
+		"format": "biome format --write",
+		"check": "pnpm lint && pnpm typecheck"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@electric-sql/pglite": "^0.2.17",
+		"drizzle-orm": "^0.41.0",
+		"logger": "workspace:*",
+		"minio": "^8.0.5",
+		"pg-gateway": "0.3.0-beta.4",
+		"redis-memory-server": "^0.12.1",
+		"s3rver": "3.7.1",
+		"zod": "^3.24.2"
+	},
+	"devDependencies": {
+		"@types/bun": "^1.2.8",
+		"@types/s3rver": "^3.7.4",
+		"bun": "^1.2.8",
+		"pino-pretty": "^13.0.0",
+		"s3rver": "3.7.1",
+		"typescript": "^5.8.2"
+	}
+}

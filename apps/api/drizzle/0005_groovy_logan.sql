@@ -1,0 +1,16 @@
+ALTER POLICY "workspace_access_policy" ON "conversation_items" TO workspace_viewer USING (current_setting('app.workspace_id')::varchar = "workspace_id");--> statement-breakpoint
+ALTER POLICY "workspace_access_policy" ON "conversations" TO workspace_viewer USING (current_setting('app.workspace_id')::varchar = "workspace_id");--> statement-breakpoint
+ALTER POLICY "workspace_access_policy" ON "customers" TO workspace_viewer USING (current_setting('app.workspace_id')::varchar = "workspace_id");--> statement-breakpoint
+ALTER POLICY "workspace_access_policy" ON "discount_codes" TO workspace_viewer USING (current_setting('app.workspace_id')::varchar = "workspace_id");--> statement-breakpoint
+ALTER POLICY "workspace_access_policy" ON "documents" TO workspace_viewer USING (current_setting('app.workspace_id')::varchar = "workspace_id");--> statement-breakpoint
+ALTER POLICY "workspace_access_policy" ON "documents_to_time_entries" TO workspace_viewer USING (current_setting('app.workspace_id')::varchar = "workspace_id");--> statement-breakpoint
+ALTER POLICY "workspace_access_policy" ON "inventory" TO workspace_viewer USING (current_setting('app.workspace_id')::varchar = "workspace_id");--> statement-breakpoint
+ALTER POLICY "workspace_access_policy" ON "inventory_movement" TO workspace_viewer USING (current_setting('app.workspace_id')::varchar = "workspace_id");--> statement-breakpoint
+ALTER POLICY "workspace_access_policy" ON "items" TO workspace_viewer USING (current_setting('app.workspace_id')::varchar = "workspace_id");--> statement-breakpoint
+ALTER POLICY "workspace_access_policy" ON "messages" TO workspace_viewer USING (current_setting('app.workspace_id')::varchar = "workspace_id");--> statement-breakpoint
+ALTER POLICY "workspace_access_policy" ON "notes" TO workspace_viewer USING (current_setting('app.workspace_id')::varchar = "workspace_id");--> statement-breakpoint
+ALTER POLICY "workspace_access_policy" ON "order_items" TO workspace_viewer USING (current_setting('app.workspace_id')::varchar = "workspace_id");--> statement-breakpoint
+ALTER POLICY "workspace_access_policy" ON "orders" TO workspace_viewer USING (current_setting('app.workspace_id')::varchar = "workspace_id");--> statement-breakpoint
+ALTER POLICY "workspace_access_policy" ON "task_assignments" TO workspace_viewer USING (current_setting('app.workspace_id')::varchar = "workspace_id");--> statement-breakpoint
+ALTER POLICY "workspace_access_policy" ON "tasks" TO workspace_viewer USING (current_setting('app.workspace_id')::varchar = "workspace_id");--> statement-breakpoint
+ALTER POLICY "workspace_access_policy" ON "time_entries" TO workspace_viewer USING (current_setting('app.workspace_id')::varchar = "workspace_id");

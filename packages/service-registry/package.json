@@ -1,0 +1,27 @@
+{
+	"name": "service-registry",
+	"version": "1.0.0",
+	"description": "Shared types and utilities for the service registry",
+	"main": "service-registry.ts",
+	"types": "service-registry.ts",
+	"exports": {
+		".": "./service-registry.ts"
+	},
+	"scripts": {
+		"lint": "biome check",
+		"lint:fix": "biome check --fix --unsafe && pnpm lint --write",
+		"test": "bun test",
+		"typecheck": "tsc --noEmit",
+		"format": "biome format --write",
+		"check": "pnpm lint && pnpm typecheck"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"logger": "workspace:*",
+		"nanoid": "^5.1.5",
+		"typeid-js": "^1.2.0",
+		"zod": "^3.24.2"
+	}
+}

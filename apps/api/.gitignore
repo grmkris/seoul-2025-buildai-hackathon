@@ -1,0 +1,8 @@
+# deps
+node_modules/
+generated_types/
+
+.env
+.idea
+
+.cache
