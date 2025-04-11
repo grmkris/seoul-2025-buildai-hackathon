@@ -5,6 +5,8 @@ packages:
 onlyBuiltDependencies:
   - '@biomejs/biome'
   - bun
+  - canvas
   - esbuild
+  - protobufjs
   - redis-memory-server
   - sharp
