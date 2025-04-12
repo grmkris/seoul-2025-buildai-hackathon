@@ -15,7 +15,10 @@
   solc = "0.8.25"
   src = "src"
   test = "test"
-libs = ["node_modules", "lib"]
+  libs = ["node_modules", "lib"]
+  fork_url = "https://mainnet.base.org" # <-- IMPORTANT: Replace this placeholder!
+  # Optional: Pin to a specific block number for consistency
+  # fork_block_number = 12345678 
 
 [profile.ci]
   fuzz = { runs = 10_000 }

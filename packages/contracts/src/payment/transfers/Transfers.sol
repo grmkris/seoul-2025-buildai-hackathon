@@ -40,14 +40,14 @@ contract Transfers is Context, Ownable, Pausable, ReentrancyGuard, Sweepable, IT
     address private immutable NATIVE_CURRENCY = address(0);
 
     // @dev Uniswap on-chain contract
-    IUniversalRouter private immutable uniswap;
+    IUniversalRouter public immutable uniswap;
 
     // @dev permit2 SignatureTransfer contract address. Used for tranferring tokens with a signature instead of a full transaction.
     // See: https://github.com/Uniswap/permit2
     IPermit2 public immutable permit2;
 
     // @dev Canonical wrapped token for this chain. e.g. (wETH or wMATIC).
-    IWrappedNativeCurrency private immutable wrappedNativeCurrency;
+    IWrappedNativeCurrency public immutable wrappedNativeCurrency;
 
     // @param _uniswap The address of the Uniswap V3 swap router
     // @param _wrappedNativeCurrency The address of the wrapped token for this chain
@@ -810,5 +810,29 @@ contract Transfers is Context, Ownable, Pausable, ReentrancyGuard, Sweepable, IT
     // @dev Required to be able to unwrap WETH
     receive() external payable {
         require(msg.sender == address(wrappedNativeCurrency), "only payable for unwrapping");
+    }
+
+    // --- Getters ---
+
+    /// @notice Checks if an operator address is registered.
+    /// @param _operator The address to check.
+    /// @return bool True if the operator is registered, false otherwise.
+    function isOperatorRegistered(address _operator) public view returns (bool) {
+        return feeDestinations[_operator] != address(0);
+    }
+
+    /// @notice Gets the fee destination address for a registered operator.
+    /// @param _operator The operator address.
+    /// @return address The fee destination address, or address(0) if not registered.
+    function getFeeDestination(address _operator) public view returns (address) {
+        return feeDestinations[_operator];
+    }
+
+    /// @notice Checks if a specific transfer intent has already been processed for an operator.
+    /// @param _operator The operator address.
+    /// @param _id The transfer intent ID.
+    /// @return bool True if the intent has been processed, false otherwise.
+    function isIntentProcessed(address _operator, bytes16 _id) public view returns (bool) {
+        return processedTransferIntents[_operator][_id];
     }
 }
