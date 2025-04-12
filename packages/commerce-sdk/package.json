@@ -1,0 +1,31 @@
+{
+	"name": "commerce-sdk",
+	"version": "1.0.0",
+	"description": "",
+	"main": "commerce-sdk.ts",
+	"scripts": {
+		"lint": "biome check",
+		"lint:fix": "biome check --fix --unsafe && pnpm lint --write",
+		"test": "bun test",
+		"typecheck": "tsc --noEmit",
+		"format": "biome format --write",
+		"check": "pnpm lint && pnpm typecheck"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"packageManager": "pnpm@10.5.2",
+	"dependencies": {
+		"abitype": "^1.0.1",
+		"logger": "workspace:*",
+		"neverthrow": "^8.2.0",
+		"viem": "^2.26.3",
+		"zod": "^3.24.2"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@types/bun": "^1.2.9",
+		"bun": "^1.2.9",
+		"typescript": "^5.8.3"
+	}
+}

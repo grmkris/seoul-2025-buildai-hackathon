@@ -621,6 +621,37 @@ importers:
         specifier: ^5.8.3
         version: 5.8.3
 
+  packages/commerce-sdk:
+    dependencies:
+      abitype:
+        specifier: ^1.0.1
+        version: 1.0.8(typescript@5.8.3)(zod@3.24.2)
+      logger:
+        specifier: workspace:*
+        version: link:../logger
+      neverthrow:
+        specifier: ^8.2.0
+        version: 8.2.0
+      viem:
+        specifier: ^2.26.3
+        version: 2.26.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.2
+    devDependencies:
+      '@biomejs/biome':
+        specifier: 1.9.4
+        version: 1.9.4
+      '@types/bun':
+        specifier: ^1.2.9
+        version: 1.2.9
+      bun:
+        specifier: ^1.2.9
+        version: 1.2.9
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
+
   packages/contracts:
     dependencies:
       '@openzeppelin/contracts':
@@ -635,6 +666,9 @@ importers:
       abitype:
         specifier: ^1.0.1
         version: 1.0.8(typescript@5.8.3)(zod@3.24.2)
+      neverthrow:
+        specifier: ^8.2.0
+        version: 8.2.0
       solmate:
         specifier: ^6.2.0
         version: 6.8.0

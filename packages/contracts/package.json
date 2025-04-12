@@ -4,10 +4,11 @@
   "version": "1.0.0",
   "dependencies": {
     "@openzeppelin/contracts": "4.9.6",
+    "@prb/math": "4.1.0",
     "@uniswap/universal-router": "^1.6.0",
     "abitype": "^1.0.1",
-    "solmate": "^6.2.0",
-    "@prb/math": "4.1.0"
+    "neverthrow": "^8.2.0",
+    "solmate": "^6.2.0"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
