@@ -197,7 +197,7 @@ describe("Commerce SDK: transferTokenPreApproved Flow", () => {
 
 		expect(finalPayerBalance).toBe(initialPayerBalance - totalAmount);
 		expect(finalRecipientBalance).toBe(
-			initialRecipientBalance + recipientAmount + feeAmount,
+			initialRecipientBalance + recipientAmount,
 		);
 		expect(finalOperatorBalance).toBe(initialOperatorBalance + feeAmount);
 
