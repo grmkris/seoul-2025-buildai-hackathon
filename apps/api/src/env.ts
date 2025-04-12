@@ -43,6 +43,10 @@ export const envSchema = z.object({
   STORAGE_REGION: z.string(),
   STORAGE_ENDPOINT: z.string(),
   GROQ_API_KEY: z.string(),
+
+  TEST_RPC_URL: z.string(),
+  TRANSFERS_CONTRACT_ADDRESS: z.string(),
+  OPERATOR_PRIVATE_KEY: z.string(),
 });
 
 export const env = envSchema.parse(Bun.env);

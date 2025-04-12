@@ -287,6 +287,9 @@ importers:
       better-auth:
         specifier: ^1.2.5
         version: 1.2.5(typescript@5.8.3)
+      commerce-sdk:
+        specifier: workspace:*
+        version: link:../../packages/commerce-sdk
       drizzle-orm:
         specifier: ^0.41.0
         version: 0.41.0(@electric-sql/pglite@0.2.17)(@neondatabase/serverless@1.0.0)(@opentelemetry/api@1.9.0)(@types/pg@8.11.12)(bun-types@1.2.9)(gel@2.0.2)(kysely@0.27.6)
@@ -624,7 +627,7 @@ importers:
   packages/commerce-sdk:
     dependencies:
       abitype:
-        specifier: ^1.0.1
+        specifier: ^1.0.8
         version: 1.0.8(typescript@5.8.3)(zod@3.24.2)
       logger:
         specifier: workspace:*
@@ -655,22 +658,22 @@ importers:
   packages/contracts:
     dependencies:
       '@openzeppelin/contracts':
-        specifier: 4.9.6
-        version: 4.9.6
+        specifier: 5.3.0
+        version: 5.3.0
       '@prb/math':
         specifier: 4.1.0
         version: 4.1.0
       '@uniswap/universal-router':
-        specifier: ^1.6.0
-        version: 1.6.0
+        specifier: ^2.0.0
+        version: 2.0.0
       abitype:
-        specifier: ^1.0.1
+        specifier: ^1.0.8
         version: 1.0.8(typescript@5.8.3)(zod@3.24.2)
       neverthrow:
         specifier: ^8.2.0
         version: 8.2.0
       solmate:
-        specifier: ^6.2.0
+        specifier: ^6.8.0
         version: 6.8.0
     devDependencies:
       '@biomejs/biome':
@@ -2257,11 +2260,11 @@ packages:
     resolution: {integrity: sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg==}
     engines: {node: '>=8.0.0'}
 
-  '@openzeppelin/contracts@4.7.0':
-    resolution: {integrity: sha512-52Qb+A1DdOss8QvJrijYYPSf32GUg2pGaG/yCxtaA3cu4jduouTdg4XZSMLW9op54m1jH7J8hoajhHKOPsoJFw==}
+  '@openzeppelin/contracts@5.0.2':
+    resolution: {integrity: sha512-ytPc6eLGcHHnapAZ9S+5qsdomhjo6QBHTDRRBFfTxXIpsicMhVPouPgmUPebZZZGX7vt9USA+Z+0M0dSVtSUEA==}
 
-  '@openzeppelin/contracts@4.9.6':
-    resolution: {integrity: sha512-xSmezSupL+y9VkHZJGDoCBpmnB2ogM13ccaYDWqJTfS3dbuHkgjuwDFUmaFauBCboQMGB/S5UqUl2y54X99BmA==}
+  '@openzeppelin/contracts@5.3.0':
+    resolution: {integrity: sha512-zj/KGoW7zxWUE8qOI++rUM18v+VeLTTzKs/DJFkSzHpQFPD/jKKF0TrMxBfGLl3kpdELCNccvB3zmofSzm4nlA==}
 
   '@oven/bun-darwin-aarch64@1.2.9':
     resolution: {integrity: sha512-A190s6twmzNE6KGVoUxEDQaSebXUY0bTYXUwnAqTWpE/LxkkDZ7VLhDKxe0nqiDOWStSTTXpfZcFp5T2D6c8iQ==}
@@ -3437,8 +3440,8 @@ packages:
   '@unhead/schema@1.11.20':
     resolution: {integrity: sha512-0zWykKAaJdm+/Y7yi/Yds20PrUK7XabLe9c3IRcjnwYmSWY6z0Cr19VIs3ozCj8P+GhR+/TI2mwtGlueCEYouA==}
 
-  '@uniswap/universal-router@1.6.0':
-    resolution: {integrity: sha512-Gt0b0rtMV1vSrgXY3vz5R1RCZENB+rOkbOidY9GvcXrK1MstSrQSOAc+FCr8FSgsDhmRAdft0lk5YUxtM9i9Lg==}
+  '@uniswap/universal-router@2.0.0':
+    resolution: {integrity: sha512-6V21kuf547hE1gLfLQ89gv41DMSJY1ZZKer/k7CBagNPJ0oDnUyme+qQPtdoWknyUgSKd1M6sDm/WpocjVmPlA==}
     engines: {node: '>=14'}
 
   '@uniswap/v2-core@1.0.1':
@@ -9429,9 +9432,9 @@ snapshots:
 
   '@opentelemetry/api@1.9.0': {}
 
-  '@openzeppelin/contracts@4.7.0': {}
+  '@openzeppelin/contracts@5.0.2': {}
 
-  '@openzeppelin/contracts@4.9.6': {}
+  '@openzeppelin/contracts@5.3.0': {}
 
   '@oven/bun-darwin-aarch64@1.2.9':
     optional: true
@@ -10909,9 +10912,9 @@ snapshots:
       hookable: 5.5.3
       zhead: 2.2.4
 
-  '@uniswap/universal-router@1.6.0':
+  '@uniswap/universal-router@2.0.0':
     dependencies:
-      '@openzeppelin/contracts': 4.7.0
+      '@openzeppelin/contracts': 5.0.2
       '@uniswap/v2-core': 1.0.1
       '@uniswap/v3-core': 1.0.0
 

@@ -16,7 +16,7 @@
 	"license": "ISC",
 	"packageManager": "pnpm@10.5.2",
 	"dependencies": {
-		"abitype": "^1.0.1",
+		"abitype": "^1.0.8",
 		"logger": "workspace:*",
 		"neverthrow": "^8.2.0",
 		"viem": "^2.26.3",

@@ -7,7 +7,7 @@ import { env } from "@/env";
 import type { Message } from "ai";
 import { typeIdGenerator } from "typeid";
 import { appendResponseMessages, createDataStream } from "ai";
-import { createOgrodjeClientTools } from "./agentTools";
+import { createOgrodjeClientTools } from "./ogrodjeAgentTools";
 
 export const createSimpleAgent = (props: {
   db: db,
