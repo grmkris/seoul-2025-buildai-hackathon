@@ -32,6 +32,7 @@
     "neverthrow": "^8.2.0",
     "service-registry": "workspace:*",
     "typeid": "workspace:*",
+    "viem": "^2.26.3",
     "zod": "^3.24.2",
     "zod-validation-error": "^3.4.0"
   },

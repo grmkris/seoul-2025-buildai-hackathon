@@ -40,11 +40,5 @@
     "deployer:address": "source .env && cast wallet address --private-key $PRIVATE_KEY",
     "deploy:citrea": "source .env && forge script script/Deploy.s.sol:Deploy --rpc-url $CITREA_TESTNET_RPC_URL --private-key $PRIVATE_KEY --broadcast --verify -vvvv",
     "deploy:rootstock": "REQ_TIMEOUT=100000 source .env && forge script script/Deploy.s.sol:Deploy --rpc-url $ROOTSTOCK_TESTNET_RPC_URL --private-key $PRIVATE_KEY --broadcast --legacy --evm-version london"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@biomejs/biome",
-      "bun"
-    ]
   }
 }

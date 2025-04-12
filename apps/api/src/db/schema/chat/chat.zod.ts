@@ -1,6 +1,6 @@
 import { MessageSchema } from "ai";
 import { createSelectSchema } from "drizzle-zod";
-import { ConversationId, MemberId, MessageId, WorkspaceId } from "typeid";
+import { ConversationId, MessageId, UserId, WorkspaceId } from "typeid";
 import { z } from "zod";
 import { conversations, messages } from "./chat.db"; // Assuming tables are exported from chat.db.ts
 
@@ -10,8 +10,8 @@ export const SelectConversationSchema = createSelectSchema(conversations, {
   workspaceId: WorkspaceId,
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
-  createdBy: MemberId,
-  updatedBy: MemberId,
+  createdBy: UserId,
+  updatedBy: UserId,
 });
 export const InsertConversationSchema = z.object({
   title: z.string().min(1).max(255),
@@ -26,8 +26,8 @@ export const SelectMessageSchema = createSelectSchema(messages, {
   message: MessageSchema,
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
-  createdBy: MemberId,
-  updatedBy: MemberId, // Added updatedBy based on createFullEntityFields
+  createdBy: UserId,
+  updatedBy: UserId, // Added updatedBy based on createFullEntityFields
   workspaceId: WorkspaceId,
 });
 export type SelectMessageSchema = z.infer<typeof SelectMessageSchema>;

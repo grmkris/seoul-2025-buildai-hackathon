@@ -5,15 +5,17 @@ import { and, eq, sql } from "drizzle-orm";
 import {
   type ConversationId,
   MessageId,
-  typeIdGenerator,
   type WorkspaceId,
+  type UserId,
 } from "typeid";
 import { z } from "zod";
-
+import type { Logger } from "logger";
 // Define missing types
 export interface ChatHistoryServiceOptions {
   conversationId: ConversationId;
   workspaceId: WorkspaceId;
+  userId: UserId;
+  logger: Logger;
 }
 
 export interface ChatHistoryService {
@@ -26,7 +28,7 @@ export interface ChatHistoryService {
 export const createChatHistoryService = (
   options: ChatHistoryServiceOptions & { db: db },
 ): ChatHistoryService => {
-  const { conversationId, workspaceId, db } = options;
+  const { conversationId, workspaceId, userId, db, logger } = options;
 
   return {
     addUserMessage: async (message: CoreMessage) => {
@@ -38,8 +40,8 @@ export const createChatHistoryService = (
           message,
           conversationId,
           workspaceId,
-          createdBy: typeIdGenerator('member'), // TODO: change to userID
-          updatedBy: typeIdGenerator('member'), // TODO: change to userID
+          createdBy: userId,
+          updatedBy: userId,
           createdAt: z.coerce.date().parse(message.createdAt),
         })
         .returning();
@@ -49,7 +51,7 @@ export const createChatHistoryService = (
         .update(conversations)
         .set({
           updatedAt: new Date(),
-          updatedBy: typeIdGenerator('member'), // TODO: change to userID
+          updatedBy: userId,
         })
         .where(eq(conversations.id, conversationId));
 
@@ -62,6 +64,13 @@ export const createChatHistoryService = (
 
     // agent messages are streamed into the db, so we want to update and on conflict do update with the latest message
     addAgentMessages: async (agentMessages: CoreMessage[]) => {
+      logger.debug({
+        msg: "Adding agent messages",
+        agentMessages,
+        conversationId,
+        workspaceId,
+        userId,
+      });
       if (agentMessages.length === 0) return [];
       // insert messages with incrementing timestamps to preserve order
       const messagesToInsert = agentMessages.map((message: CoreMessage) => ({
@@ -70,8 +79,8 @@ export const createChatHistoryService = (
         conversationId,
         workspaceId,
         createdAt: z.coerce.date().parse(message.createdAt),
-        createdBy: typeIdGenerator('member'), // TODO: change to userID
-        updatedBy: typeIdGenerator('member'), // TODO: change to userID
+        createdBy: userId,
+        updatedBy: userId,
       }));
 
       await db

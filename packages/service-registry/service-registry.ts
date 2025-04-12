@@ -13,11 +13,13 @@ export const SERVICE_URLS: Record<
 		frontend: string;
 		cookieDomain: string;
 		ollama: string;
+		admin: string;
 	}
 > = {
 	dev: {
 		auth: "http://localhost:3001",
 		api: "http://localhost:3001",
+		admin: "http://localhost:3002",
 		frontend: "http://localhost:3000",
 		cookieDomain: "localhost",
 		ollama: "http://localhost:11434/api",
@@ -26,6 +28,7 @@ export const SERVICE_URLS: Record<
 		auth: "https://zdrava-kosara-backend-production.up.railway.app",
 		api: "https://zdrava-kosara-backend-production.up.railway.app",
 		frontend: "https://zdrava-kosara-frontend-production.up.railway.app",
+		admin: "https://zdrava-kosara-admin-production.up.railway.app",
 		cookieDomain: ".zdrava-kosara-backend-production.up.railway.app",
 		ollama: "http://localhost:11434/api",
 	},

@@ -3,7 +3,6 @@ import type { Message } from "@ai-sdk/react";
 import { MessageBubble } from "./MessageBubble";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { LevelCompletedToolRenderer } from "./LevelCompletedToolRenderer";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
@@ -20,8 +19,6 @@ function InlineToolInvocation({
   const [isExpanded, setIsExpanded] = useState(false);
   const toggleExpand = () => setIsExpanded(!isExpanded);
 
-  const isLevelCompletedTool = part.toolInvocation.toolName === "finishLevel";
-
   return (
     <div className="my-1">
       <Button
@@ -35,7 +32,6 @@ function InlineToolInvocation({
         ) : (
           <ChevronDown size={14} className="mr-1" />
         )}
-        {isLevelCompletedTool ? "Level Completed" : "Tool Call"}
       </Button>
       {isExpanded && (
         <div className="mt-1 p-2 text-xs border rounded bg-background">
@@ -108,15 +104,6 @@ function AIMessage({ fullMessage, ...props }: AIMessageProps) {
 
       {/* Render Tool Invocation Parts */}
       {toolInvocationParts.map((part, index) => {
-        if (part.toolInvocation.toolName === "finishLevelTool") {
-          // Render LevelCompletedToolRenderer for finishLevel tool calls
-          return (
-            <LevelCompletedToolRenderer
-              key={`${fullMessage.id}-tool-${index}`}
-              toolInvocation={part}
-            />
-          );
-        }
         // Render InlineToolInvocation for other tool calls
         return (
           <InlineToolInvocation

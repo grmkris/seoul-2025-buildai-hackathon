@@ -137,7 +137,7 @@ export const createApp = async (props: {
     .use(
       "*", // or replace with "*" to enable cors for all routes
       cors({
-        origin: SERVICE_URLS[env.APP_ENV].frontend,
+        origin: [SERVICE_URLS[env.APP_ENV].frontend, SERVICE_URLS[env.APP_ENV].admin],
         allowHeaders: ["Content-Type", "Authorization"],
         allowMethods: ["POST", "GET", "OPTIONS", "PUT", "DELETE"],
         exposeHeaders: ["Content-Length"],

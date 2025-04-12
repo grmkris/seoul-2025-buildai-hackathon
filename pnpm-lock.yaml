@@ -308,6 +308,9 @@ importers:
       typeid:
         specifier: workspace:*
         version: link:../../packages/typeid
+      viem:
+        specifier: ^2.26.3
+        version: 2.26.3(bufferutil@4.0.9)(typescript@5.8.3)(utf-8-validate@5.0.10)(zod@3.24.2)
       zod:
         specifier: ^3.24.2
         version: 3.24.2

@@ -12,7 +12,6 @@ import { z } from "zod";
 import {
   commonHeaderSchema,
   createCommonErrorSchema,
-  createJsonSchema,
   createOpenAPIRoute,
   validateAuth,
 } from "../helpers";
@@ -62,94 +61,10 @@ export const UpdateConversationSchema = InsertConversationSchema.partial();
 export type UpdateConversationSchema = z.infer<typeof UpdateConversationSchema>;
 
 // Schema for getting conversation - Simplified: Removed audit history
-export const GetConversationSchema = SelectConversationSchema;
+export const GetConversationSchema = SelectConversationSchema.extend({
+  messages: z.array(SelectMessageSchema),
+});
 export type GetConversationSchema = z.infer<typeof GetConversationSchema>;
-
-/**
- * Route: Create a new conversation
- */
-const createConversationRoute = createOpenAPIRoute().openapi(
-  createRoute({
-    method: "post",
-    path: "",
-    tags: ["Chat"],
-    summary: "Create a conversation",
-    request: {
-      params: z.object({
-        organizationId: OrganizationId,
-        workspaceId: WorkspaceId,
-      }),
-      body: createJsonSchema(CreateConversationSchema),
-      headers: commonHeaderSchema,
-    },
-    responses: {
-      201: {
-        description: "Conversation created successfully",
-        content: {
-          "application/json": {
-            schema: SelectConversationSchema,
-          },
-        },
-      },
-      ...createCommonErrorSchema(),
-    },
-  }),
-  async (c) => {
-    try {
-      const data = c.req.valid("json");
-      const db = c.get("db");
-      const session = validateAuth(c);
-      const workspaceId = c.req.valid("param").workspaceId;
-      const requestId = c.get("requestId");
-      const logger = c.get("logger");
-
-      if (!session.memberId) {
-        return c.json(
-          { message: "Unauthorized", requestId: c.get("requestId") },
-          401,
-        );
-      }
-
-      // Create the conversation
-      const newConversation = await db
-        .insert(conversations)
-        .values({
-          ...data,
-          createdBy: session.memberId,
-          updatedBy: session.memberId,
-          workspaceId: workspaceId,
-        })
-        .returning();
-
-      if (!newConversation[0]?.id) {
-        return c.json({ message: "Conversation not created", requestId }, 500);
-      }
-
-      const conversationId = newConversation[0].id;
-
-      logger.info({
-        msg: "Conversation created",
-        conversationId,
-        workspaceId,
-        createdBy: session.memberId,
-      });
-
-      return c.json(newConversation[0], 201);
-    } catch (error) {
-      c.get("logger").error({
-        msg: "Error creating conversation",
-        error,
-      });
-      return c.json(
-        {
-          message: "Internal server error",
-          requestId: c.get("requestId"),
-        },
-        500,
-      );
-    }
-  },
-);
 
 /**
  * Route: Get a conversation - Simplified (removed audit history)
@@ -193,6 +108,9 @@ const getConversationRoute = createOpenAPIRoute().openapi(
           eq(conversations.id, conversationId),
           eq(conversations.workspaceId, workspaceId),
         ),
+        with: {
+          messages: true,
+        },
       });
 
       if (!conversation) {
@@ -348,108 +266,6 @@ const listConversationsRoute = createOpenAPIRoute().openapi(
 );
 
 /**
- * Route: Update a conversation
- */
-const updateConversationRoute = createOpenAPIRoute().openapi(
-  createRoute({
-    method: "patch",
-    path: "",
-    tags: ["Chat"],
-    summary: "Update conversation",
-    request: {
-      params: z.object({
-        organizationId: OrganizationId,
-        workspaceId: WorkspaceId,
-        conversationId: ConversationId,
-      }),
-      body: createJsonSchema(UpdateConversationSchema),
-      headers: commonHeaderSchema,
-    },
-    responses: {
-      200: {
-        description: "Conversation updated successfully",
-        content: {
-          "application/json": {
-            schema: SelectConversationSchema,
-          },
-        },
-      },
-      ...createCommonErrorSchema(),
-    },
-  }),
-  async (c) => {
-    try {
-      const { conversationId } = c.req.valid("param");
-      const data = c.req.valid("json");
-      const db = c.get("db");
-      const session = validateAuth(c);
-      const workspaceId = c.req.valid("param").workspaceId;
-
-      // Check if the conversation exists
-      const existingConversation = await db.query.conversations.findFirst({
-        where: and(
-          eq(conversations.id, conversationId),
-          eq(conversations.workspaceId, workspaceId),
-        ),
-      });
-
-      if (!existingConversation) {
-        return c.json(
-          {
-            message: "Conversation not found",
-            requestId: c.get("requestId"),
-          },
-          404,
-        );
-      }
-
-      if (!session.memberId) {
-        return c.json(
-          { message: "Unauthorized", requestId: c.get("requestId") },
-          401,
-        );
-      }
-
-      // Update the conversation
-      const updatedConversation = await db
-        .update(conversations)
-        .set({ ...data, updatedBy: session.memberId })
-        .where(
-          and(
-            eq(conversations.id, conversationId),
-            eq(conversations.workspaceId, workspaceId),
-          ),
-        )
-        .returning();
-
-      if (!updatedConversation.length) {
-        return c.json(
-          {
-            message: "Conversation not found",
-            requestId: c.get("requestId"),
-          },
-          404,
-        );
-      }
-
-      return c.json(updatedConversation[0], 200);
-    } catch (error) {
-      c.get("logger").error({
-        msg: "Error updating conversation",
-        error,
-      });
-      return c.json(
-        {
-          message: "Internal server error",
-          requestId: c.get("requestId"),
-        },
-        500,
-      );
-    }
-  },
-);
-
-/**
  * Route: Delete (archive) a conversation
  */
 const deleteConversationRoute = createOpenAPIRoute().openapi(
@@ -545,10 +361,8 @@ const conversationRoutes = new OpenAPIHono()
   .use(`${WORKSPACE_PATH}/chat/conversations/*`, checkOrganizationAccess) // Use wildcard for middleware
   .use(`${WORKSPACE_PATH}/chat/conversations/*`, checkWorkspaceAccess)
   .basePath(`${WORKSPACE_PATH}/chat/conversations`)
-  .route("/", createConversationRoute)
   .route("/", listConversationsRoute)
   .route("/:conversationId", getConversationRoute)
-  .route("/:conversationId", updateConversationRoute)
   .route("/:conversationId", deleteConversationRoute);
 
 export { conversationRoutes };
