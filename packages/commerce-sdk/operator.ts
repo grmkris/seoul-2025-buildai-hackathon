@@ -204,18 +204,8 @@ export const createOperatorClient = (config: OperatorClientConfig) => {
 			],
 		);
 
-		const hash = keccak256(packedData);
-
-		if (intent.prefix) {
-			// Custom prefix: keccak256(abi.encodePacked(_intent.prefix, hash))
-			const prefixedHash = keccak256(
-				encodePacked(["string", "bytes32"], [intent.prefix, hash]),
-			);
-			return prefixedHash;
-		}
-		// Default EIP-191 prefix: "\\x19Ethereum Signed Message:\\n32" + hash
-		// viem's hashMessage handles this automatically
-		return hashMessage({ raw: hash }); // Let viem handle EIP-191
+		// Return the raw hash without any prefixing
+		return keccak256(packedData);
 	};
 
 	// Creates and signs the TransferIntent
@@ -263,23 +253,22 @@ export const createOperatorClient = (config: OperatorClientConfig) => {
 			});
 		}
 
-		// 1. Create the hash
+		// 1. Create the hash the same way as in the example code
 		const messageHash = createTransferIntentHash(intent, payerAddress);
-
-		// 2. Sign the hash
+		
 		try {
-			// Assuming config.signer is a WalletClient correctly configured
-			// with the operator's account
+			// 2. Sign the raw message hash directly like in the example code
 			const signature = await config.operatorSigner.signMessage({
 				account: config.operatorSigner.account,
-				message: { raw: messageHash }, // Sign the raw hash directly if using hashMessage EIP-191 style, or just messageHash if custom prefix
+				message: { raw: messageHash }
 			});
 
-			// 3. Return the full intent with the signature
+			// 3. Return the intent with signature and empty prefix
+			// This will cause the contract to use EIP-191 prefixing when validating
 			const signedIntent: SignedTransferIntent = {
 				...intent,
 				signature,
-				prefix: intent.prefix || "0x",
+				prefix: "0x" as Hex
 			};
 			return ok(signedIntent);
 		} catch (error) {

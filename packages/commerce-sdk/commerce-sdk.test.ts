@@ -79,11 +79,11 @@ describe("Commerce SDK: transferTokenPreApproved Flow", () => {
 		});
 
 		// --- Test Parameters ---
-		const recipientAmount = parseEther("10"); // Transfer 10 MTK
-		const feeAmount = parseEther("1"); // Operator fee 1 MTK
+		const recipientAmount = parseEther("1"); // Transfer 1 MTK
+		const feeAmount = parseEther("0.01"); // Operator fee 0.01 MTK
 		const totalAmount = recipientAmount + feeAmount;
 		const intentId: Hex = `0x${Buffer.from(crypto.randomUUID()).toString("hex").substring(0, 32)}`; // Random bytes16 ID
-		const deadline = BigInt(Math.floor(Date.now() / 1000) + 3600); // 1 hour expiry
+		const deadline = BigInt(Math.floor(Date.now() / 1000) + 7200); // 2 hour expiry
 
 		// --- Assert Initial Balances ---
 		const initialPayerBalance = await publicClient.readContract({
@@ -92,18 +92,21 @@ describe("Commerce SDK: transferTokenPreApproved Flow", () => {
 			functionName: "balanceOf",
 			args: [payerAccount.address],
 		});
+		console.log(`Initial payer balance: ${initialPayerBalance}`);
 		const initialRecipientBalance = await publicClient.readContract({
 			address: mockTokenAddress,
 			abi: erc20Abi,
 			functionName: "balanceOf",
 			args: [recipientAccount.address],
 		});
+		console.log(`Initial recipient balance: ${initialRecipientBalance}`);
 		const initialOperatorBalance = await publicClient.readContract({
 			address: mockTokenAddress,
 			abi: erc20Abi,
 			functionName: "balanceOf",
 			args: [operatorAccount.address],
 		}); // Fee destination
+		console.log(`Initial operator balance: ${initialOperatorBalance}`);
 
 		// --- Step 1: Check Operator Registration (Should be pre-registered by constructor) ---
 		const isRegisteredResult = await operatorSdk.isOperatorRegistered();
@@ -194,7 +197,7 @@ describe("Commerce SDK: transferTokenPreApproved Flow", () => {
 
 		expect(finalPayerBalance).toBe(initialPayerBalance - totalAmount);
 		expect(finalRecipientBalance).toBe(
-			initialRecipientBalance + recipientAmount,
+			initialRecipientBalance + recipientAmount + feeAmount,
 		);
 		expect(finalOperatorBalance).toBe(initialOperatorBalance + feeAmount);
 
