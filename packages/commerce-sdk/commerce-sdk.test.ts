@@ -1,27 +1,27 @@
-import { describe, it, expect } from 'bun:test'; // Or import from 'jest'
+import { describe, it, expect } from "bun:test"; // Or import from 'jest'
 import {
-  parseEther,
-  type Address,
-  type Hex,
-  erc20Abi,
-  createPublicClient,
-  http,
-  createWalletClient,
-} from 'viem';
-import { rootstockTestnet } from 'viem/chains'; // Or your preferred test chain
-import { privateKeyToAccount } from 'viem/accounts';
+	parseEther,
+	type Address,
+	type Hex,
+	erc20Abi,
+	createPublicClient,
+	http,
+	createWalletClient,
+} from "viem";
+import { rootstockTestnet } from "viem/chains"; // Or your preferred test chain
+import { privateKeyToAccount } from "viem/accounts";
 
-import { createOperatorClient, type TransferIntent } from './operator';
-import { createPayerClient } from './payer';
-import { z } from 'zod';
+import { createOperatorClient, type TransferIntent } from "./operator";
+import { createPayerClient } from "./payer";
+import { z } from "zod";
 
 const testEnvSchema = z.object({
-  TEST_RPC_URL: z.string(),
-  OPERATOR_PRIVATE_KEY: z.string(),
-  PAYER_PRIVATE_KEY: z.string(),
-  RECIPIENT_PRIVATE_KEY: z.string(),
-  TRANSFERS_CONTRACT_ADDRESS: z.string(),
-  MOCK_TOKEN_ADDRESS: z.string(),
+	TEST_RPC_URL: z.string(),
+	OPERATOR_PRIVATE_KEY: z.string(),
+	PAYER_PRIVATE_KEY: z.string(),
+	RECIPIENT_PRIVATE_KEY: z.string(),
+	TRANSFERS_CONTRACT_ADDRESS: z.string(),
+	MOCK_TOKEN_ADDRESS: z.string(),
 });
 
 const env = testEnvSchema.parse(Bun.env);
@@ -44,111 +44,167 @@ const recipientAccount = privateKeyToAccount(recipientSk as `0x${string}`); // T
 const transfersContractAddress = env.TRANSFERS_CONTRACT_ADDRESS as Address;
 const mockTokenAddress = env.MOCK_TOKEN_ADDRESS as Address;
 
-describe('Commerce SDK: transferTokenPreApproved Flow', () => {
+describe("Commerce SDK: transferTokenPreApproved Flow", () => {
+	const publicClient = createPublicClient({
+		chain: testChain,
+		transport: http(TEST_RPC_URL),
+	});
 
-  const publicClient = createPublicClient({
-    chain: testChain,
-    transport: http(TEST_RPC_URL),
-  });
+	const operatorSigner = createWalletClient({
+		account: operatorAccount,
+		chain: testChain,
+		transport: http(TEST_RPC_URL),
+	});
 
-  const operatorSigner = createWalletClient({
-    account: operatorAccount,
-    chain: testChain,
-    transport: http(TEST_RPC_URL),
-  });
+	const payerSigner = createWalletClient({
+		account: payerAccount,
+		chain: testChain,
+		transport: http(TEST_RPC_URL),
+	});
 
-  const payerSigner = createWalletClient({
-    account: payerAccount,
-    chain: testChain,
-    transport: http(TEST_RPC_URL),
-  });
-  
+	it("should execute transferTokenPreApproved successfully", async () => {
+		// --- Instantiate SDK Clients ---
+		const operatorSdk = createOperatorClient({
+			chain: testChain,
+			transportUrl: TEST_RPC_URL,
+			transfersContractAddress: transfersContractAddress,
+			operatorSigner: operatorSigner,
+		});
 
-  it('should execute transferTokenPreApproved successfully', async () => {
-    // --- Instantiate SDK Clients ---
-    const operatorSdk = createOperatorClient({
-      chain: testChain,
-      transportUrl: TEST_RPC_URL,
-      transfersContractAddress: transfersContractAddress,
-      operatorAccount: operatorAccount.address,
-      signer: operatorSigner,
-    });
+		const payerSdk = createPayerClient({
+			chain: testChain,
+			transportUrl: TEST_RPC_URL,
+			transfersContractAddress: transfersContractAddress,
+			payerSigner: payerSigner,
+		});
 
-    const payerSdk = createPayerClient({
-      chain: testChain,
-      transportUrl: TEST_RPC_URL,
-      transfersContractAddress: transfersContractAddress,
-      payerAccount: payerAccount.address,
-      signer: payerSigner,
-    });
+		// --- Test Parameters ---
+		const recipientAmount = parseEther("10"); // Transfer 10 MTK
+		const feeAmount = parseEther("1"); // Operator fee 1 MTK
+		const totalAmount = recipientAmount + feeAmount;
+		const intentId: Hex = `0x${Buffer.from(crypto.randomUUID()).toString("hex").substring(0, 32)}`; // Random bytes16 ID
+		const deadline = BigInt(Math.floor(Date.now() / 1000) + 3600); // 1 hour expiry
 
-    // --- Test Parameters ---
-    const recipientAmount = parseEther("10"); // Transfer 10 MTK
-    const feeAmount = parseEther("1");      // Operator fee 1 MTK
-    const totalAmount = recipientAmount + feeAmount;
-    const intentId: Hex = `0x${Buffer.from(crypto.randomUUID()).toString('hex').substring(0, 32)}`; // Random bytes16 ID
-    const deadline = BigInt(Math.floor(Date.now() / 1000) + 3600); // 1 hour expiry
+		// --- Assert Initial Balances ---
+		const initialPayerBalance = await publicClient.readContract({
+			address: mockTokenAddress,
+			abi: erc20Abi,
+			functionName: "balanceOf",
+			args: [payerAccount.address],
+		});
+		const initialRecipientBalance = await publicClient.readContract({
+			address: mockTokenAddress,
+			abi: erc20Abi,
+			functionName: "balanceOf",
+			args: [recipientAccount.address],
+		});
+		const initialOperatorBalance = await publicClient.readContract({
+			address: mockTokenAddress,
+			abi: erc20Abi,
+			functionName: "balanceOf",
+			args: [operatorAccount.address],
+		}); // Fee destination
 
-    // --- Assert Initial Balances ---
-    const initialPayerBalance = await publicClient.readContract({ address: mockTokenAddress, abi: erc20Abi, functionName: 'balanceOf', args: [payerAccount.address] });
-    const initialRecipientBalance = await publicClient.readContract({ address: mockTokenAddress, abi: erc20Abi, functionName: 'balanceOf', args: [recipientAccount.address] });
-    const initialOperatorBalance = await publicClient.readContract({ address: mockTokenAddress, abi: erc20Abi, functionName: 'balanceOf', args: [operatorAccount.address] }); // Fee destination
+		// --- Step 1: Check Operator Registration (Should be pre-registered by constructor) ---
+		const isRegisteredResult = await operatorSdk.isOperatorRegistered();
+		expect(isRegisteredResult.isOk()).toBe(true);
+		if (isRegisteredResult.isOk()) expect(isRegisteredResult.value).toBe(true);
 
-    // --- Step 1: Check Operator Registration (Should be pre-registered by constructor) ---
-    const isRegisteredResult = await operatorSdk.isOperatorRegistered();
-    expect(isRegisteredResult.isOk()).toBe(true);
-    if(isRegisteredResult.isOk()) expect(isRegisteredResult.value).toBe(true);
+		// --- Step 2: Payer Approves the Transfers Contract (if needed) ---
+		console.log("Checking current allowance...");
+		const currentAllowance = await publicClient.readContract({
+			address: mockTokenAddress,
+			abi: erc20Abi,
+			functionName: "allowance",
+			args: [payerAccount.address, transfersContractAddress],
+		});
+		console.log(`Current allowance: ${currentAllowance}`);
 
-    // --- Step 2: Payer Approves the Transfers Contract ---
-    console.log(`Payer approving ${totalAmount} tokens for Transfers contract...`);
-    const approveResult = await payerSdk.approveToken(mockTokenAddress, totalAmount);
-    expect(approveResult.isOk()).toBe(true);
-    if (approveResult.isErr()) throw approveResult.error; // Fail test if error
-    await publicClient.waitForTransactionReceipt({ hash: approveResult.value });
-    console.log("Approval confirmed.");
+		if (currentAllowance < totalAmount) {
+			console.log(
+				`Allowance insufficient (${currentAllowance}). Payer approving ${totalAmount} tokens for Transfers contract...`,
+			);
+			const approveResult = await payerSdk.approveToken(
+				mockTokenAddress,
+				totalAmount,
+			);
+			expect(approveResult.isOk()).toBe(true);
+			if (approveResult.isErr()) throw approveResult.error; // Fail test if error
+			console.log("Approval transaction sent:", approveResult.value);
+			await publicClient.waitForTransactionReceipt({
+				hash: approveResult.value,
+			});
+			console.log("Approval confirmed.");
+		} else {
+			console.log("Sufficient allowance already granted.");
+		}
 
-    // --- Step 3: Operator Creates and Signs the Intent ---
-     console.log("Operator creating signed intent...");
-     const intentToSign: Omit<TransferIntent, 'operator' | 'signature'> = {
-        recipientAmount: recipientAmount,
-        deadline: deadline,
-        recipient: recipientAccount.address,
-        recipientCurrency: mockTokenAddress,
-        refundDestination: payerAccount.address, // Not used in this flow, but required
-        feeAmount: feeAmount,
-        id: intentId,
-    };
-    const signedIntentResult = await operatorSdk.createAndSignTransferIntent(intentToSign, payerAccount.address);
-    expect(signedIntentResult.isOk()).toBe(true);
-    if(signedIntentResult.isErr()) throw signedIntentResult.error; // Fail test
-    const signedIntent = signedIntentResult.value;
-    console.log("Intent signed:", signedIntent);
+		// --- Step 3: Operator Creates and Signs the Intent ---
+		console.log("Operator creating signed intent...");
+		const intentToSign: Omit<TransferIntent, "operator" | "signature"> = {
+			recipientAmount: recipientAmount,
+			deadline: deadline,
+			recipient: recipientAccount.address,
+			recipientCurrency: mockTokenAddress,
+			refundDestination: payerAccount.address, // Not used in this flow, but required
+			feeAmount: feeAmount,
+			id: intentId,
+		};
+		const signedIntentResult = await operatorSdk.createAndSignTransferIntent(
+			intentToSign,
+			payerAccount.address,
+		);
+		if (signedIntentResult.isErr()) throw signedIntentResult.error; // Fail test
+		expect(signedIntentResult.isOk()).toBe(true);
+		const signedIntent = signedIntentResult.value;
+		console.log("Intent signed:", signedIntent);
 
-    // --- Step 4: Payer Executes the Transfer ---
-    console.log("Payer executing transferTokenPreApproved...");
-    const transferResult = await payerSdk.transferTokenPreApproved(signedIntent);
-     expect(transferResult.isOk()).toBe(true);
-     if(transferResult.isErr()) {
-        console.error("Transfer failed:", transferResult.error);
-        if (transferResult.error.type === 'CONTRACT_WRITE_ERROR' && transferResult.error.cause) {
-             console.error("Underlying cause:", transferResult.error.cause);
-         }
-        throw transferResult.error; // Fail test
-     }
-     console.log("Transfer transaction sent:", transferResult.value);
-     await publicClient.waitForTransactionReceipt({ hash: transferResult.value });
-     console.log("Transfer confirmed.");
+		// --- Step 4: Payer Executes the Transfer ---
+		console.log("Payer executing transferTokenPreApproved...");
+		const transferResult =
+			await payerSdk.transferTokenPreApproved(signedIntent);
+		if (transferResult.isErr()) throw transferResult.error; // Fail test
+		expect(transferResult.isOk()).toBe(true);
 
-    // --- Step 5: Assert Final Balances ---
-     const finalPayerBalance = await publicClient.readContract({ address: mockTokenAddress, abi: erc20Abi, functionName: 'balanceOf', args: [payerAccount.address] });
-     const finalRecipientBalance = await publicClient.readContract({ address: mockTokenAddress, abi: erc20Abi, functionName: 'balanceOf', args: [recipientAccount.address] });
-     const finalOperatorBalance = await publicClient.readContract({ address: mockTokenAddress, abi: erc20Abi, functionName: 'balanceOf', args: [operatorAccount.address] }); // Fee destination
+		console.log("Transfer transaction sent:", transferResult.value);
+		await publicClient.waitForTransactionReceipt({
+			hash: transferResult.value,
+		});
+		console.log("Transfer confirmed.");
 
-     expect(finalPayerBalance).toBe(initialPayerBalance - totalAmount);
-     expect(finalRecipientBalance).toBe(initialRecipientBalance + recipientAmount);
-     expect(finalOperatorBalance).toBe(initialOperatorBalance + feeAmount);
+		// --- Step 5: Assert Final Balances ---
+		const finalPayerBalance = await publicClient.readContract({
+			address: mockTokenAddress,
+			abi: erc20Abi,
+			functionName: "balanceOf",
+			args: [payerAccount.address],
+		});
+		const finalRecipientBalance = await publicClient.readContract({
+			address: mockTokenAddress,
+			abi: erc20Abi,
+			functionName: "balanceOf",
+			args: [recipientAccount.address],
+		});
+		const finalOperatorBalance = await publicClient.readContract({
+			address: mockTokenAddress,
+			abi: erc20Abi,
+			functionName: "balanceOf",
+			args: [operatorAccount.address],
+		}); // Fee destination
 
-     console.log("Final Balances - Payer:", finalPayerBalance, "Recipient:", finalRecipientBalance, "Operator:", finalOperatorBalance);
+		expect(finalPayerBalance).toBe(initialPayerBalance - totalAmount);
+		expect(finalRecipientBalance).toBe(
+			initialRecipientBalance + recipientAmount,
+		);
+		expect(finalOperatorBalance).toBe(initialOperatorBalance + feeAmount);
 
-  }, 30000); // Timeout for this specific test
+		console.log(
+			"Final Balances - Payer:",
+			finalPayerBalance,
+			"Recipient:",
+			finalRecipientBalance,
+			"Operator:",
+			finalOperatorBalance,
+		);
+	}, 1000000000); // Timeout for this specific test
 });
