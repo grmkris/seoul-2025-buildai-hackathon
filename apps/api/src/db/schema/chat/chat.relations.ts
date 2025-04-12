@@ -1,30 +1,26 @@
 import { relations } from "drizzle-orm";
 import { member } from "../orgs/orgs.db"; // Adjusted path
 import { workspaces } from "../orgs/orgs.db"; // Adjusted path
-import { conversations, messages, usersTable } from "./chat.db";
-import { user } from "../auth/auth.db"; // Corrected import name
+import { conversations, messages } from "./chat.db";
 import { paymentIntents } from "../payments/payments.db";
+import { customersTable } from "../customers/customers.db";
 
 export const conversationsRelations = relations(
   conversations,
   ({ one, many }) => ({
-    createdByMember: one(member, {
+    createdByCustomer: one(customersTable, {
       fields: [conversations.createdBy],
-      references: [member.id],
+      references: [customersTable.id],
       relationName: "conversationCreatedBy",
     }),
-    updatedByMember: one(member, {
+    updatedByCustomer: one(customersTable, {
       fields: [conversations.updatedBy],
-      references: [member.id],
+      references: [customersTable.id],
       relationName: "conversationUpdatedBy",
     }),
     workspace: one(workspaces, {
       fields: [conversations.workspaceId],
       references: [workspaces.id],
-    }),
-    user: one(user, {
-      fields: [conversations.createdBy],
-      references: [user.id],
     }),
     messages: many(messages),
     paymentIntents: many(paymentIntents),
@@ -50,11 +46,4 @@ export const messagesRelations = relations(messages, ({ one }) => ({
     fields: [messages.workspaceId],
     references: [workspaces.id],
   }),
-}));
-
-
-export const usersRelations = relations(usersTable, ({ many }) => ({
-  conversations: many(conversations),
-  messages: many(messages),
-  paymentIntents: many(paymentIntents),
 }));

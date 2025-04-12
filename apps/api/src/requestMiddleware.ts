@@ -66,11 +66,11 @@ export const createRequestMiddleware = (props: {
 
     const sessionData = {
       sessionId,
-      activeOrganizationId: organizationId,
-      organizationRole: organizationRole,
+      activeOrganizationId: organizationId ?? null,
+      organizationRole: organizationRole ?? null,
       systemRole: sessionRole,
       userId: userId,
-      memberId: memberId,
+      memberId: memberId ?? null,
     };
 
     logger.debug({

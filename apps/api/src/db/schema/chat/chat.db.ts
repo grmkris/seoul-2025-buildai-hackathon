@@ -1,17 +1,9 @@
 import type { Message } from "ai";
 import { index, jsonb, pgTable, varchar } from "drizzle-orm/pg-core";
-import { type ConversationId, type MessageId, typeIdGenerator, type UserId } from "typeid";
+import { type ConversationId, type MessageId, typeIdGenerator } from "typeid";
 import { workspaces } from "../orgs/orgs.db";
 import { createFullEntityFields, typeId } from "../utils.db";
-
-export const usersTable = pgTable("users", {
-  id: typeId("user", "id")
-    .primaryKey()
-    .$defaultFn(() => typeIdGenerator("user"))
-    .$type<UserId>(),
-  walletAddress: varchar("wallet_address", { length: 255 }).notNull(),  
-});
-
+import { customersTable } from "../customers/customers.db";
 
 // Conversations table
 export const conversations = pgTable(
@@ -22,7 +14,7 @@ export const conversations = pgTable(
       .$defaultFn(() => typeIdGenerator("conversation"))
       .$type<ConversationId>(),
     title: varchar("title", { length: 255 }).notNull(),
-    ...createFullEntityFields(usersTable, workspaces),
+    ...createFullEntityFields(customersTable, workspaces),
   },
   (t) => [
     index("conversation_workspace_idx").on(t.workspaceId),
@@ -43,7 +35,7 @@ export const messages = pgTable(
       .references(() => conversations.id)
       .$type<ConversationId>(),
     message: jsonb("message").$type<Message>().notNull(),
-    ...createFullEntityFields(usersTable, workspaces),
+    ...createFullEntityFields(customersTable, workspaces),
   },
   (t) => [
     index("message_conversation_idx").on(t.conversationId),

@@ -14,6 +14,7 @@ export const customersTable = pgTable(
     firstName: varchar("firstName", { length: 50 }),
     lastName: varchar("lastName", { length: 50 }),
     phoneNumber: varchar("phoneNumber", { length: 20 }),
+    walletAddress: varchar("walletAddress", { length: 42 }),
     ...createFullEntityFieldsWithMember(member, workspaces),
   },
   (table) => [

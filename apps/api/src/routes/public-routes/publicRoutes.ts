@@ -1,8 +1,14 @@
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
 import { createCommonErrorSchema, createOpenAPIRoute } from "../helpers";
 import { GetConversationSchema } from "../chat/conversationRoutes";
-import { ConversationId, type PaymentIntentId, typeIdGenerator, type UserId, WorkspaceId } from "typeid";
-import { conversations, usersTable } from "@/db/schema/chat/chat.db";
+import {
+  ConversationId,
+  type PaymentIntentId,
+  typeIdGenerator,
+  WorkspaceId,
+  type CustomerId,
+} from "typeid";
+import { conversations } from "@/db/schema/chat/chat.db";
 import { eq } from "drizzle-orm";
 import type { ContextVariables } from "@/types";
 import { PUBLIC_PATH } from "@/utils";
@@ -12,6 +18,7 @@ import { getAddress } from "viem";
 import { createSimpleAgent } from "@/ai/simpleAgent";
 import { SelectPaymentIntentSchema } from "@/db/schema/payments/payments.zod";
 import { DB_SCHEMA } from "@/db/db";
+import { customersTable } from "@/db/schema/customers/customers.db";
 
 // Schema for wallet address validation
 const WalletAddressSchema = z.string().refine(
@@ -58,43 +65,57 @@ const initializeWidget = createOpenAPIRoute().openapi(
   }),
   async (c) => {
     const logger = c.get("logger");
-    const { walletAddress: rawWalletAddress, workspaceId } = c.req.valid("json");
+    const { walletAddress: rawWalletAddress, workspaceId } =
+      c.req.valid("json");
     const db = c.get("db");
     const requestId = c.get("requestId");
 
     try {
       const walletAddress = getAddress(rawWalletAddress);
 
-      let user = await db.query.usersTable.findFirst({
-        where: eq(usersTable.walletAddress, walletAddress),
+      let customer = await db.query.customersTable.findFirst({
+        where: eq(customersTable.walletAddress, walletAddress),
       });
 
-      let userId: UserId;
-      if (!user) {
+      let customerId: CustomerId;
+      if (!customer) {
         logger.info({
-          msg: "User not found, creating new one.",
+          msg: "Customer not found, creating new one.",
           walletAddress,
           requestId,
         });
-        userId = typeIdGenerator("user");
-        const newUser = await db
-          .insert(usersTable)
+        const newCustomer = await db
+          .insert(customersTable)
           .values({
-            id: userId,
+            workspaceId,
             walletAddress,
           })
           .returning();
-        user = newUser[0];
-        if (!user) throw new Error("Failed to create user.");
-        userId = user.id;
-         logger.info({ msg: "Created new user", userId, walletAddress, requestId });
+        customer = newCustomer[0];
+        if (!customer) throw new Error("Failed to create user.");
+        customerId = customer.id;
+        logger.info({
+          msg: "Created new user",
+          customerId,
+          walletAddress,
+          requestId,
+        });
       } else {
-        userId = user.id;
-        logger.info({ msg: "Found existing user", userId, walletAddress, requestId });
+        customerId = customer.id;
+        logger.info({
+          msg: "Found existing user",
+          customerId,
+          walletAddress,
+          requestId,
+        });
       }
 
       let conversation = await db.query.conversations.findFirst({
-        where: (table, { and }) => and(eq(table.createdBy, userId), eq(table.workspaceId, workspaceId)),
+        where: (table, { and }) =>
+          and(
+            eq(table.createdBy, customerId),
+            eq(table.workspaceId, workspaceId),
+          ),
         with: {
           messages: {
             orderBy: (messages, { asc }) => [asc(messages.createdAt)],
@@ -105,7 +126,7 @@ const initializeWidget = createOpenAPIRoute().openapi(
       if (!conversation) {
         logger.info({
           msg: "Conversation not found for this user/workspace, creating new one.",
-          userId,
+          customerId,
           workspaceId,
           requestId,
         });
@@ -115,8 +136,8 @@ const initializeWidget = createOpenAPIRoute().openapi(
           .insert(conversations)
           .values({
             id: newConversationId,
-            createdBy: userId,
-            updatedBy: userId,
+            createdBy: customerId,
+            updatedBy: customerId,
             title: `Chat with ${walletAddress.slice(0, 6)}...`,
             workspaceId: workspaceId,
           })
@@ -125,7 +146,13 @@ const initializeWidget = createOpenAPIRoute().openapi(
         if (!insertedConversation || insertedConversation.length === 0) {
           throw new Error("Failed to insert new conversation");
         }
-         logger.info({ msg: "Created new conversation", conversationId: newConversationId, userId, workspaceId, requestId });
+        logger.info({
+          msg: "Created new conversation",
+          conversationId: newConversationId,
+          customerId,
+          workspaceId,
+          requestId,
+        });
 
         conversation = await db.query.conversations.findFirst({
           where: eq(conversations.id, newConversationId),
@@ -140,7 +167,13 @@ const initializeWidget = createOpenAPIRoute().openapi(
           throw new Error("Failed to fetch newly created conversation");
         }
       } else {
-         logger.info({ msg: "Found existing conversation", conversationId: conversation.id, userId, workspaceId, requestId });
+        logger.info({
+          msg: "Found existing conversation",
+          conversationId: conversation.id,
+          customerId,
+          workspaceId,
+          requestId,
+        });
       }
 
       const validatedData = GetConversationSchema.safeParse(conversation);
@@ -214,18 +247,29 @@ const getConversationRoute = createOpenAPIRoute().openapi(
       });
 
       if (!conversation) {
-        logger.warn({ msg: "Conversation not found", conversationId, requestId });
+        logger.warn({
+          msg: "Conversation not found",
+          conversationId,
+          requestId,
+        });
         return c.json({ message: "Conversation not found", requestId }, 404);
       }
 
-      logger.info({ msg: "Found conversation", conversationId: conversation.id, requestId });
+      logger.info({
+        msg: "Found conversation",
+        conversationId: conversation.id,
+        requestId,
+      });
       const validatedData = GetConversationSchema.safeParse(conversation);
       if (!validatedData.success) {
-        logger.error({ msg: "Fetched conversation data mismatch schema", error: validatedData.error, requestId });
+        logger.error({
+          msg: "Fetched conversation data mismatch schema",
+          error: validatedData.error,
+          requestId,
+        });
         throw new Error("Conversation data validation failed.");
       }
       return c.json(validatedData.data, 200);
-
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : "Unknown error";
       logger.error({
@@ -275,17 +319,26 @@ const getConversationsRoute = createOpenAPIRoute().openapi(
     });
 
     const allConversations = await db.query.conversations.findMany({
-       with: {
-          messages: {
-            orderBy: (messages, { asc }) => [asc(messages.createdAt)],
-          },
+      with: {
+        messages: {
+          orderBy: (messages, { asc }) => [asc(messages.createdAt)],
         },
+      },
     });
 
-    const validatedConversations = z.array(GetConversationSchema).safeParse(allConversations);
+    const validatedConversations = z
+      .array(GetConversationSchema)
+      .safeParse(allConversations);
     if (!validatedConversations.success) {
-       logger.error({ msg: "Fetched conversations data mismatch schema", error: validatedConversations.error, requestId });
-       return c.json({ message: "Failed to validate conversations data", requestId}, 500);
+      logger.error({
+        msg: "Fetched conversations data mismatch schema",
+        error: validatedConversations.error,
+        requestId,
+      });
+      return c.json(
+        { message: "Failed to validate conversations data", requestId },
+        500,
+      );
     }
 
     return c.json(validatedConversations.data, 200);
@@ -336,24 +389,28 @@ const sendNewMessageRoute = createOpenAPIRoute().openapi(
       const conversation = await db.query.conversations.findFirst({
         where: eq(conversations.id, conversationId),
         columns: {
-            workspaceId: true,
-            createdBy: true,
-        }
+          workspaceId: true,
+          createdBy: true,
+        },
       });
 
       if (!conversation) {
-         logger.warn({ msg: "Conversation not found for sending message", conversationId, requestId });
+        logger.warn({
+          msg: "Conversation not found for sending message",
+          conversationId,
+          requestId,
+        });
         return c.json({ message: "Conversation not found", requestId }, 404);
       }
 
-      const { workspaceId, createdBy: userId } = conversation;
+      const { workspaceId, createdBy: customerId } = conversation;
 
       // Create simple agent
       const simpleAgent = createSimpleAgent({
         db,
         workspaceId,
         conversationId,
-        userId,
+        customerId,
         logger,
       });
 
@@ -363,7 +420,7 @@ const sendNewMessageRoute = createOpenAPIRoute().openapi(
       c.header("X-Vercel-AI-Data-Stream", "v1");
       c.header("Content-Type", "text/plain; charset=utf-8");
       return stream(c, async (stream) => {
-          await stream.pipe(dataStream);
+        await stream.pipe(dataStream);
       });
     } catch (error: unknown) {
       const errorMessage =
@@ -394,7 +451,9 @@ const getPaymentIntentRoute = createOpenAPIRoute().openapi(
     summary: "Get payment intent details by ID",
     request: {
       params: z.object({
-        paymentIntentId: z.string().describe("The ID of the payment intent to get"),
+        paymentIntentId: z
+          .string()
+          .describe("The ID of the payment intent to get"),
       }),
     },
     responses: {
@@ -407,7 +466,7 @@ const getPaymentIntentRoute = createOpenAPIRoute().openapi(
         },
       },
       ...createCommonErrorSchema(),
-      },
+    },
   }),
   async (c) => {
     const logger = c.get("logger");
@@ -419,11 +478,18 @@ const getPaymentIntentRoute = createOpenAPIRoute().openapi(
 
     try {
       const paymentIntent = await db.query.paymentIntents.findFirst({
-        where: eq(DB_SCHEMA.paymentIntents.id, paymentIntentId as PaymentIntentId),
+        where: eq(
+          DB_SCHEMA.paymentIntents.id,
+          paymentIntentId as PaymentIntentId,
+        ),
       });
 
       if (!paymentIntent) {
-        logger.warn({ msg: "Payment intent not found", paymentIntentId, requestId });
+        logger.warn({
+          msg: "Payment intent not found",
+          paymentIntentId,
+          requestId,
+        });
         return c.json({ message: "Payment intent not found", requestId }, 404);
       }
 
@@ -438,7 +504,6 @@ const getPaymentIntentRoute = createOpenAPIRoute().openapi(
         throw new Error("Payment intent data validation failed.");
       }
       return c.json(validatedData.data, 200);
-
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : "Unknown error";
       logger.error({
@@ -479,4 +544,3 @@ export const publicRoutes = new OpenAPIHono<{
   .route("/payments", getPaymentIntentRoute);
 
 export type PublicRoutes = typeof publicRoutes;
-

@@ -6,7 +6,7 @@ import {
   type ConversationId,
   MessageId,
   type WorkspaceId,
-  type UserId,
+  type CustomerId,
 } from "typeid";
 import { z } from "zod";
 import type { Logger } from "logger";
@@ -14,7 +14,7 @@ import type { Logger } from "logger";
 export interface ChatHistoryServiceOptions {
   conversationId: ConversationId;
   workspaceId: WorkspaceId;
-  userId: UserId;
+  customerId: CustomerId;
   logger: Logger;
 }
 
@@ -28,7 +28,7 @@ export interface ChatHistoryService {
 export const createChatHistoryService = (
   options: ChatHistoryServiceOptions & { db: db },
 ): ChatHistoryService => {
-  const { conversationId, workspaceId, userId, db, logger } = options;
+  const { conversationId, workspaceId, customerId, db, logger } = options;
 
   return {
     addUserMessage: async (message: CoreMessage) => {
@@ -40,8 +40,8 @@ export const createChatHistoryService = (
           message,
           conversationId,
           workspaceId,
-          createdBy: userId,
-          updatedBy: userId,
+          createdBy: customerId,
+          updatedBy: customerId,
           createdAt: z.coerce.date().parse(message.createdAt),
         })
         .returning();
@@ -51,7 +51,7 @@ export const createChatHistoryService = (
         .update(conversations)
         .set({
           updatedAt: new Date(),
-          updatedBy: userId,
+          updatedBy: customerId,
         })
         .where(eq(conversations.id, conversationId));
 
@@ -69,7 +69,7 @@ export const createChatHistoryService = (
         agentMessages,
         conversationId,
         workspaceId,
-        userId,
+        customerId,
       });
       if (agentMessages.length === 0) return [];
       // insert messages with incrementing timestamps to preserve order
@@ -79,8 +79,8 @@ export const createChatHistoryService = (
         conversationId,
         workspaceId,
         createdAt: z.coerce.date().parse(message.createdAt),
-        createdBy: userId,
-        updatedBy: userId,
+        createdBy: customerId,
+        updatedBy: customerId,
       }));
 
       await db
@@ -105,7 +105,7 @@ export const createChatHistoryService = (
         with: {
           messages: {
             orderBy: [asc(messages.createdAt)],
-          }
+          },
         },
       });
 

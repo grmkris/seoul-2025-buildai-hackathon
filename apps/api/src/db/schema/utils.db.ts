@@ -66,7 +66,7 @@ export const baseEntityFields = {
  * @returns A configured created_by field with reference
  */
 export const createCreatedByField = (targetTable?: Table) => {
-  const field = typeId("user", "created_by").notNull();
+  const field = typeId("customer", "created_by").notNull();
 
   if (targetTable) {
     // @ts-expect-error id is a column in the members table
@@ -77,7 +77,7 @@ export const createCreatedByField = (targetTable?: Table) => {
 };
 
 export const createMemberCreatedByField = (targetTable?: Table) => {
-  const field = typeId("member", "created_by").notNull();
+  const field = typeId("member", "created_by");
 
   if (targetTable) {
     // @ts-expect-error id is a column in the members table
@@ -93,7 +93,7 @@ export const createMemberCreatedByField = (targetTable?: Table) => {
  * @returns A configured updated_by field with reference
  */
 export const createUpdatedByField = (targetTable?: Table) => {
-  const field = typeId("user", "updated_by").notNull();
+  const field = typeId("customer", "updated_by").notNull();
 
   if (targetTable) {
     // @ts-expect-error id is a column in the members table
@@ -156,22 +156,22 @@ export const createFullEntityFields = (
   workspaceId: createWorkspaceIdField(workspacesTable),
 });
 
-
 export const createMemberUpdatedByField = (targetTable?: Table) => {
-  const field = typeId("member", "updated_by").notNull();
+  const field = typeId("member", "updated_by");
 
   if (targetTable) {
     // @ts-expect-error id is a column in the members table
     return field.references(() => targetTable.id);
-  } 
+  }
 
   return field;
 };
 
-
-export const createFullEntityFieldsWithMember = (targetTable?: Table, workspacesTable?: Table) => ({
+export const createFullEntityFieldsWithMember = (
+  targetTable?: Table,
+  workspacesTable?: Table,
+) => ({
   ...createFullEntityFields(targetTable, workspacesTable),
   createdBy: createMemberCreatedByField(targetTable),
   updatedBy: createMemberUpdatedByField(targetTable),
 });
-

@@ -13,8 +13,8 @@ export * from "./utils.db";
  */
 export * from "./auth/auth.relations";
 export * from "./chat/chat.relations";
-export * from "./customers/customers.relations";
 export * from "./orgs/orgs.relations";
+export * from "./customers/customers.relations";
 export * from "./payments/payments.relations";
 
 /**

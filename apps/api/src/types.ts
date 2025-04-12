@@ -17,7 +17,7 @@ type RequestIdVariables = {
   requestId: RequestId;
 };
 
-type Session = {
+export type Session = {
   userId: UserId;
   memberId: MemberId | null;
   activeOrganizationId: OrganizationId | null;

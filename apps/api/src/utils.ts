@@ -15,5 +15,5 @@ export const ORGANIZATION_PATH =
   "/admin/organizations/:organizationId" as const;
 export const WORKSPACE_PATH =
   `${ORGANIZATION_PATH}/workspaces/:workspaceId` as const;
-  
+
 export const PUBLIC_PATH = "/public" as const;

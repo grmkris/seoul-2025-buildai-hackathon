@@ -1,5 +1,5 @@
 import type { db } from "@/db/db";
-import type { UserId, ConversationId, WorkspaceId } from "typeid";
+import type { ConversationId, WorkspaceId, CustomerId } from "typeid";
 import type { Logger } from "logger";
 import { createChatHistoryService } from "@/routes/chat/chatHistoryService";
 import { createAiClient } from "ai";
@@ -59,23 +59,23 @@ const system_prompt = `You are a helpful assistant operating on a pay-per-questi
 // console.log(system_prompt);
 
 export const createSimpleAgent = (props: {
-  db: db,
-  workspaceId: WorkspaceId,
-  conversationId: ConversationId,
-  userId: UserId,
-  logger: Logger,
+  db: db;
+  workspaceId: WorkspaceId;
+  conversationId: ConversationId;
+  customerId: CustomerId;
+  logger: Logger;
   // TODO: Add state management for payment status and remaining questions
   // e.g., getPaymentStatus: () => Promise<{ paid: boolean; questionsRemaining: number }>,
   // e.g., decrementQuestionCount: () => Promise<void>,
   // e.g., recordPaymentSuccess: () => Promise<void>,
 }) => {
-  const { db, workspaceId, conversationId, userId, logger } = props;
+  const { db, workspaceId, conversationId, customerId, logger } = props;
 
   const chatHistoryService = createChatHistoryService({
     db,
     workspaceId,
     conversationId,
-    userId,
+    customerId,
     logger,
   });
 
@@ -118,7 +118,12 @@ export const createSimpleAgent = (props: {
           }),
           tools: {
             ...createOgrodjeClientTools({ logger }),
-            ...createPaymentAgentTools({ logger, db, userId, conversationId }),
+            ...createPaymentAgentTools({
+              logger,
+              db,
+              customerId,
+              conversationId,
+            }),
           },
           system: system_prompt,
           messages: messagesFromDb,
@@ -126,6 +131,7 @@ export const createSimpleAgent = (props: {
           onFinish: (resultContext) => {
             logger.debug({
               msg: "Agent finished",
+              resultContext,
               conversationId,
             });
             // TODO: If the last step involved answering a question, decrement count here
@@ -160,7 +166,8 @@ export const createSimpleAgent = (props: {
           onError: (error) => {
             logger.error({
               msg: "AI streaming error",
-              error: error instanceof Error ? error.message : JSON.stringify(error),
+              error:
+                error instanceof Error ? error.message : JSON.stringify(error),
               stack: error instanceof Error ? error.stack : undefined,
               conversationId,
             });
@@ -169,7 +176,7 @@ export const createSimpleAgent = (props: {
         });
 
         result.mergeIntoDataStream(dataStream);
-      }
+      },
     });
     return dataStream;
   };
