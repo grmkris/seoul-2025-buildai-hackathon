@@ -8,7 +8,6 @@ import {
 	type Hex,
 	keccak256,
 	encodePacked,
-	hashMessage,
 } from "viem";
 import { type Result, err, ok } from "neverthrow";
 import { COMMERCE_ABI } from "./abi"; // Assuming ABI is stored here

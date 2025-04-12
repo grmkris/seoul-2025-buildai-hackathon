@@ -1,4 +1,4 @@
-import type { ConversationId, WorkspaceId } from "typeid";
+import type { ConversationId, PaymentIntentId, WorkspaceId } from "typeid";
 import { publicClient } from "./api/apiClient";
 
 export const getConversation = async (props: {
@@ -48,4 +48,21 @@ export const getConversations = async () => {
   }
 
   return response.json();
+};
+
+export const getPaymentIntent = async (props: {
+  paymentIntentId: PaymentIntentId;
+}) => {
+  const response = await publicClient.public.payments[":paymentIntentId"].$get({
+    param: { paymentIntentId: props.paymentIntentId },
+  });
+
+  if (!response.ok) {
+    console.error("Failed to get payment intent:", await response.text());
+    throw new Error(`Failed to get payment intent: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+
+  return data;
 };

@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getConversation, initializeWidget, getConversations } from "./actions";
-import type { ConversationId, WorkspaceId } from "typeid";
+import { getConversation, initializeWidget, getConversations, getPaymentIntent } from "./actions";
+import type { ConversationId, PaymentIntentId, WorkspaceId } from "typeid";
 
 export const useConversation = (props: {
   conversationId: ConversationId;
@@ -43,4 +43,16 @@ export const useInitializeWidget = () => {
   });
 
   return { initialize: mutate, initializeAsync: mutateAsync, isInitializing: isPending, error, data };
+};
+
+
+export const usePaymentIntent = (props: {
+  paymentIntentId: PaymentIntentId | undefined;
+}) => {
+  const { data, isLoading, error, refetch } = useQuery({
+    enabled: !!props.paymentIntentId,
+    queryKey: ["paymentIntent", props.paymentIntentId],
+    queryFn: () => getPaymentIntent({ paymentIntentId: props.paymentIntentId as PaymentIntentId }),
+  });
+  return { data, isLoading, error, refetch };
 };

@@ -9,6 +9,7 @@ import {
 	ConversationId,
 	UserId,
 } from "typeid"; // Assuming typeid package exports these
+import type { SignedTransferIntent } from "commerce-sdk";
 
 // Base schema for selecting data, infers types from the table
 export const SelectPaymentIntentSchema = createSelectSchema(paymentIntents, {
@@ -17,9 +18,9 @@ export const SelectPaymentIntentSchema = createSelectSchema(paymentIntents, {
 	userId: UserId,
 	status: z.enum(paymentIntentStatusEnum.enumValues),
 	amount: z.bigint(),
-	currencyAddress: z.string().regex(/^0x[a-fA-F0-9]{40}$/, "Invalid Ethereum address"),
-	intentId: z.string().regex(/^0x[a-fA-F0-9]{64}$/, "Invalid Intent ID format"),
-	signedIntentData: z.record(z.string(), z.unknown()), // Basic validation for JSONB, refine if specific structure is known
+	currencyAddress: z.string(),
+	intentId: z.string(),
+	signedIntentData: z.custom<SignedTransferIntent>(),
 	deadline: z.date(),
 	createdAt: z.date(),
 	updatedAt: z.date(),

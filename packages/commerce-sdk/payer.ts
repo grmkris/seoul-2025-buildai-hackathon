@@ -169,10 +169,50 @@ export const createPayerClient = (config: PayerClientConfig) => {
 
 		// --- Check Allowance ---
 		const allowanceResult = await checkAllowance(tokenAddress, neededAmount);
-		if (allowanceResult.isErr()) {
-			// Propagate insufficient allowance or read error
+
+		// --- Handle Insufficient Allowance ---
+		if (allowanceResult.isErr() && allowanceResult.error.type === 'INSUFFICIENT_ALLOWANCE') {
+			const requiredAmount = allowanceResult.error.required;
+			console.log(`Insufficient allowance. Required: ${requiredAmount}. Attempting to approve...`);
+
+			const approveResult = await approveToken(tokenAddress, requiredAmount);
+			if (approveResult.isErr()) {
+				// Propagate approval error
+				return err(approveResult.error);
+			}
+
+			// --- Wait for Approval Confirmation ---
+			try {
+				console.log(`Approval transaction sent: ${approveResult.value}. Waiting for confirmation...`);
+				const receipt = await publicClient.waitForTransactionReceipt({ hash: approveResult.value });
+				if (receipt.status !== 'success') {
+					return err({
+						type: "CONTRACT_WRITE_ERROR",
+						message: `Approval transaction failed with status: ${receipt.status}`,
+						cause: receipt,
+					});
+				}
+				console.log("Approval confirmed.");
+				// Re-check allowance after successful approval (optional but good practice)
+                // allowanceResult = await checkAllowance(tokenAddress, neededAmount);
+                // if (allowanceResult.isErr()) {
+                //     // This shouldn't happen if approval succeeded, but handle just in case
+                //     console.error("Allowance check failed even after approval:", allowanceResult.error);
+                //     return err(allowanceResult.error);
+                // }
+			} catch (error) {
+				const message = error instanceof Error ? error.message : "Unknown error";
+				return err({
+					type: "CONTRACT_WRITE_ERROR",
+					message: `Failed to confirm approval transaction: ${message}`,
+					cause: error,
+				});
+			}
+		} else if (allowanceResult.isErr()) {
+			// Handle other checkAllowance errors (e.g., CONTRACT_READ_ERROR)
 			return err(allowanceResult.error);
 		}
+
 
 		// --- Execute Transaction ---
 		try {

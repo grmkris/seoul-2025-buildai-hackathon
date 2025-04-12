@@ -1,7 +1,7 @@
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
 import { createCommonErrorSchema, createOpenAPIRoute } from "../helpers";
 import { GetConversationSchema } from "../chat/conversationRoutes";
-import { ConversationId, typeIdGenerator, type UserId, WorkspaceId, PaymentIntentId } from "typeid";
+import { ConversationId, type PaymentIntentId, typeIdGenerator, type UserId, WorkspaceId } from "typeid";
 import { conversations, usersTable } from "@/db/schema/chat/chat.db";
 import { eq } from "drizzle-orm";
 import type { ContextVariables } from "@/types";
@@ -394,7 +394,7 @@ const getPaymentIntentRoute = createOpenAPIRoute().openapi(
     summary: "Get payment intent details by ID",
     request: {
       params: z.object({
-        paymentIntentId: PaymentIntentId,
+        paymentIntentId: z.string().describe("The ID of the payment intent to get"),
       }),
     },
     responses: {
@@ -419,7 +419,7 @@ const getPaymentIntentRoute = createOpenAPIRoute().openapi(
 
     try {
       const paymentIntent = await db.query.paymentIntents.findFirst({
-        where: eq(DB_SCHEMA.paymentIntents.id, paymentIntentId),
+        where: eq(DB_SCHEMA.paymentIntents.id, paymentIntentId as PaymentIntentId),
       });
 
       if (!paymentIntent) {

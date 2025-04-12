@@ -1,7 +1,7 @@
 import type { db } from "@/db/db";
 import { conversations, messages } from "@/db/schema/chat/chat.db";
 import type { Message as CoreMessage } from "ai";
-import { and, eq, sql } from "drizzle-orm";
+import { and, asc, eq, sql } from "drizzle-orm";
 import {
   type ConversationId,
   MessageId,
@@ -103,7 +103,9 @@ export const createChatHistoryService = (
           eq(conversations.workspaceId, workspaceId),
         ),
         with: {
-          messages: true,
+          messages: {
+            orderBy: [asc(messages.createdAt)],
+          }
         },
       });
 

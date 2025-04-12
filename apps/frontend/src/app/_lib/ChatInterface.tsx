@@ -208,6 +208,7 @@ export function ChatInterface(props: { workspaceId: WorkspaceId }) {
                            case "assistant":
                              return (
                                <AIMessage
+                                addUserMessage={handleSendMessage}                          
                                  key={message.id}
                                  fullMessage={message}
                                  avatarFallback="AI"

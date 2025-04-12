@@ -231,6 +231,7 @@ export const createPaymentAgentTools = (props: {
       }
     },
   });
+
 	return {
 		requestPaymentTool,
     validatePaymentTool,

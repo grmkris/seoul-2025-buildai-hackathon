@@ -98,8 +98,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                name: string;
                 id: `wsp_${string}`;
+                name: string;
                 createdAt: string;
                 organizationId: `org_${string}`;
                 updatedAt: string;
@@ -565,8 +565,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                name: string;
                 id: `wsp_${string}`;
+                name: string;
                 createdAt: string;
                 organizationId: `org_${string}`;
                 updatedAt: string;

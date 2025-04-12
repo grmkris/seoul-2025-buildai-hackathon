@@ -1,5 +1,4 @@
 import type { ContextVariables } from "@/types";
-import { type Message } from "ai";
 export declare const publicRoutes: import("hono/hono-base").HonoBase<{
     Variables: ContextVariables;
 }, {
@@ -529,7 +528,7 @@ export declare const publicRoutes: import("hono/hono-base").HonoBase<{
                 };
             } & {
                 json: {
-                    message: Omit<Message, "data" | "annotations">;
+                    message: Omit<import("ai").Message, "data" | "annotations">;
                 };
             };
             output: {
@@ -545,7 +544,7 @@ export declare const publicRoutes: import("hono/hono-base").HonoBase<{
                 };
             } & {
                 json: {
-                    message: Omit<Message, "data" | "annotations">;
+                    message: Omit<import("ai").Message, "data" | "annotations">;
                 };
             };
             output: {
@@ -561,7 +560,7 @@ export declare const publicRoutes: import("hono/hono-base").HonoBase<{
                 };
             } & {
                 json: {
-                    message: Omit<Message, "data" | "annotations">;
+                    message: Omit<import("ai").Message, "data" | "annotations">;
                 };
             };
             output: {
@@ -577,7 +576,7 @@ export declare const publicRoutes: import("hono/hono-base").HonoBase<{
                 };
             } & {
                 json: {
-                    message: Omit<Message, "data" | "annotations">;
+                    message: Omit<import("ai").Message, "data" | "annotations">;
                 };
             };
             output: {
@@ -593,7 +592,7 @@ export declare const publicRoutes: import("hono/hono-base").HonoBase<{
                 };
             } & {
                 json: {
-                    message: Omit<Message, "data" | "annotations">;
+                    message: Omit<import("ai").Message, "data" | "annotations">;
                 };
             };
             output: {
@@ -609,7 +608,7 @@ export declare const publicRoutes: import("hono/hono-base").HonoBase<{
                 };
             } & {
                 json: {
-                    message: Omit<Message, "data" | "annotations">;
+                    message: Omit<import("ai").Message, "data" | "annotations">;
                 };
             };
             output: {};
@@ -617,5 +616,78 @@ export declare const publicRoutes: import("hono/hono-base").HonoBase<{
             status: 200;
         };
     };
-}, "/public/conversations/:conversationId/messages">, "/public">;
+}, "/public/conversations/:conversationId/messages"> | import("hono/types").MergeSchemaPath<{
+    "/:paymentIntentId": {
+        $get: {
+            input: {
+                param: {
+                    paymentIntentId: string;
+                };
+            };
+            output: {
+                requestId: `req_${string}`;
+                message: string;
+            };
+            outputFormat: "json";
+            status: 400;
+        } | {
+            input: {
+                param: {
+                    paymentIntentId: string;
+                };
+            };
+            output: {
+                requestId: `req_${string}`;
+                message: string;
+            };
+            outputFormat: "json";
+            status: 401;
+        } | {
+            input: {
+                param: {
+                    paymentIntentId: string;
+                };
+            };
+            output: {
+                requestId: `req_${string}`;
+                message: string;
+            };
+            outputFormat: "json";
+            status: 403;
+        } | {
+            input: {
+                param: {
+                    paymentIntentId: string;
+                };
+            };
+            output: {
+                requestId: `req_${string}`;
+                message: string;
+            };
+            outputFormat: "json";
+            status: 404;
+        } | {
+            input: {
+                param: {
+                    paymentIntentId: string;
+                };
+            };
+            output: {
+                requestId: `req_${string}`;
+                message: string;
+            };
+            outputFormat: "json";
+            status: 500;
+        } | {
+            input: {
+                param: {
+                    paymentIntentId: string;
+                };
+            };
+            output: never;
+            outputFormat: "json";
+            status: 200;
+        };
+    };
+}, "/public/payments">, "/public">;
 export type PublicRoutes = typeof publicRoutes;
