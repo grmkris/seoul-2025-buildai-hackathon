@@ -4,9 +4,12 @@ packages:
   - '!**/test/**'
 onlyBuiltDependencies:
   - '@biomejs/biome'
+  - bufferutil
   - bun
   - canvas
   - esbuild
+  - keccak
   - protobufjs
   - redis-memory-server
   - sharp
+  - utf-8-validate

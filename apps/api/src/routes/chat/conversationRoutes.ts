@@ -157,7 +157,7 @@ const createConversationRoute = createOpenAPIRoute().openapi(
 const getConversationRoute = createOpenAPIRoute().openapi(
   createRoute({
     method: "get",
-    path: "/:conversationId", // Corrected path
+    path: "/:conversationId",
     tags: ["Chat"],
     summary: "Get conversation details",
     request: {
@@ -547,7 +547,7 @@ const conversationRoutes = new OpenAPIHono()
   .basePath(`${WORKSPACE_PATH}/chat/conversations`)
   .route("/", createConversationRoute)
   .route("/", listConversationsRoute)
-  .route("/:conversationId", getConversationRoute) // Use updated route
+  .route("/:conversationId", getConversationRoute)
   .route("/:conversationId", updateConversationRoute)
   .route("/:conversationId", deleteConversationRoute);
 
