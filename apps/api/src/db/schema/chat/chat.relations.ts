@@ -2,6 +2,8 @@ import { relations } from "drizzle-orm";
 import { member } from "../orgs/orgs.db"; // Adjusted path
 import { workspaces } from "../orgs/orgs.db"; // Adjusted path
 import { conversations, messages } from "./chat.db";
+import { user } from "../auth/auth.db"; // Corrected import name
+import { paymentIntents } from "../payments/payments.db";
 
 export const conversationsRelations = relations(
   conversations,
@@ -20,7 +22,12 @@ export const conversationsRelations = relations(
       fields: [conversations.workspaceId],
       references: [workspaces.id],
     }),
+    user: one(user, {
+      fields: [conversations.createdBy],
+      references: [user.id],
+    }),
     messages: many(messages),
+    paymentIntents: many(paymentIntents),
   }),
 );
 

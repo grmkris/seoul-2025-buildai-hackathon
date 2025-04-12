@@ -70,6 +70,7 @@ export const idTypesMapNameToPrefix = {
   unitOfMeasure: "uom",
   productVariantOption: "prvopt",
   language: "lng",
+  paymentIntent: "pi",
 } as const;
 
 type IdTypesMapNameToPrefix = typeof idTypesMapNameToPrefix;
@@ -297,3 +298,6 @@ export type EntityLinkId = z.infer<typeof EntityLinkId>;
 
 export const LanguageId = typeIdValidator("language");
 export type LanguageId = z.infer<typeof LanguageId>;
+
+export const PaymentIntentId = typeIdValidator("paymentIntent");
+export type PaymentIntentId = z.infer<typeof PaymentIntentId>;
