@@ -1,13 +1,11 @@
 // context/index.tsx
 "use client";
 
-import { wagmiAdapter, projectId } from "@/wagmiConfig";
+import { createWagmiConfig, networks, projectId } from "@/wagmiConfig";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createAppKit } from "@reown/appkit/react";
 import {
   rootstockTestnet,
-  citreaTestnet,
-  flowMainnet,
 } from "@reown/appkit/networks";
 import React, { type ReactNode } from "react";
 import { cookieToInitialState, WagmiProvider, type Config } from "wagmi";
@@ -27,12 +25,14 @@ const metadata = {
   icons: ["https://assets.reown.com/reown-profile-pic.png"],
 };
 
+const { wagmiAdapter } = createWagmiConfig();
+
 // Create the modal
 createAppKit({
   adapters: [wagmiAdapter],
   projectId,
-  networks: [flowMainnet, citreaTestnet, rootstockTestnet],
-  defaultNetwork: flowMainnet,
+  networks: [rootstockTestnet],
+  defaultNetwork: rootstockTestnet,
   metadata: metadata,
   features: {
     analytics: true, // Optional - defaults to your Cloud configuration

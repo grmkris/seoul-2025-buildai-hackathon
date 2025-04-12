@@ -3,8 +3,6 @@
 import { cookieStorage, createStorage } from "@wagmi/core";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
 import {
-  flowMainnet,
-  citreaTestnet,
   rootstockTestnet,
 } from "@reown/appkit/networks";
 
@@ -15,16 +13,20 @@ if (!projectId) {
   throw new Error("Project ID is not defined");
 }
 
-export const networks = [flowMainnet, citreaTestnet, rootstockTestnet];
+export const networks = [rootstockTestnet];
 
-//Set up the Wagmi Adapter (Config)
-export const wagmiAdapter = new WagmiAdapter({
-  storage: createStorage({
-    storage: cookieStorage,
-  }),
-  ssr: true,
-  projectId,
-  networks,
-});
-
-export const config = wagmiAdapter.wagmiConfig;
+export const createWagmiConfig = () => {
+  const wagmiAdapter = new WagmiAdapter({
+    storage: createStorage({
+      storage: cookieStorage,
+    }),
+    ssr: true,
+    projectId,
+    networks,
+  });
+  const defaultNetwork = networks[0];
+  return {
+    wagmiAdapter,
+    defaultNetwork,
+  };
+};
