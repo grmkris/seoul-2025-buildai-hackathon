@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getConversation } from "./actions";
 import type { ConversationId } from "typeid";
-import { apiClient } from "./apiClient";
+import { apiClient } from "./api/apiClient";
 
 export const useConversation = (props: {
   conversationId: ConversationId;

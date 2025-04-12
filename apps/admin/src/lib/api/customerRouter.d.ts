@@ -25,8 +25,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 400;
@@ -49,8 +49,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 401;
@@ -73,8 +73,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 403;
@@ -97,8 +97,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 404;
@@ -121,8 +121,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 500;
@@ -146,8 +146,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             };
             output: {
                 id: `cst_${string}`;
-                email: string | null;
                 createdAt: string;
+                email: string | null;
                 updatedAt: string;
                 createdBy: `mbr_${string}`;
                 updatedBy: `mbr_${string}`;
@@ -171,7 +171,7 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             } & {
                 query: {
                     search?: string | undefined;
-                    orderBy?: "email" | "createdAt" | "updatedAt" | "firstName" | "lastName" | "phoneNumber" | undefined;
+                    orderBy?: "createdAt" | "email" | "updatedAt" | "firstName" | "lastName" | "phoneNumber" | undefined;
                     limit?: number | undefined;
                     page?: number | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
@@ -182,8 +182,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 400;
@@ -196,7 +196,7 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             } & {
                 query: {
                     search?: string | undefined;
-                    orderBy?: "email" | "createdAt" | "updatedAt" | "firstName" | "lastName" | "phoneNumber" | undefined;
+                    orderBy?: "createdAt" | "email" | "updatedAt" | "firstName" | "lastName" | "phoneNumber" | undefined;
                     limit?: number | undefined;
                     page?: number | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
@@ -207,8 +207,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 401;
@@ -221,7 +221,7 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             } & {
                 query: {
                     search?: string | undefined;
-                    orderBy?: "email" | "createdAt" | "updatedAt" | "firstName" | "lastName" | "phoneNumber" | undefined;
+                    orderBy?: "createdAt" | "email" | "updatedAt" | "firstName" | "lastName" | "phoneNumber" | undefined;
                     limit?: number | undefined;
                     page?: number | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
@@ -232,8 +232,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 403;
@@ -246,7 +246,7 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             } & {
                 query: {
                     search?: string | undefined;
-                    orderBy?: "email" | "createdAt" | "updatedAt" | "firstName" | "lastName" | "phoneNumber" | undefined;
+                    orderBy?: "createdAt" | "email" | "updatedAt" | "firstName" | "lastName" | "phoneNumber" | undefined;
                     limit?: number | undefined;
                     page?: number | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
@@ -257,8 +257,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 404;
@@ -271,7 +271,7 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             } & {
                 query: {
                     search?: string | undefined;
-                    orderBy?: "email" | "createdAt" | "updatedAt" | "firstName" | "lastName" | "phoneNumber" | undefined;
+                    orderBy?: "createdAt" | "email" | "updatedAt" | "firstName" | "lastName" | "phoneNumber" | undefined;
                     limit?: number | undefined;
                     page?: number | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
@@ -282,8 +282,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 500;
@@ -296,7 +296,7 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             } & {
                 query: {
                     search?: string | undefined;
-                    orderBy?: "email" | "createdAt" | "updatedAt" | "firstName" | "lastName" | "phoneNumber" | undefined;
+                    orderBy?: "createdAt" | "email" | "updatedAt" | "firstName" | "lastName" | "phoneNumber" | undefined;
                     limit?: number | undefined;
                     page?: number | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
@@ -309,8 +309,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             output: {
                 data: {
                     id: `cst_${string}`;
-                    email: string | null;
                     createdAt: string;
+                    email: string | null;
                     updatedAt: string;
                     createdBy: `mbr_${string}`;
                     updatedBy: `mbr_${string}`;
@@ -345,8 +345,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 400;
@@ -363,8 +363,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 401;
@@ -381,8 +381,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 403;
@@ -399,8 +399,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 404;
@@ -417,8 +417,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 500;
@@ -463,8 +463,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 400;
@@ -488,8 +488,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 401;
@@ -513,8 +513,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 403;
@@ -538,8 +538,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 404;
@@ -563,8 +563,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 500;
@@ -589,8 +589,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             };
             output: {
                 id: `cst_${string}`;
-                email: string | null;
                 createdAt: string;
+                email: string | null;
                 updatedAt: string;
                 createdBy: `mbr_${string}`;
                 updatedBy: `mbr_${string}`;
@@ -618,8 +618,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 400;
@@ -636,8 +636,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 401;
@@ -654,8 +654,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 403;
@@ -672,8 +672,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 404;
@@ -690,8 +690,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 500;
@@ -709,8 +709,8 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             };
             output: {
                 id: `cst_${string}`;
-                email: string | null;
                 createdAt: string;
+                email: string | null;
                 updatedAt: string;
                 createdBy: `mbr_${string}`;
                 updatedBy: `mbr_${string}`;

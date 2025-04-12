@@ -36,8 +36,8 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 400;
@@ -59,8 +59,8 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 401;
@@ -82,8 +82,8 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 403;
@@ -105,8 +105,8 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 404;
@@ -128,8 +128,8 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 500;
@@ -154,8 +154,8 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
                 message: {
                     content: string;
                     id: string;
-                    role: "system" | "user" | "assistant" | "data";
                     createdAt?: string | undefined;
+                    role: "system" | "user" | "assistant" | "data";
                     reasoning?: string | undefined;
                     experimental_attachments?: {
                         name?: string | undefined;
@@ -270,8 +270,8 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 400;
@@ -292,8 +292,8 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 401;
@@ -314,8 +314,8 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 403;
@@ -336,8 +336,8 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 404;
@@ -358,8 +358,8 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 500;
@@ -404,8 +404,8 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 400;
@@ -427,8 +427,8 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 401;
@@ -450,8 +450,8 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 403;
@@ -473,8 +473,8 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 404;
@@ -496,8 +496,8 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 500;
@@ -522,8 +522,8 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
                 message: {
                     content: string;
                     id: string;
-                    role: "system" | "user" | "assistant" | "data";
                     createdAt?: string | undefined;
+                    role: "system" | "user" | "assistant" | "data";
                     reasoning?: string | undefined;
                     experimental_attachments?: {
                         name?: string | undefined;
@@ -635,8 +635,8 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 400;
@@ -654,8 +654,8 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 401;
@@ -673,8 +673,8 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 403;
@@ -692,8 +692,8 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 404;
@@ -711,8 +711,8 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 500;

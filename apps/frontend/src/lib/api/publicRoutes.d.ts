@@ -1,4 +1,4 @@
-import { OpenAPIHono } from "@hono/zod-openapi";
+import type { OpenAPIHono } from "@hono/zod-openapi";
 import type { ContextVariables } from "@/types";
 export declare const publicRoutes: OpenAPIHono<{
     Variables: ContextVariables;

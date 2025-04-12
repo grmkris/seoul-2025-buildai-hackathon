@@ -1,5 +1,5 @@
 import type { ConversationId } from "typeid";
-import { publicClient } from "./apiClient";
+import { publicClient } from "./api/apiClient";
 
 export const getConversation = async (props: {
   conversationId: ConversationId;
