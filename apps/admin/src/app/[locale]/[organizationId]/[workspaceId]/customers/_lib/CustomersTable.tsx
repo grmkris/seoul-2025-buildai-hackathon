@@ -116,6 +116,18 @@ export function CustomersTable() {
         cell: ({ row }) =>
           format(new Date(row.original.createdAt), "dd/MM/yyyy HH:mm"),
       },
+      {
+        accessorKey: "walletAddress",
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title={t("walletAddress")} />
+        ),
+        enableSorting: false,
+        cell: ({ row }) => (
+          <div className="max-w-[150px] truncate font-mono text-xs">
+            {row.getValue("walletAddress")}
+          </div>
+        ),
+      },
     ],
     [t, activeOrganization, activeWorkspace],
   );
@@ -185,7 +197,7 @@ export function CustomersTable() {
   if (data.isLoading) {
     return (
       <DataTableSkeleton
-        columnCount={7}
+        columnCount={8}
         rowCount={10}
         searchableColumnCount={3}
         filterableColumnCount={3}

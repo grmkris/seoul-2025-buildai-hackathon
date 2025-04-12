@@ -34,6 +34,14 @@ const WorkspacePage = () => {
       description="Welcome to your workspace. What would you like to accomplish today?"
     >
       <div className="space-y-4">
+        <a
+          href={`http://localhost:3000/?workspaceId=${activeWorkspace}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 hover:underline"
+        >
+          Open Agent View
+        </a>
       </div>
     </PageContainer>
   );

@@ -8,9 +8,10 @@ export const SelectCustomerSchema = createSelectSchema(customersTable, {
   id: CustomerId,
   updatedAt: z.coerce.date(),
   createdAt: z.coerce.date(),
-  createdBy: MemberId,
-  updatedBy: MemberId,
+  createdBy: MemberId.nullable(),
+  updatedBy: MemberId.nullable(),
   workspaceId: WorkspaceId,
+  walletAddress: z.string().length(42).nullable(),
 });
 export const InsertCustomerSchema = z.object({
   firstName: z.string().min(1).max(50),

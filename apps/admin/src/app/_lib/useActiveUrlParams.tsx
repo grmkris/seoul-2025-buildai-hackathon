@@ -9,5 +9,6 @@ export const useActiveOrganization = () => {
 
 export const useActiveWorkspace = () => {
   const params = useParams();
-  return params?.workspaceId as WorkspaceId;
+  const workspaceId = params?.workspaceId;
+  return workspaceId ? decodeURIComponent(workspaceId as string) as WorkspaceId : undefined;
 };

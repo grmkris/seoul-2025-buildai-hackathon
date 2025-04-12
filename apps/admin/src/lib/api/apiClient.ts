@@ -5,6 +5,7 @@ import type { workspaceRouter } from "./workspaceRoute";
 import type { customerRouter } from "./customerRouter";
 import type { messageRoutes } from "./messageRoutes";
 import type { conversationRoutes } from "./conversationRoutes";
+import type { customerConversationRoutes } from "./customerConversationRoutes";
 
 export const workspaceClient = hc<typeof workspaceRouter>(
   `${SERVICE_URLS[clientEnvs.NEXT_PUBLIC_ENV].api}/api`,
@@ -47,6 +48,19 @@ export const messageClient = hc<typeof messageRoutes>(
   
 
 export const conversationClient = hc<typeof conversationRoutes>(
+  `${SERVICE_URLS[clientEnvs.NEXT_PUBLIC_ENV].api}/api`,
+  {
+    init: {
+      credentials: "include",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  },
+);
+
+export const customerConversationClient = hc<typeof customerConversationRoutes>(
   `${SERVICE_URLS[clientEnvs.NEXT_PUBLIC_ENV].api}/api`,
   {
     init: {

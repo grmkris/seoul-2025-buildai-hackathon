@@ -113,8 +113,8 @@ export const createSimpleAgent = (props: {
         const result = aiClient.streamText({
           maxSteps: 25, // May need adjustment if payment flow adds steps
           model: aiClient.getModel({
-            provider: "google",
-            modelId: "gemini-2.5-pro-exp-03-25", // Consider potential cost/speed implications of more complex prompts
+            provider: "anthropic",
+            modelId: "claude-3-7-sonnet-20250219", // Consider potential cost/speed implications of more complex prompts
           }),
           tools: {
             ...createOgrodjeClientTools({ logger }),

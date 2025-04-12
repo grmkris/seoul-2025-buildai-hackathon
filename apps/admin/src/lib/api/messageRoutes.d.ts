@@ -242,8 +242,8 @@ declare const messageRoutes: import("hono/hono-base").HonoBase<{
                 id: `msg_${string}`;
                 createdAt: string;
                 updatedAt: string;
-                createdBy: `usr_${string}`;
-                updatedBy: `usr_${string}`;
+                createdBy: `cst_${string}`;
+                updatedBy: `cst_${string}`;
                 workspaceId: `wsp_${string}`;
                 conversationId: `cnv_${string}`;
             }[];

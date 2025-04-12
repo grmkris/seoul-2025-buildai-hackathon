@@ -61,9 +61,7 @@ export const UpdateConversationSchema = InsertConversationSchema.partial();
 export type UpdateConversationSchema = z.infer<typeof UpdateConversationSchema>;
 
 // Schema for getting conversation - Simplified: Removed audit history
-export const GetConversationSchema = SelectConversationSchema.extend({
-  messages: z.array(SelectMessageSchema),
-});
+export const GetConversationSchema = SelectConversationSchema;
 export type GetConversationSchema = z.infer<typeof GetConversationSchema>;
 
 /**
@@ -88,7 +86,10 @@ const getConversationRoute = createOpenAPIRoute().openapi(
         description: "Conversation retrieved successfully",
         content: {
           "application/json": {
-            schema: GetConversationSchema, // Use simplified schema
+            schema: z.object({
+              ...GetConversationSchema.shape,
+              messages: z.array(SelectMessageSchema),
+            }),
           },
         },
       },
@@ -109,13 +110,17 @@ const getConversationRoute = createOpenAPIRoute().openapi(
           eq(conversations.workspaceId, workspaceId),
         ),
         with: {
-          messages: true,
+          messages: {
+            orderBy: [desc(messages.createdAt)],
+          }
         },
       });
 
       if (!conversation) {
         return c.json({ message: "Conversation not found", requestId }, 404);
       }
+
+      console.log("qweqweqwe");
 
       // Return the plain conversation object
       return c.json(conversation, 200);

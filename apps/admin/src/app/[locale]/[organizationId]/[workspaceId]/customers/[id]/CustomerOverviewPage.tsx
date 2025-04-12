@@ -15,7 +15,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "@/navigation";
 import {
@@ -33,6 +33,9 @@ import { useRef } from "react";
 import type { KeyboardEvent } from "react";
 import type { CustomerId } from "typeid";
 import { toast } from "sonner";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CustomerChatHistory } from "./CustomerChatHistory";
+import { format } from "date-fns";
 
 export default function CustomerOverviewPage({
   params,
@@ -161,6 +164,33 @@ export default function CustomerOverviewPage({
         </Card>
 
       </div>
+
+      <Tabs defaultValue="overview" className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="overview">{t("overviewTab")}</TabsTrigger>
+          <TabsTrigger value="chatHistory">{t("chatHistoryTab")}</TabsTrigger>
+        </TabsList>
+        <TabsContent value="overview">
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("customerDetails")}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <p><strong>{t("email")}:</strong> {customer.email || "N/A"}</p>
+                <p><strong>{t("phone")}:</strong> {customer.phoneNumber || "N/A"}</p>
+                <p><strong>{t("walletAddress")}:</strong> {customer.walletAddress || "N/A"}</p>
+                <p><strong>{t("createdAt")}:</strong> {format(new Date(customer.createdAt), "PPPpp")}</p>
+                {/* Add other details here */}
+              </div>
+            </CardContent>
+          </Card>
+          {/* Other overview components can go here */}
+        </TabsContent>
+        <TabsContent value="chatHistory">
+          <CustomerChatHistory customerId={customer.id} />
+        </TabsContent>
+      </Tabs>
     </PageContainer>
   );
 }

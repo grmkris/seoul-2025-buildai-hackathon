@@ -227,8 +227,8 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 id: `msg_${string}`;
                 createdAt: string;
                 updatedAt: string;
-                createdBy: `usr_${string}`;
-                updatedBy: `usr_${string}`;
+                createdBy: `cst_${string}`;
+                updatedBy: `cst_${string}`;
                 workspaceId: `wsp_${string}`;
                 conversationId: `cnv_${string}`;
             }[];
@@ -249,134 +249,9 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
             } & {
                 query: {
                     search?: string | undefined;
-                    limit?: string | undefined;
-                    orderBy?: "title" | "createdAt" | "updatedAt" | undefined;
                     page?: string | undefined;
-                    orderDirection?: "asc" | "desc" | undefined;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            };
-            output: {
-                message: string;
-                requestId: `req_${string}`;
-            };
-            outputFormat: "json";
-            status: 400;
-        } | {
-            input: {
-                param: {
-                    organizationId: string;
-                    workspaceId: string;
-                };
-            } & {
-                query: {
-                    search?: string | undefined;
                     limit?: string | undefined;
-                    orderBy?: "title" | "createdAt" | "updatedAt" | undefined;
-                    page?: string | undefined;
-                    orderDirection?: "asc" | "desc" | undefined;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            };
-            output: {
-                message: string;
-                requestId: `req_${string}`;
-            };
-            outputFormat: "json";
-            status: 401;
-        } | {
-            input: {
-                param: {
-                    organizationId: string;
-                    workspaceId: string;
-                };
-            } & {
-                query: {
-                    search?: string | undefined;
-                    limit?: string | undefined;
-                    orderBy?: "title" | "createdAt" | "updatedAt" | undefined;
-                    page?: string | undefined;
-                    orderDirection?: "asc" | "desc" | undefined;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            };
-            output: {
-                message: string;
-                requestId: `req_${string}`;
-            };
-            outputFormat: "json";
-            status: 403;
-        } | {
-            input: {
-                param: {
-                    organizationId: string;
-                    workspaceId: string;
-                };
-            } & {
-                query: {
-                    search?: string | undefined;
-                    limit?: string | undefined;
-                    orderBy?: "title" | "createdAt" | "updatedAt" | undefined;
-                    page?: string | undefined;
-                    orderDirection?: "asc" | "desc" | undefined;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            };
-            output: {
-                message: string;
-                requestId: `req_${string}`;
-            };
-            outputFormat: "json";
-            status: 404;
-        } | {
-            input: {
-                param: {
-                    organizationId: string;
-                    workspaceId: string;
-                };
-            } & {
-                query: {
-                    search?: string | undefined;
-                    limit?: string | undefined;
-                    orderBy?: "title" | "createdAt" | "updatedAt" | undefined;
-                    page?: string | undefined;
-                    orderDirection?: "asc" | "desc" | undefined;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            };
-            output: {
-                message: string;
-                requestId: `req_${string}`;
-            };
-            outputFormat: "json";
-            status: 500;
-        } | {
-            input: {
-                param: {
-                    organizationId: string;
-                    workspaceId: string;
-                };
-            } & {
-                query: {
-                    search?: string | undefined;
-                    limit?: string | undefined;
-                    orderBy?: "title" | "createdAt" | "updatedAt" | undefined;
-                    page?: string | undefined;
+                    orderBy?: "createdAt" | "updatedAt" | "title" | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
                 };
             } & {
@@ -387,12 +262,12 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
             output: {
                 data: {
                     id: `cnv_${string}`;
-                    title: string;
                     createdAt: string;
                     updatedAt: string;
-                    createdBy: `usr_${string}`;
-                    updatedBy: `usr_${string}`;
+                    createdBy: `cst_${string}`;
+                    updatedBy: `cst_${string}`;
                     workspaceId: `wsp_${string}`;
+                    title: string;
                     lastMessage?: {
                         message: {
                             content: string;
@@ -485,8 +360,8 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                         id: `msg_${string}`;
                         createdAt: string;
                         updatedAt: string;
-                        createdBy: `usr_${string}`;
-                        updatedBy: `usr_${string}`;
+                        createdBy: `cst_${string}`;
+                        updatedBy: `cst_${string}`;
                         workspaceId: `wsp_${string}`;
                         conversationId: `cnv_${string}`;
                     } | undefined;
@@ -500,6 +375,131 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
             };
             outputFormat: "json";
             status: 200;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                };
+            } & {
+                query: {
+                    search?: string | undefined;
+                    page?: string | undefined;
+                    limit?: string | undefined;
+                    orderBy?: "createdAt" | "updatedAt" | "title" | undefined;
+                    orderDirection?: "asc" | "desc" | undefined;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 400;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                };
+            } & {
+                query: {
+                    search?: string | undefined;
+                    page?: string | undefined;
+                    limit?: string | undefined;
+                    orderBy?: "createdAt" | "updatedAt" | "title" | undefined;
+                    orderDirection?: "asc" | "desc" | undefined;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 401;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                };
+            } & {
+                query: {
+                    search?: string | undefined;
+                    page?: string | undefined;
+                    limit?: string | undefined;
+                    orderBy?: "createdAt" | "updatedAt" | "title" | undefined;
+                    orderDirection?: "asc" | "desc" | undefined;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 403;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                };
+            } & {
+                query: {
+                    search?: string | undefined;
+                    page?: string | undefined;
+                    limit?: string | undefined;
+                    orderBy?: "createdAt" | "updatedAt" | "title" | undefined;
+                    orderDirection?: "asc" | "desc" | undefined;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 404;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                };
+            } & {
+                query: {
+                    search?: string | undefined;
+                    page?: string | undefined;
+                    limit?: string | undefined;
+                    orderBy?: "createdAt" | "updatedAt" | "title" | undefined;
+                    orderDirection?: "asc" | "desc" | undefined;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 500;
         };
     };
 }, "/admin/organizations/:organizationId/workspaces/:workspaceId/chat/conversations"> | import("hono/types").MergeSchemaPath<{
@@ -517,13 +517,103 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 400;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                    conversationId: string;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 401;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                    conversationId: string;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 403;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                    conversationId: string;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 404;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                    conversationId: string;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 500;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                    conversationId: string;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            };
+            output: {
                 id: `cnv_${string}`;
-                title: string;
                 createdAt: string;
                 updatedAt: string;
-                createdBy: `usr_${string}`;
-                updatedBy: `usr_${string}`;
+                createdBy: `cst_${string}`;
+                updatedBy: `cst_${string}`;
                 workspaceId: `wsp_${string}`;
+                title: string;
                 messages: {
                     message: {
                         content: string;
@@ -616,104 +706,14 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                     id: `msg_${string}`;
                     createdAt: string;
                     updatedAt: string;
-                    createdBy: `usr_${string}`;
-                    updatedBy: `usr_${string}`;
+                    createdBy: `cst_${string}`;
+                    updatedBy: `cst_${string}`;
                     workspaceId: `wsp_${string}`;
                     conversationId: `cnv_${string}`;
                 }[];
             };
             outputFormat: "json";
             status: 200;
-        } | {
-            input: {
-                param: {
-                    organizationId: string;
-                    workspaceId: string;
-                    conversationId: string;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            };
-            output: {
-                message: string;
-                requestId: `req_${string}`;
-            };
-            outputFormat: "json";
-            status: 400;
-        } | {
-            input: {
-                param: {
-                    organizationId: string;
-                    workspaceId: string;
-                    conversationId: string;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            };
-            output: {
-                message: string;
-                requestId: `req_${string}`;
-            };
-            outputFormat: "json";
-            status: 401;
-        } | {
-            input: {
-                param: {
-                    organizationId: string;
-                    workspaceId: string;
-                    conversationId: string;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            };
-            output: {
-                message: string;
-                requestId: `req_${string}`;
-            };
-            outputFormat: "json";
-            status: 403;
-        } | {
-            input: {
-                param: {
-                    organizationId: string;
-                    workspaceId: string;
-                    conversationId: string;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            };
-            output: {
-                message: string;
-                requestId: `req_${string}`;
-            };
-            outputFormat: "json";
-            status: 404;
-        } | {
-            input: {
-                param: {
-                    organizationId: string;
-                    workspaceId: string;
-                    conversationId: string;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            };
-            output: {
-                message: string;
-                requestId: `req_${string}`;
-            };
-            outputFormat: "json";
-            status: 500;
         };
     };
 }, "/admin/organizations/:organizationId/workspaces/:workspaceId/chat/conversations/:conversationId"> | import("hono/types").MergeSchemaPath<{

@@ -221,7 +221,10 @@ const getConversationRoute = createOpenAPIRoute().openapi(
         description: "Conversation retrieved successfully",
         content: {
           "application/json": {
-            schema: GetConversationSchema,
+            schema: z.object({
+              ...GetConversationSchema.shape,
+              messages: z.array(MessageSchema),
+            }),
           },
         },
       },
@@ -260,7 +263,10 @@ const getConversationRoute = createOpenAPIRoute().openapi(
         conversationId: conversation.id,
         requestId,
       });
-      const validatedData = GetConversationSchema.safeParse(conversation);
+      const validatedData = z.object({
+        ...GetConversationSchema.shape,
+        messages: z.array(MessageSchema),
+      }).safeParse(conversation);
       if (!validatedData.success) {
         logger.error({
           msg: "Fetched conversation data mismatch schema",

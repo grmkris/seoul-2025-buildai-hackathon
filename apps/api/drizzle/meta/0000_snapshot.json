@@ -1,5 +1,5 @@
 {
-  "id": "144c356d-6ec3-4e5f-8c00-46b6b641e88d",
+  "id": "fa85090b-a3be-4d36-af49-43ccde3f7353",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -330,13 +330,28 @@
           "concurrently": false,
           "method": "btree",
           "with": {}
+        },
+        "conversation_created_by_idx": {
+          "name": "conversation_created_by_idx",
+          "columns": [
+            {
+              "expression": "created_by",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
         }
       },
       "foreignKeys": {
-        "conversations_created_by_member_id_fk": {
-          "name": "conversations_created_by_member_id_fk",
+        "conversations_created_by_customers_id_fk": {
+          "name": "conversations_created_by_customers_id_fk",
           "tableFrom": "conversations",
-          "tableTo": "member",
+          "tableTo": "customers",
           "columnsFrom": [
             "created_by"
           ],
@@ -346,10 +361,10 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "conversations_updated_by_member_id_fk": {
-          "name": "conversations_updated_by_member_id_fk",
+        "conversations_updated_by_customers_id_fk": {
+          "name": "conversations_updated_by_customers_id_fk",
           "tableFrom": "conversations",
-          "tableTo": "member",
+          "tableTo": "customers",
           "columnsFrom": [
             "updated_by"
           ],
@@ -413,6 +428,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "walletAddress": {
+          "name": "walletAddress",
+          "type": "varchar(42)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
@@ -431,13 +452,13 @@
           "name": "created_by",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "updated_by": {
           "name": "updated_by",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "workspace_id": {
           "name": "workspace_id",
@@ -781,10 +802,10 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "messages_created_by_member_id_fk": {
-          "name": "messages_created_by_member_id_fk",
+        "messages_created_by_customers_id_fk": {
+          "name": "messages_created_by_customers_id_fk",
           "tableFrom": "messages",
-          "tableTo": "member",
+          "tableTo": "customers",
           "columnsFrom": [
             "created_by"
           ],
@@ -794,10 +815,10 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "messages_updated_by_member_id_fk": {
-          "name": "messages_updated_by_member_id_fk",
+        "messages_updated_by_customers_id_fk": {
+          "name": "messages_updated_by_customers_id_fk",
           "tableFrom": "messages",
-          "tableTo": "member",
+          "tableTo": "customers",
           "columnsFrom": [
             "updated_by"
           ],
@@ -967,6 +988,130 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.payment_intents": {
+      "name": "payment_intents",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "intent_id": {
+          "name": "intent_id",
+          "type": "varchar(66)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "conversation_id": {
+          "name": "conversation_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "customer_id": {
+          "name": "customer_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "payment_intent_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pending'"
+        },
+        "amount": {
+          "name": "amount",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "currency_address": {
+          "name": "currency_address",
+          "type": "varchar(42)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reason": {
+          "name": "reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "signed_intent_data": {
+          "name": "signed_intent_data",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "deadline": {
+          "name": "deadline",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "payment_intents_conversation_id_conversations_id_fk": {
+          "name": "payment_intents_conversation_id_conversations_id_fk",
+          "tableFrom": "payment_intents",
+          "tableTo": "conversations",
+          "columnsFrom": [
+            "conversation_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payment_intents_customer_id_customers_id_fk": {
+          "name": "payment_intents_customer_id_customers_id_fk",
+          "tableFrom": "payment_intents",
+          "tableTo": "customers",
+          "columnsFrom": [
+            "customer_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "payment_intents_intent_id_unique": {
+          "name": "payment_intents_intent_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "intent_id"
+          ]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -1333,7 +1478,18 @@
       "isRLSEnabled": false
     }
   },
-  "enums": {},
+  "enums": {
+    "public.payment_intent_status": {
+      "name": "payment_intent_status",
+      "schema": "public",
+      "values": [
+        "pending",
+        "completed",
+        "failed",
+        "expired"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "roles": {},

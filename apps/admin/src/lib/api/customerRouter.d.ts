@@ -146,15 +146,16 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             };
             output: {
                 id: `cst_${string}`;
-                createdAt: string;
-                updatedAt: string;
-                createdBy: `mbr_${string}`;
-                updatedBy: `mbr_${string}`;
-                workspaceId: `wsp_${string}`;
                 email: string | null;
                 firstName: string | null;
                 lastName: string | null;
                 phoneNumber: string | null;
+                walletAddress: string | null;
+                createdAt: string;
+                updatedAt: string;
+                createdBy: `mbr_${string}` | null;
+                updatedBy: `mbr_${string}` | null;
+                workspaceId: `wsp_${string}`;
             };
             outputFormat: "json";
             status: 201;
@@ -171,9 +172,9 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             } & {
                 query: {
                     search?: string | undefined;
-                    limit?: number | undefined;
-                    orderBy?: "createdAt" | "updatedAt" | "email" | "firstName" | "lastName" | "phoneNumber" | undefined;
                     page?: number | undefined;
+                    limit?: number | undefined;
+                    orderBy?: "email" | "firstName" | "lastName" | "phoneNumber" | "createdAt" | "updatedAt" | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
                 };
             } & {
@@ -196,9 +197,9 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             } & {
                 query: {
                     search?: string | undefined;
-                    limit?: number | undefined;
-                    orderBy?: "createdAt" | "updatedAt" | "email" | "firstName" | "lastName" | "phoneNumber" | undefined;
                     page?: number | undefined;
+                    limit?: number | undefined;
+                    orderBy?: "email" | "firstName" | "lastName" | "phoneNumber" | "createdAt" | "updatedAt" | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
                 };
             } & {
@@ -221,9 +222,9 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             } & {
                 query: {
                     search?: string | undefined;
-                    limit?: number | undefined;
-                    orderBy?: "createdAt" | "updatedAt" | "email" | "firstName" | "lastName" | "phoneNumber" | undefined;
                     page?: number | undefined;
+                    limit?: number | undefined;
+                    orderBy?: "email" | "firstName" | "lastName" | "phoneNumber" | "createdAt" | "updatedAt" | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
                 };
             } & {
@@ -246,9 +247,9 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             } & {
                 query: {
                     search?: string | undefined;
-                    limit?: number | undefined;
-                    orderBy?: "createdAt" | "updatedAt" | "email" | "firstName" | "lastName" | "phoneNumber" | undefined;
                     page?: number | undefined;
+                    limit?: number | undefined;
+                    orderBy?: "email" | "firstName" | "lastName" | "phoneNumber" | "createdAt" | "updatedAt" | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
                 };
             } & {
@@ -271,9 +272,9 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             } & {
                 query: {
                     search?: string | undefined;
-                    limit?: number | undefined;
-                    orderBy?: "createdAt" | "updatedAt" | "email" | "firstName" | "lastName" | "phoneNumber" | undefined;
                     page?: number | undefined;
+                    limit?: number | undefined;
+                    orderBy?: "email" | "firstName" | "lastName" | "phoneNumber" | "createdAt" | "updatedAt" | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
                 };
             } & {
@@ -296,9 +297,9 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             } & {
                 query: {
                     search?: string | undefined;
-                    limit?: number | undefined;
-                    orderBy?: "createdAt" | "updatedAt" | "email" | "firstName" | "lastName" | "phoneNumber" | undefined;
                     page?: number | undefined;
+                    limit?: number | undefined;
+                    orderBy?: "email" | "firstName" | "lastName" | "phoneNumber" | "createdAt" | "updatedAt" | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
                 };
             } & {
@@ -309,15 +310,16 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             output: {
                 data: {
                     id: `cst_${string}`;
-                    createdAt: string;
-                    updatedAt: string;
-                    createdBy: `mbr_${string}`;
-                    updatedBy: `mbr_${string}`;
-                    workspaceId: `wsp_${string}`;
                     email: string | null;
                     firstName: string | null;
                     lastName: string | null;
                     phoneNumber: string | null;
+                    walletAddress: string | null;
+                    createdAt: string;
+                    updatedAt: string;
+                    createdBy: `mbr_${string}` | null;
+                    updatedBy: `mbr_${string}` | null;
+                    workspaceId: `wsp_${string}`;
                 }[];
                 pagination: {
                     currentPage: number;
@@ -589,15 +591,16 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             };
             output: {
                 id: `cst_${string}`;
-                createdAt: string;
-                updatedAt: string;
-                createdBy: `mbr_${string}`;
-                updatedBy: `mbr_${string}`;
-                workspaceId: `wsp_${string}`;
                 email: string | null;
                 firstName: string | null;
                 lastName: string | null;
                 phoneNumber: string | null;
+                walletAddress: string | null;
+                createdAt: string;
+                updatedAt: string;
+                createdBy: `mbr_${string}` | null;
+                updatedBy: `mbr_${string}` | null;
+                workspaceId: `wsp_${string}`;
             };
             outputFormat: "json";
             status: 200;
@@ -709,15 +712,16 @@ export declare const customerRouter: import("hono/hono-base").HonoBase<{
             };
             output: {
                 id: `cst_${string}`;
-                createdAt: string;
-                updatedAt: string;
-                createdBy: `mbr_${string}`;
-                updatedBy: `mbr_${string}`;
-                workspaceId: `wsp_${string}`;
                 email: string | null;
                 firstName: string | null;
                 lastName: string | null;
                 phoneNumber: string | null;
+                walletAddress: string | null;
+                createdAt: string;
+                updatedAt: string;
+                createdBy: `mbr_${string}` | null;
+                updatedBy: `mbr_${string}` | null;
+                workspaceId: `wsp_${string}`;
             };
             outputFormat: "json";
             status: 200;

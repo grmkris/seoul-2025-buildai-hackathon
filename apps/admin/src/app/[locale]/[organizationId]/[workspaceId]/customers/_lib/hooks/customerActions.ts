@@ -9,19 +9,19 @@ import type {
 
 // Customer API endpoints
 const customerPostEndpoint =
-  customerClient.api.organizations[":organizationId"].workspaces[":workspaceId"]
+  customerClient.admin.organizations[":organizationId"].workspaces[":workspaceId"]
     .customers.$post;
 const _customerPutEndpoint =
-  customerClient.api.organizations[":organizationId"].workspaces[":workspaceId"]
+  customerClient.admin.organizations[":organizationId"].workspaces[":workspaceId"]
     .customers[":customerId"].$put;
 const customerDeleteEndpoint =
-  customerClient.api.organizations[":organizationId"].workspaces[":workspaceId"]
+  customerClient.admin.organizations[":organizationId"].workspaces[":workspaceId"]
     .customers[":customerId"].$delete;
 const customersGetEndpoint =
-  customerClient.api.organizations[":organizationId"].workspaces[":workspaceId"]
+  customerClient.admin.organizations[":organizationId"].workspaces[":workspaceId"]
     .customers.$get;
 const customerGetEndpoint =
-  customerClient.api.organizations[":organizationId"].workspaces[":workspaceId"]
+  customerClient.admin.organizations[":organizationId"].workspaces[":workspaceId"]
     .customers[":customerId"].$get;
 
 
@@ -58,7 +58,7 @@ export const createCustomer = async (props: {
   workspaceId: WorkspaceId;
   data: InsertCustomerSchema;
 }) => {
-  const response = await customerClient.api.organizations[
+  const response = await customerClient.admin.organizations[
     ":organizationId"
   ].workspaces[":workspaceId"].customers.$post({
     param: {
@@ -80,7 +80,7 @@ export const editCustomer = async (props: {
   id: CustomerId;
   data: InsertCustomerSchema;
 }) => {
-  const response = await customerClient.api.organizations[
+  const response = await customerClient.admin.organizations[
     ":organizationId"
   ].workspaces[":workspaceId"].customers[":customerId"].$put({
     param: {
@@ -102,7 +102,7 @@ export const deleteCustomer = async (props: {
   workspaceId: WorkspaceId;
   id: CustomerId;
 }) => {
-  const response = await customerClient.api.organizations[
+  const response = await customerClient.admin.organizations[
     ":organizationId"
   ].workspaces[":workspaceId"].customers[":customerId"].$delete({
     param: {
@@ -123,7 +123,7 @@ export const getCustomers = async (props: {
   workspaceId: WorkspaceId;
   params?: ListCustomersSchema;
 }) => {
-  const response = await customerClient.api.organizations[
+  const response = await customerClient.admin.organizations[
     ":organizationId"
   ].workspaces[":workspaceId"].customers.$get({
     param: {
@@ -144,7 +144,7 @@ export const getCustomer = async (props: {
   workspaceId: WorkspaceId;
   id: CustomerId;
 }) => {
-  const response = await customerClient.api.organizations[
+  const response = await customerClient.admin.organizations[
     ":organizationId"
   ].workspaces[":workspaceId"].customers[":customerId"].$get({
     param: {
