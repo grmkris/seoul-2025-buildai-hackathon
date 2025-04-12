@@ -1,8 +1,70 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
-export declare const PUBLIC_ROUTES_PATH: "/public";
-declare const publicRoutes: OpenAPIHono<import("hono").Env, import("hono/types").MergeSchemaPath<{
-    "/:conversationId": {
+import type { ContextVariables } from "@/types";
+export declare const publicRoutes: OpenAPIHono<{
+    Variables: ContextVariables;
+}, import("hono/types").MergeSchemaPath<{
+    "/public/conversations/:conversationId": {
         $get: {
+            input: {
+                param: {
+                    conversationId: string;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 400;
+        } | {
+            input: {
+                param: {
+                    conversationId: string;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 401;
+        } | {
+            input: {
+                param: {
+                    conversationId: string;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 403;
+        } | {
+            input: {
+                param: {
+                    conversationId: string;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 404;
+        } | {
+            input: {
+                param: {
+                    conversationId: string;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 500;
+        } | {
             input: {
                 param: {
                     conversationId: string;
@@ -19,67 +81,7 @@ declare const publicRoutes: OpenAPIHono<import("hono").Env, import("hono/types")
             };
             outputFormat: "json";
             status: 200;
-        } | {
-            input: {
-                param: {
-                    conversationId: string;
-                };
-            };
-            output: {
-                requestId: `req_${string}`;
-                message: string;
-            };
-            outputFormat: "json";
-            status: 400;
-        } | {
-            input: {
-                param: {
-                    conversationId: string;
-                };
-            };
-            output: {
-                requestId: `req_${string}`;
-                message: string;
-            };
-            outputFormat: "json";
-            status: 401;
-        } | {
-            input: {
-                param: {
-                    conversationId: string;
-                };
-            };
-            output: {
-                requestId: `req_${string}`;
-                message: string;
-            };
-            outputFormat: "json";
-            status: 403;
-        } | {
-            input: {
-                param: {
-                    conversationId: string;
-                };
-            };
-            output: {
-                requestId: `req_${string}`;
-                message: string;
-            };
-            outputFormat: "json";
-            status: 404;
-        } | {
-            input: {
-                param: {
-                    conversationId: string;
-                };
-            };
-            output: {
-                requestId: `req_${string}`;
-                message: string;
-            };
-            outputFormat: "json";
-            status: 500;
         };
     };
-}, "/conversations/:conversationId">, "/">;
-export { publicRoutes };
+}, "/public/conversations/:conversationId">, "/">;
+export type PublicRoutes = typeof publicRoutes;

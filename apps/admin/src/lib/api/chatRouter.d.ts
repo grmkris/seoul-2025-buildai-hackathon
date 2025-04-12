@@ -6,9 +6,9 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
         $get: {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                 };
             } & {
                 query: {
@@ -21,17 +21,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 400;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                 };
             } & {
                 query: {
@@ -44,17 +44,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 401;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                 };
             } & {
                 query: {
@@ -67,17 +67,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 403;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                 };
             } & {
                 query: {
@@ -90,17 +90,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 404;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                 };
             } & {
                 query: {
@@ -113,17 +113,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 500;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                 };
             } & {
                 query: {
@@ -139,8 +139,8 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 message: {
                     content: string;
                     id: string;
-                    createdAt?: string | undefined;
                     role: "system" | "user" | "assistant" | "data";
+                    createdAt?: string | undefined;
                     reasoning?: string | undefined;
                     experimental_attachments?: {
                         name?: string | undefined;
@@ -224,13 +224,13 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                         type: "step-start";
                     })[] | undefined;
                 };
-                conversationId: `cnv_${string}`;
                 id: `msg_${string}`;
                 createdAt: string;
                 updatedAt: string;
                 createdBy: `mbr_${string}`;
                 updatedBy: `mbr_${string}`;
                 workspaceId: `wsp_${string}`;
+                conversationId: `cnv_${string}`;
             }[];
             outputFormat: "json";
             status: 200;
@@ -241,9 +241,9 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
         $post: {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                 };
             } & {
                 header: {
@@ -255,17 +255,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 400;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                 };
             } & {
                 header: {
@@ -277,17 +277,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 401;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                 };
             } & {
                 header: {
@@ -299,17 +299,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 403;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                 };
             } & {
                 header: {
@@ -321,17 +321,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 404;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                 };
             } & {
                 header: {
@@ -343,17 +343,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 500;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                 };
             } & {
                 header: {
@@ -374,9 +374,9 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
         $patch: {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                     messageId: string;
                 };
             } & {
@@ -389,17 +389,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 400;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                     messageId: string;
                 };
             } & {
@@ -412,17 +412,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 401;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                     messageId: string;
                 };
             } & {
@@ -435,17 +435,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 403;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                     messageId: string;
                 };
             } & {
@@ -458,17 +458,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 404;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                     messageId: string;
                 };
             } & {
@@ -481,17 +481,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 500;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                     messageId: string;
                 };
             } & {
@@ -507,8 +507,8 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 message: {
                     content: string;
                     id: string;
-                    createdAt?: string | undefined;
                     role: "system" | "user" | "assistant" | "data";
+                    createdAt?: string | undefined;
                     reasoning?: string | undefined;
                     experimental_attachments?: {
                         name?: string | undefined;
@@ -592,13 +592,13 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                         type: "step-start";
                     })[] | undefined;
                 };
-                conversationId: `cnv_${string}`;
                 id: `msg_${string}`;
                 createdAt: string;
                 updatedAt: string;
                 createdBy: `mbr_${string}`;
                 updatedBy: `mbr_${string}`;
                 workspaceId: `wsp_${string}`;
+                conversationId: `cnv_${string}`;
             };
             outputFormat: "json";
             status: 200;
@@ -609,9 +609,9 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
         $delete: {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                     messageId: string;
                 };
             } & {
@@ -620,17 +620,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 400;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                     messageId: string;
                 };
             } & {
@@ -639,17 +639,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 401;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                     messageId: string;
                 };
             } & {
@@ -658,17 +658,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 403;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                     messageId: string;
                 };
             } & {
@@ -677,17 +677,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 404;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                     messageId: string;
                 };
             } & {
@@ -696,17 +696,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 500;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                     messageId: string;
                 };
             } & {
@@ -741,8 +741,34 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
+                title: string;
+                id: `cnv_${string}`;
+                createdAt: string;
+                updatedAt: string;
+                createdBy: `mbr_${string}`;
+                updatedBy: `mbr_${string}`;
+                workspaceId: `wsp_${string}`;
+            };
+            outputFormat: "json";
+            status: 201;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            } & {
+                json: {
+                    title: string;
+                };
+            };
+            output: {
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 400;
@@ -762,8 +788,8 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 401;
@@ -783,8 +809,8 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 403;
@@ -804,8 +830,8 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 404;
@@ -825,37 +851,11 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 500;
-        } | {
-            input: {
-                param: {
-                    organizationId: string;
-                    workspaceId: string;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            } & {
-                json: {
-                    title: string;
-                };
-            };
-            output: {
-                title: string;
-                id: `cnv_${string}`;
-                createdAt: string;
-                updatedAt: string;
-                createdBy: `mbr_${string}`;
-                updatedBy: `mbr_${string}`;
-                workspaceId: `wsp_${string}`;
-            };
-            outputFormat: "json";
-            status: 201;
         };
     };
 }, "/admin/organizations/:organizationId/workspaces/:workspaceId/chat/conversations"> | import("hono/types").MergeSchemaPath<{
@@ -869,8 +869,8 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
             } & {
                 query: {
                     search?: string | undefined;
-                    limit?: string | undefined;
                     orderBy?: "title" | "createdAt" | "updatedAt" | undefined;
+                    limit?: string | undefined;
                     page?: string | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
                 };
@@ -880,8 +880,8 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 400;
@@ -894,8 +894,8 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
             } & {
                 query: {
                     search?: string | undefined;
-                    limit?: string | undefined;
                     orderBy?: "title" | "createdAt" | "updatedAt" | undefined;
+                    limit?: string | undefined;
                     page?: string | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
                 };
@@ -905,8 +905,8 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 401;
@@ -919,8 +919,8 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
             } & {
                 query: {
                     search?: string | undefined;
-                    limit?: string | undefined;
                     orderBy?: "title" | "createdAt" | "updatedAt" | undefined;
+                    limit?: string | undefined;
                     page?: string | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
                 };
@@ -930,8 +930,8 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 403;
@@ -944,8 +944,8 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
             } & {
                 query: {
                     search?: string | undefined;
-                    limit?: string | undefined;
                     orderBy?: "title" | "createdAt" | "updatedAt" | undefined;
+                    limit?: string | undefined;
                     page?: string | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
                 };
@@ -955,8 +955,8 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 404;
@@ -969,8 +969,8 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
             } & {
                 query: {
                     search?: string | undefined;
-                    limit?: string | undefined;
                     orderBy?: "title" | "createdAt" | "updatedAt" | undefined;
+                    limit?: string | undefined;
                     page?: string | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
                 };
@@ -980,8 +980,8 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 500;
@@ -994,8 +994,8 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
             } & {
                 query: {
                     search?: string | undefined;
-                    limit?: string | undefined;
                     orderBy?: "title" | "createdAt" | "updatedAt" | undefined;
+                    limit?: string | undefined;
                     page?: string | undefined;
                     orderDirection?: "asc" | "desc" | undefined;
                 };
@@ -1017,8 +1017,8 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                         message: {
                             content: string;
                             id: string;
-                            createdAt?: string | undefined;
                             role: "system" | "user" | "assistant" | "data";
+                            createdAt?: string | undefined;
                             reasoning?: string | undefined;
                             experimental_attachments?: {
                                 name?: string | undefined;
@@ -1102,13 +1102,13 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                                 type: "step-start";
                             })[] | undefined;
                         };
-                        conversationId: `cnv_${string}`;
                         id: `msg_${string}`;
                         createdAt: string;
                         updatedAt: string;
                         createdBy: `mbr_${string}`;
                         updatedBy: `mbr_${string}`;
                         workspaceId: `wsp_${string}`;
+                        conversationId: `cnv_${string}`;
                     } | undefined;
                 }[];
                 pagination: {
@@ -1127,9 +1127,99 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
         $get: {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 400;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                    conversationId: string;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 401;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                    conversationId: string;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 403;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                    conversationId: string;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 404;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                    conversationId: string;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 500;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                    conversationId: string;
                 };
             } & {
                 header: {
@@ -1147,96 +1237,6 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
             };
             outputFormat: "json";
             status: 200;
-        } | {
-            input: {
-                param: {
-                    conversationId: string;
-                    organizationId: string;
-                    workspaceId: string;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            };
-            output: {
-                requestId: `req_${string}`;
-                message: string;
-            };
-            outputFormat: "json";
-            status: 400;
-        } | {
-            input: {
-                param: {
-                    conversationId: string;
-                    organizationId: string;
-                    workspaceId: string;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            };
-            output: {
-                requestId: `req_${string}`;
-                message: string;
-            };
-            outputFormat: "json";
-            status: 401;
-        } | {
-            input: {
-                param: {
-                    conversationId: string;
-                    organizationId: string;
-                    workspaceId: string;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            };
-            output: {
-                requestId: `req_${string}`;
-                message: string;
-            };
-            outputFormat: "json";
-            status: 403;
-        } | {
-            input: {
-                param: {
-                    conversationId: string;
-                    organizationId: string;
-                    workspaceId: string;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            };
-            output: {
-                requestId: `req_${string}`;
-                message: string;
-            };
-            outputFormat: "json";
-            status: 404;
-        } | {
-            input: {
-                param: {
-                    conversationId: string;
-                    organizationId: string;
-                    workspaceId: string;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            };
-            output: {
-                requestId: `req_${string}`;
-                message: string;
-            };
-            outputFormat: "json";
-            status: 500;
         };
     };
 }, "/admin/organizations/:organizationId/workspaces/:workspaceId/chat/conversations/:conversationId"> | import("hono/types").MergeSchemaPath<{
@@ -1244,9 +1244,119 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
         $patch: {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            } & {
+                json: {
+                    title?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 400;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                    conversationId: string;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            } & {
+                json: {
+                    title?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 401;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                    conversationId: string;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            } & {
+                json: {
+                    title?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 403;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                    conversationId: string;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            } & {
+                json: {
+                    title?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 404;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                    conversationId: string;
+                };
+            } & {
+                header: {
+                    Authorization?: string | undefined;
+                };
+            } & {
+                json: {
+                    title?: string | undefined;
+                };
+            };
+            output: {
+                message: string;
+                requestId: `req_${string}`;
+            };
+            outputFormat: "json";
+            status: 500;
+        } | {
+            input: {
+                param: {
+                    organizationId: string;
+                    workspaceId: string;
+                    conversationId: string;
                 };
             } & {
                 header: {
@@ -1268,116 +1378,6 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
             };
             outputFormat: "json";
             status: 200;
-        } | {
-            input: {
-                param: {
-                    conversationId: string;
-                    organizationId: string;
-                    workspaceId: string;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            } & {
-                json: {
-                    title?: string | undefined;
-                };
-            };
-            output: {
-                requestId: `req_${string}`;
-                message: string;
-            };
-            outputFormat: "json";
-            status: 400;
-        } | {
-            input: {
-                param: {
-                    conversationId: string;
-                    organizationId: string;
-                    workspaceId: string;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            } & {
-                json: {
-                    title?: string | undefined;
-                };
-            };
-            output: {
-                requestId: `req_${string}`;
-                message: string;
-            };
-            outputFormat: "json";
-            status: 401;
-        } | {
-            input: {
-                param: {
-                    conversationId: string;
-                    organizationId: string;
-                    workspaceId: string;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            } & {
-                json: {
-                    title?: string | undefined;
-                };
-            };
-            output: {
-                requestId: `req_${string}`;
-                message: string;
-            };
-            outputFormat: "json";
-            status: 403;
-        } | {
-            input: {
-                param: {
-                    conversationId: string;
-                    organizationId: string;
-                    workspaceId: string;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            } & {
-                json: {
-                    title?: string | undefined;
-                };
-            };
-            output: {
-                requestId: `req_${string}`;
-                message: string;
-            };
-            outputFormat: "json";
-            status: 404;
-        } | {
-            input: {
-                param: {
-                    conversationId: string;
-                    organizationId: string;
-                    workspaceId: string;
-                };
-            } & {
-                header: {
-                    Authorization?: string | undefined;
-                };
-            } & {
-                json: {
-                    title?: string | undefined;
-                };
-            };
-            output: {
-                requestId: `req_${string}`;
-                message: string;
-            };
-            outputFormat: "json";
-            status: 500;
         };
     };
 }, "/admin/organizations/:organizationId/workspaces/:workspaceId/chat/conversations/:conversationId"> | import("hono/types").MergeSchemaPath<{
@@ -1385,9 +1385,9 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
         $delete: {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                 };
             } & {
                 header: {
@@ -1395,17 +1395,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 400;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                 };
             } & {
                 header: {
@@ -1413,17 +1413,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 401;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                 };
             } & {
                 header: {
@@ -1431,17 +1431,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 403;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                 };
             } & {
                 header: {
@@ -1449,17 +1449,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 404;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                 };
             } & {
                 header: {
@@ -1467,17 +1467,17 @@ export declare const chatRouter: OpenAPIHono<import("hono").Env, import("hono/ty
                 };
             };
             output: {
-                requestId: `req_${string}`;
                 message: string;
+                requestId: `req_${string}`;
             };
             outputFormat: "json";
             status: 500;
         } | {
             input: {
                 param: {
-                    conversationId: string;
                     organizationId: string;
                     workspaceId: string;
+                    conversationId: string;
                 };
             } & {
                 header: {

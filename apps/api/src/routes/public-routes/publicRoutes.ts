@@ -4,16 +4,17 @@ import { GetConversationSchema } from "../chat/conversationRoutes";
 import { ConversationId } from "typeid";
 import { conversations } from "@/db/schema/chat/chat.db";
 import { eq } from "drizzle-orm";
+import type { ContextVariables } from "@/types";
+import { PUBLIC_PATH } from "@/utils";
 
-export const PUBLIC_ROUTES_PATH = "/public" as const;
 /**
  * Route: Get a conversation - Simplified (removed audit history)
  */
 const getConversationRoute = createOpenAPIRoute().openapi(
   createRoute({
     method: "get",
-    path: "/:conversationId",
-    tags: ["Chat"],
+    path: `${PUBLIC_PATH}/conversations/:conversationId`,
+    tags: ["Public"],
     summary: "Get conversation details",
     request: {
       params: z.object({
@@ -25,7 +26,7 @@ const getConversationRoute = createOpenAPIRoute().openapi(
         description: "Conversation retrieved successfully",
         content: {
           "application/json": {
-            schema: GetConversationSchema, // Use simplified schema
+            schema: GetConversationSchema,
           },
         },
       },
@@ -65,9 +66,9 @@ const getConversationRoute = createOpenAPIRoute().openapi(
   },
 );
 
-const publicRoutes = new OpenAPIHono().route(
-  "/conversations/:conversationId",
-  getConversationRoute,
-);
+export const publicRoutes = new OpenAPIHono<{
+  Variables: ContextVariables;
+}>()
+  .route(`${PUBLIC_PATH}/conversations/:conversationId`, getConversationRoute);
 
-export { publicRoutes };
+export type PublicRoutes = typeof publicRoutes;

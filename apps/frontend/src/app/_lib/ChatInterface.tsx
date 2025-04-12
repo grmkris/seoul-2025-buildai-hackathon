@@ -9,17 +9,18 @@ import { ChatContainer } from "@/components/chat/ChatContainer";
 import { AIMessage } from "@/components/chat/AIMessage";
 import { UserMessage } from "@/components/chat/UserMessage";
 import { ChatInputBar } from "@/components/chat/ChatInputBar";
-import { typeIdGenerator } from "typeid";
+import { typeIdGenerator, type ConversationId } from "typeid";
 import { useAccount, useChainId } from "wagmi";
 import ConnectButton from "@/components/web3/connect-button";
 import { Button } from "@/components/ui/button";
 import { RefreshCwIcon } from "lucide-react";
+import { useConversation } from "@/lib/hooks";
 
-export function ChatInterface() {
+export function ChatInterface(props: { conversationId: ConversationId }) {
   const { address } = useAccount();
   const chainId = useChainId();
   const conversation = useConversation({
-    address: address,
+    conversationId: props.conversationId,
   });
   const initalMessages: Message[] = [];
   for (const m of conversation.data ?? []) {

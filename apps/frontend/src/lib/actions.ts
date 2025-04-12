@@ -1,11 +1,16 @@
 import type { ConversationId } from "typeid";
-import type { ApiClient } from "./apiClient";
+import { publicClient } from "./apiClient";
+
 export const getConversation = async (props: {
-  apiClient: ApiClient;
   conversationId: ConversationId;
 }) => {
-  const response = await props.apiClient.public.$get({
+  const response = await publicClient["/:conversationId"].$get({
     param: { conversationId: props.conversationId },
   });
+
+  if (!response.ok) {
+    throw new Error("Failed to get conversation");
+  }
+
   return response.json();
 };
