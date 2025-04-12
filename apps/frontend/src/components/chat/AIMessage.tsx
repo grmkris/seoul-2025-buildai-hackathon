@@ -7,6 +7,70 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 
+
+type PaymentRequestToolInvocationPart = Extract<
+  NonNullable<Message["parts"]>[number],
+  { type: "tool-invocation"; toolInvocation: { toolName: "payment.requestPayment" } }
+>;
+
+// TODO: Define the expected structure of the result object
+type PaymentRequestResult = {
+  success: boolean;
+  paymentIntentId: string;
+  message: string;
+  // Add other potential fields based on the actual API response
+};
+
+
+export function PaymentRequestToolRenderer({
+  toolInvocation,
+}: {
+  toolInvocation: PaymentRequestToolInvocationPart;
+}) {
+  // Extract args and result
+  const args = toolInvocation.toolInvocation.args as { amount: number; currencySymbol: string; reason: string; } | undefined;
+  const result = toolInvocation.toolInvocation.result as PaymentRequestResult | undefined;
+
+  if (!args || !result) {
+    // Handle cases where args or result might be missing or malformed
+    return (
+      <div className="my-1 p-2 text-xs border rounded bg-destructive/10 text-destructive">
+        Error rendering payment request: Missing arguments or result.
+      </div>
+    );
+  }
+
+  if (!result.success) {
+     return (
+      <div className="my-1 p-2 text-xs border rounded bg-destructive/10 text-destructive">
+        Payment request failed: {result.message || 'Unknown error'}
+      </div>
+    );
+  }
+
+
+  // TODO: Implement the actual rendering logic
+  // This might involve displaying the amount, currency, reason,
+  // and potentially a button to initiate the payment flow using the paymentIntentId.
+  return (
+    <div className="my-2 p-3 border rounded-md bg-card shadow-sm">
+      <p className="font-medium text-sm mb-1">Payment Request</p>
+      <p className="text-xs text-muted-foreground mb-2">{args.reason}</p>
+      <div className="flex items-center justify-between gap-2">
+          <span className="font-semibold text-base">
+            {args.amount} {args.currencySymbol}
+          </span>
+        {/* TODO: Add a button or component to handle the payment flow */}
+        <Button size="sm" onClick={() => alert(`Pay ${args.amount} ${args.currencySymbol} (Intent: ${result.paymentIntentId})`)}>
+          Pay Now
+        </Button>
+      </div>
+       <p className="text-xs text-muted-foreground mt-1">{result.message}</p>
+    </div>
+  );
+}
+
+
 // Component for rendering a single, inline, expandable tool invocation
 function InlineToolInvocation({
   part,
@@ -104,6 +168,21 @@ function AIMessage({ fullMessage, ...props }: AIMessageProps) {
 
       {/* Render Tool Invocation Parts */}
       {toolInvocationParts.map((part, index) => {
+        // Check if the tool is 'payment.requestPayment'
+        if (part.toolInvocation.toolName === "requestPaymentTool") {
+          // Type assertion to help TypeScript understand the specific part type
+          const paymentRequestPart = part as Extract<
+             NonNullable<Message["parts"]>[number],
+             { type: "tool-invocation"; toolInvocation: { toolName: "payment.requestPayment" } }
+          >;
+          return (
+            <PaymentRequestToolRenderer
+              key={`${fullMessage.id}-tool-${index}`}
+              toolInvocation={paymentRequestPart}
+            />
+          );
+        }
+
         // Render InlineToolInvocation for other tool calls
         return (
           <InlineToolInvocation

@@ -1,7 +1,7 @@
 import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
 import { createCommonErrorSchema, createOpenAPIRoute } from "../helpers";
 import { GetConversationSchema } from "../chat/conversationRoutes";
-import { ConversationId, typeIdGenerator, type UserId, WorkspaceId } from "typeid";
+import { ConversationId, typeIdGenerator, type UserId, WorkspaceId, PaymentIntentId } from "typeid";
 import { conversations, usersTable } from "@/db/schema/chat/chat.db";
 import { eq } from "drizzle-orm";
 import type { ContextVariables } from "@/types";
@@ -10,6 +10,8 @@ import { MessageSchema } from "ai";
 import { stream } from "hono/streaming";
 import { getAddress } from "viem";
 import { createSimpleAgent } from "@/ai/simpleAgent";
+import { SelectPaymentIntentSchema } from "@/db/schema/payments/payments.zod";
+import { DB_SCHEMA } from "@/db/db";
 
 // Schema for wallet address validation
 const WalletAddressSchema = z.string().refine(
@@ -384,6 +386,78 @@ const sendNewMessageRoute = createOpenAPIRoute().openapi(
   },
 );
 
+const getPaymentIntentRoute = createOpenAPIRoute().openapi(
+  createRoute({
+    method: "get",
+    path: "/{paymentIntentId}",
+    tags: ["Public", "Payments"],
+    summary: "Get payment intent details by ID",
+    request: {
+      params: z.object({
+        paymentIntentId: PaymentIntentId,
+      }),
+    },
+    responses: {
+      200: {
+        description: "Payment intent retrieved successfully",
+        content: {
+          "application/json": {
+            schema: SelectPaymentIntentSchema,
+          },
+        },
+      },
+      ...createCommonErrorSchema(),
+      },
+  }),
+  async (c) => {
+    const logger = c.get("logger");
+    const { paymentIntentId } = c.req.valid("param");
+    const db = c.get("db");
+    const requestId = c.get("requestId");
+
+    logger.info({ msg: "Getting payment intent", paymentIntentId, requestId });
+
+    try {
+      const paymentIntent = await db.query.paymentIntents.findFirst({
+        where: eq(DB_SCHEMA.paymentIntents.id, paymentIntentId),
+      });
+
+      if (!paymentIntent) {
+        logger.warn({ msg: "Payment intent not found", paymentIntentId, requestId });
+        return c.json({ message: "Payment intent not found", requestId }, 404);
+      }
+
+      logger.info({ msg: "Found payment intent", paymentIntentId, requestId });
+      const validatedData = SelectPaymentIntentSchema.safeParse(paymentIntent);
+      if (!validatedData.success) {
+        logger.error({
+          msg: "Fetched payment intent data mismatch schema",
+          error: validatedData.error,
+          requestId,
+        });
+        throw new Error("Payment intent data validation failed.");
+      }
+      return c.json(validatedData.data, 200);
+
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : "Unknown error";
+      logger.error({
+        msg: "Error getting payment intent",
+        paymentIntentId,
+        error: errorMsg,
+        stack: error instanceof Error ? error.stack : undefined,
+        requestId,
+      });
+      return c.json(
+        {
+          message: `Internal server error: ${errorMsg}`,
+          requestId,
+        },
+        500,
+      );
+    }
+  },
+);
 
 export const publicRoutes = new OpenAPIHono<{
   Variables: ContextVariables;
@@ -401,7 +475,8 @@ export const publicRoutes = new OpenAPIHono<{
   .route("/initialize", initializeWidget)
   .route("/conversations", getConversationsRoute)
   .route("/conversations/:conversationId", getConversationRoute)
-  .route("/conversations/:conversationId/messages", sendNewMessageRoute);
+  .route("/conversations/:conversationId/messages", sendNewMessageRoute)
+  .route("/payments", getPaymentIntentRoute);
 
 export type PublicRoutes = typeof publicRoutes;
 

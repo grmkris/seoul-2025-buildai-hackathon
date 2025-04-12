@@ -3,7 +3,6 @@ import { member, organization } from "../orgs/orgs.db";
 import { account, apikey, passkey, session, user } from "./auth.db";
 import { conversations, messages } from "../chat/chat.db";
 import { customersTable } from "../customers/customers.db";
-import { paymentIntents } from "../payments/payments.db";
 
 // --- Relations for the User table ---
 export const userRelations = relations(user, ({ many }) => ({
@@ -15,7 +14,6 @@ export const userRelations = relations(user, ({ many }) => ({
   conversations: many(conversations),
   messages: many(messages),
   customers: many(customersTable),
-  paymentIntents: many(paymentIntents),
   // Potential direct links (if user owns these directly, adjust based on actual schema)
   // customers: many(customersTable), // If user maps directly to customer
 }));

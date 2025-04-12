@@ -8,6 +8,7 @@ import type { Message } from "ai";
 import { typeIdGenerator } from "typeid";
 import { appendResponseMessages, createDataStream } from "ai";
 import { createOgrodjeClientTools } from "./ogrodjeAgentTools";
+import { createPaymentAgentTools } from "./paymentAgentTools";
 
 export const createSimpleAgent = (props: {
   db: db,
@@ -55,6 +56,7 @@ export const createSimpleAgent = (props: {
           }),
           tools: {
             ...createOgrodjeClientTools({ logger }),
+            ...createPaymentAgentTools({ logger, db, userId, conversationId }),
           },
           system: "You are a helpful assistant that can answer general questions and you can use the tools to make your life easier. You can also use the tools to get information about the events and meetups.",
           messages: messagesFromDb,

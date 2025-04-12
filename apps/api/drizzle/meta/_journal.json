@@ -22,6 +22,13 @@
       "when": 1744460426551,
       "tag": "0002_useful_ink",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1744463226569,
+      "tag": "0003_nosy_moon_knight",
+      "breakpoints": true
     }
   ]
 }

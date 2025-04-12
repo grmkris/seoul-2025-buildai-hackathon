@@ -46,7 +46,9 @@ export const envSchema = z.object({
 
   TEST_RPC_URL: z.string(),
   TRANSFERS_CONTRACT_ADDRESS: z.string(),
+  MOCK_TOKEN_ADDRESS: z.string(),
   OPERATOR_PRIVATE_KEY: z.string(),
+  RECIPIENT_ADDRESS: z.string(),
 });
 
 export const env = envSchema.parse(Bun.env);
