@@ -18,8 +18,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 400;
@@ -34,8 +34,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 401;
@@ -50,8 +50,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 403;
@@ -66,8 +66,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 404;
@@ -82,8 +82,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 500;
@@ -98,11 +98,11 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                name: string;
                 id: `wsp_${string}`;
+                name: string;
                 createdAt: string;
-                updatedAt: string;
                 organizationId: `org_${string}`;
+                updatedAt: string;
             }[];
             outputFormat: "json";
             status: 200;
@@ -125,8 +125,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 400;
@@ -145,8 +145,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 401;
@@ -165,8 +165,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 403;
@@ -185,8 +185,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 404;
@@ -205,8 +205,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 500;
@@ -249,8 +249,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 400;
@@ -270,8 +270,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 401;
@@ -291,8 +291,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 403;
@@ -312,8 +312,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 404;
@@ -333,8 +333,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 500;
@@ -374,8 +374,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 400;
@@ -391,8 +391,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 401;
@@ -408,8 +408,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 403;
@@ -425,8 +425,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 404;
@@ -442,8 +442,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 500;
@@ -459,8 +459,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: "Workspace deleted successfully";
                 requestId: `req_${string}`;
+                message: "Workspace deleted successfully";
             };
             outputFormat: "json";
             status: 200;
@@ -480,8 +480,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 400;
@@ -497,8 +497,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 401;
@@ -514,8 +514,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 403;
@@ -531,8 +531,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 404;
@@ -548,8 +548,8 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 500;
@@ -565,11 +565,11 @@ export declare const workspaceRouter: import("hono/hono-base").HonoBase<{
                 };
             };
             output: {
-                name: string;
                 id: `wsp_${string}`;
+                name: string;
                 createdAt: string;
-                updatedAt: string;
                 organizationId: `org_${string}`;
+                updatedAt: string;
             };
             outputFormat: "json";
             status: 200;

@@ -1,5 +1,5 @@
-import type { OpenAPIHono } from "@hono/zod-openapi";
-export declare const PUBLIC_ROUTES_PATH = "/public/";
+import { OpenAPIHono } from "@hono/zod-openapi";
+export declare const PUBLIC_ROUTES_PATH: "/public";
 declare const publicRoutes: OpenAPIHono<import("hono").Env, import("hono/types").MergeSchemaPath<{
     "/:conversationId": {
         $get: {
@@ -9,11 +9,16 @@ declare const publicRoutes: OpenAPIHono<import("hono").Env, import("hono/types")
                 };
             };
             output: {
-                message: string;
-                requestId: `req_${string}`;
+                title: string;
+                id: `cnv_${string}`;
+                createdAt: string;
+                updatedAt: string;
+                createdBy: `mbr_${string}`;
+                updatedBy: `mbr_${string}`;
+                workspaceId: `wsp_${string}`;
             };
             outputFormat: "json";
-            status: 404;
+            status: 200;
         } | {
             input: {
                 param: {
@@ -21,8 +26,8 @@ declare const publicRoutes: OpenAPIHono<import("hono").Env, import("hono/types")
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 400;
@@ -33,8 +38,8 @@ declare const publicRoutes: OpenAPIHono<import("hono").Env, import("hono/types")
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 401;
@@ -45,8 +50,8 @@ declare const publicRoutes: OpenAPIHono<import("hono").Env, import("hono/types")
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
             status: 403;
@@ -57,11 +62,11 @@ declare const publicRoutes: OpenAPIHono<import("hono").Env, import("hono/types")
                 };
             };
             output: {
-                message: string;
                 requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
-            status: 500;
+            status: 404;
         } | {
             input: {
                 param: {
@@ -69,17 +74,12 @@ declare const publicRoutes: OpenAPIHono<import("hono").Env, import("hono/types")
                 };
             };
             output: {
-                title: string;
-                createdAt: string;
-                updatedAt: string;
-                id: `cnv_${string}`;
-                createdBy: `mbr_${string}`;
-                updatedBy: `mbr_${string}`;
-                workspaceId: `wsp_${string}`;
+                requestId: `req_${string}`;
+                message: string;
             };
             outputFormat: "json";
-            status: 200;
+            status: 500;
         };
     };
-}, "/">, "/">;
+}, "/conversations/:conversationId">, "/">;
 export { publicRoutes };

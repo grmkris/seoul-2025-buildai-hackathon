@@ -40,7 +40,7 @@ const getConversationRoute = createOpenAPIRoute().openapi(
 
       // Get conversation - Removed audit history query
       const conversation = await db.query.conversations.findFirst({
-        where: eq(conversations.id, conversationId)
+        where: eq(conversations.id, conversationId),
       });
 
       if (!conversation) {
@@ -65,7 +65,9 @@ const getConversationRoute = createOpenAPIRoute().openapi(
   },
 );
 
-const publicRoutes = new OpenAPIHono()
-  .route("/conversations/:conversationId", getConversationRoute);
+const publicRoutes = new OpenAPIHono().route(
+  "/conversations/:conversationId",
+  getConversationRoute,
+);
 
 export { publicRoutes };
