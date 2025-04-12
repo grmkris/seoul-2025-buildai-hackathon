@@ -1,12 +1,8 @@
 import { messages } from "@/db/schema/chat/chat.db";
 import { SelectMessageSchema } from "@/db/schema/chat/chat.zod";
-import { env } from "@/env";
 import { WORKSPACE_PATH } from "@/utils";
 import { OpenAPIHono, createRoute } from "@hono/zod-openapi";
-import { MessageSchema, createDataStream } from "ai";
-import { createAiClient } from "ai";
 import { and, asc, eq } from "drizzle-orm";
-import { stream } from "hono/streaming";
 import { ConversationId, MessageId, OrganizationId, WorkspaceId } from "typeid";
 import { z } from "zod";
 import {
@@ -18,7 +14,6 @@ import {
 } from "../helpers";
 import { checkOrganizationAccess } from "../helpers";
 import { checkWorkspaceAccess } from "../helpers";
-import { createChatHistoryService } from "./chatHistoryService";
 
 // List messages schema
 export const ListMessagesSchema = z.object({
@@ -307,138 +302,6 @@ const deleteMessageRoute = createOpenAPIRoute().openapi(
   },
 );
 
-const sendNewMessageRoute = createOpenAPIRoute().openapi(
-  createRoute({
-    method: "post",
-    path: "",
-    tags: ["Chat"],
-    summary: "Send message and get streaming AI response",
-    request: {
-      params: z.object({
-        organizationId: OrganizationId,
-        workspaceId: WorkspaceId,
-        conversationId: ConversationId,
-      }),
-      body: {
-        content: {
-          "application/json": {
-            schema: z.object({
-              message: MessageSchema,
-            }),
-          },
-        },
-      },
-      headers: commonHeaderSchema,
-    },
-    responses: {
-      200: {
-        description: "Streaming AI response",
-      },
-      ...createCommonErrorSchema(),
-    },
-  }),
-  async (c) => {
-    const logger = c.get("logger");
-    const { conversationId, workspaceId } = c.req.valid("param");
-    const { message: userMessage } = c.req.valid("json");
-    const db = c.get("db");
-    const session = validateAuth(c);
-    const requestId = c.get("requestId");
-
-    logger.info({
-      msg: "Sending message",
-      conversationId,
-      memberId: session.memberId,
-      contentPreview: userMessage.content.substring(0, 50),
-    });
-
-    if (!session.memberId) {
-      return c.json(
-        { message: "Unauthorized", requestId: c.get("requestId") },
-        401,
-      );
-    }
-    try {
-      // 1. Initialize Chat History Service
-      const chatHistoryService = createChatHistoryService({
-        db,
-        workspaceId,
-        memberId: session.memberId,
-        conversationId,
-      });
-
-      // 2. Add user message to DB
-      await chatHistoryService.addUserMessage(userMessage);
-
-      // 3. Fetch conversation history
-      const history = await chatHistoryService.getConversationMessages();
-
-      // 4. Initialize AI Provider (Example: OpenAI)
-      const aiClient = createAiClient({
-        logger,
-        providerConfigs: {
-          anthropicApiKey: env.ANTHROPIC_API_KEY,
-          googleGeminiApiKey: env.GOOGLE_GEMINI_API_KEY,
-        },
-      });
-
-      // Ensure history only contains role and content
-      const preparedHistory = history.map((msg) => ({
-        role: msg.role,
-        content: msg.content,
-      }));
-
-      // Start streaming response
-      const dataStream = createDataStream({
-        execute: async (dataStreamWriter) => {
-          // Process with agent
-          // 5. Stream response from AI
-          const result = aiClient.streamText({
-            model: aiClient.getModel({
-              provider: "google",
-              modelId: "gemini-2.0-flash-001",
-            }), // Use aiClient to get the model
-            messages: preparedHistory, // Pass the formatted history
-          });
-
-          result.mergeIntoDataStream(dataStreamWriter);
-        },
-        onError: (error) => {
-          logger.error({
-            msg: "Streaming error",
-            error,
-            conversationId,
-          });
-          return error instanceof Error ? error.message : String(error);
-        },
-      });
-
-      // Mark the response as a v1 data stream
-      c.header("X-Vercel-AI-Data-Stream", "v1");
-      c.header("Content-Type", "text/plain; charset=utf-8");
-
-      return stream(c, (stream) => stream.pipe(dataStream));
-    } catch (error: unknown) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Unknown error";
-      logger.error({
-        msg: "Error sending message or streaming AI response",
-        error: errorMessage,
-        stack: error instanceof Error ? error.stack : undefined,
-        conversationId,
-        requestId,
-      });
-      return c.json(
-        {
-          message: `Failed to process message: ${errorMessage}`,
-          requestId,
-        },
-        500,
-      );
-    }
-  },
-);
-
 // Create and export the message routes
 const messageRoutes = new OpenAPIHono()
   .basePath(`${WORKSPACE_PATH}/chat/conversations/:conversationId/messages`)
@@ -451,7 +314,6 @@ const messageRoutes = new OpenAPIHono()
     checkOrganizationAccess,
   )
   .route("/", getMessagesRoute)
-  .route("/", sendNewMessageRoute)
   .route("/:messageId", updateMessageRoute)
   .route("/:messageId", deleteMessageRoute);
 

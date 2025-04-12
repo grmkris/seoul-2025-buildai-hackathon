@@ -4,8 +4,8 @@ import type { Message as CoreMessage } from "ai";
 import { and, eq, sql } from "drizzle-orm";
 import {
   type ConversationId,
-  type MemberId,
   MessageId,
+  typeIdGenerator,
   type WorkspaceId,
 } from "typeid";
 import { z } from "zod";
@@ -14,7 +14,6 @@ import { z } from "zod";
 export interface ChatHistoryServiceOptions {
   conversationId: ConversationId;
   workspaceId: WorkspaceId;
-  memberId: MemberId;
 }
 
 export interface ChatHistoryService {
@@ -27,7 +26,7 @@ export interface ChatHistoryService {
 export const createChatHistoryService = (
   options: ChatHistoryServiceOptions & { db: db },
 ): ChatHistoryService => {
-  const { conversationId, workspaceId, memberId, db } = options;
+  const { conversationId, workspaceId, db } = options;
 
   return {
     addUserMessage: async (message: CoreMessage) => {
@@ -39,8 +38,8 @@ export const createChatHistoryService = (
           message,
           conversationId,
           workspaceId,
-          createdBy: memberId,
-          updatedBy: memberId,
+          createdBy: typeIdGenerator('member'), // TODO: change to userID
+          updatedBy: typeIdGenerator('member'), // TODO: change to userID
           createdAt: z.coerce.date().parse(message.createdAt),
         })
         .returning();
@@ -50,7 +49,7 @@ export const createChatHistoryService = (
         .update(conversations)
         .set({
           updatedAt: new Date(),
-          updatedBy: memberId,
+          updatedBy: typeIdGenerator('member'), // TODO: change to userID
         })
         .where(eq(conversations.id, conversationId));
 
@@ -71,8 +70,8 @@ export const createChatHistoryService = (
         conversationId,
         workspaceId,
         createdAt: z.coerce.date().parse(message.createdAt),
-        createdBy: memberId,
-        updatedBy: memberId,
+        createdBy: typeIdGenerator('member'), // TODO: change to userID
+        updatedBy: typeIdGenerator('member'), // TODO: change to userID
       }));
 
       await db

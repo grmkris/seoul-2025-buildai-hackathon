@@ -4,7 +4,7 @@ import { publicClient } from "./api/apiClient";
 export const getConversation = async (props: {
   conversationId: ConversationId;
 }) => {
-  const response = await publicClient["/:conversationId"].$get({
+  const response = await publicClient.public.conversations[":conversationId"][":conversationId"].$get({
     param: { conversationId: props.conversationId },
   });
 

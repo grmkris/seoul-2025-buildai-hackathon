@@ -1,9 +1,9 @@
 import { hc } from "hono/client";
 import { SERVICE_URLS } from "service-registry";
 import { clientEnv } from "../clientEnv";
-import type { PublicRoutes } from "./publicRoutes";
+import type { publicRoutes } from "./publicRoutes";
 
-export const publicClient = hc<PublicRoutes>(
+export const publicClient = hc<typeof publicRoutes>(
   `${SERVICE_URLS[clientEnv.NEXT_PUBLIC_ENV].api}/api`,
   { 
     init: {
