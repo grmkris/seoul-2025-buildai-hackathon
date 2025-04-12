@@ -2,15 +2,14 @@ import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi";
 import { createCommonErrorSchema, createOpenAPIRoute } from "../helpers";
 import { GetConversationSchema } from "../chat/conversationRoutes";
 import { ConversationId, typeIdGenerator, type UserId, WorkspaceId } from "typeid";
-import { conversations, messages, usersTable } from "@/db/schema/chat/chat.db";
+import { conversations, usersTable } from "@/db/schema/chat/chat.db";
 import { eq } from "drizzle-orm";
 import type { ContextVariables } from "@/types";
 import { PUBLIC_PATH } from "@/utils";
-import { appendResponseMessages, createAiClient, createDataStream, type Message, MessageSchema } from "ai";
-import { createChatHistoryService } from "../chat/chatHistoryService";
-import { env } from "@/env";
+import { MessageSchema } from "ai";
 import { stream } from "hono/streaming";
 import { getAddress } from "viem";
+import { createSimpleAgent } from "@/ai/simpleAgent";
 
 // Schema for wallet address validation
 const WalletAddressSchema = z.string().refine(
@@ -125,29 +124,6 @@ const initializeWidget = createOpenAPIRoute().openapi(
           throw new Error("Failed to insert new conversation");
         }
          logger.info({ msg: "Created new conversation", conversationId: newConversationId, userId, workspaceId, requestId });
-
-        const firstMessageId = typeIdGenerator("message");
-        const firstMessageContent = {
-          id: firstMessageId,
-          role: "assistant",
-          content: "Who are you?",
-        } satisfies Message;
-
-        await db.insert(messages).values({
-          id: firstMessageId,
-          conversationId: newConversationId,
-          message: firstMessageContent,
-          createdBy: userId,
-          updatedBy: userId,
-          workspaceId: workspaceId,
-        });
-
-        logger.info({
-          msg: "Created initial message for new conversation",
-          messageId: firstMessageId,
-          conversationId: newConversationId,
-          requestId,
-        });
 
         conversation = await db.query.conversations.findFirst({
           where: eq(conversations.id, newConversationId),
@@ -370,7 +346,8 @@ const sendNewMessageRoute = createOpenAPIRoute().openapi(
 
       const { workspaceId, createdBy: userId } = conversation;
 
-      const chatHistoryService = createChatHistoryService({
+      // Create simple agent
+      const simpleAgent = createSimpleAgent({
         db,
         workspaceId,
         conversationId,
@@ -378,92 +355,8 @@ const sendNewMessageRoute = createOpenAPIRoute().openapi(
         logger,
       });
 
-      await chatHistoryService.addUserMessage(userMessage);
-
-      const history = await chatHistoryService.getConversationMessages();
-
-      const aiClient = createAiClient({
-        logger,
-        providerConfigs: {
-          anthropicApiKey: env.ANTHROPIC_API_KEY,
-          googleGeminiApiKey: env.GOOGLE_GEMINI_API_KEY,
-        },
-      });
-
-      const messagesFromDb = history.map((msg) => ({
-        id: msg.id,
-        role: msg.role,
-        content: msg.content,
-      }));
-
-      const dataStream = createDataStream({
-        execute: async (dataStream) => {
-          const result = aiClient.streamText({
-            model: aiClient.getModel({
-              provider: "google",
-              modelId: "gemini-1.5-flash-latest",
-            }),
-            messages: messagesFromDb,
-            toolCallStreaming: true,
-            onFinish: (result) => {
-              const newMessages = appendResponseMessages({
-                messages: messagesFromDb,
-                responseMessages: result.response.messages,
-              });
-              const justNewMessages = newMessages.filter(
-                (message) => !messagesFromDb.some((m) => m.id === message.id),
-              );
-              logger.info({
-                msg: "Agent finished, just new messages:",
-                newMessagesCount: justNewMessages.length,
-                conversationId,
-                requestId,
-              });
-            },
-            onStepFinish: async (result) => {
-              const newMessagesAndOld = appendResponseMessages({
-                messages: messagesFromDb,
-                responseMessages: result.response.messages,
-              });
-    
-              const justNewMessages = newMessagesAndOld.filter(
-                (message) => !messagesFromDb.some((m) => m.id === message.id),
-              );
-    
-              if (justNewMessages.length > 0) {
-                 try {
-                  logger.debug({
-                    msg: "Agent step finished, saving new messages",
-                    newMessagesCount: justNewMessages.length,
-                    conversationId,
-                    requestId,
-                   });
-                   await chatHistoryService.addAgentMessages(justNewMessages);
-                   messagesFromDb.push(...justNewMessages);
-                 } catch (error) {
-                  logger.error({
-                    msg: "Error saving new messages",
-                    error: error instanceof Error ? error.message : String(error),
-                    stack: error instanceof Error ? error.stack : undefined,
-                  });
-                 }
-              }
-            },
-            onError: (error) => {
-              logger.error({
-                msg: "AI streaming error",
-                error: error instanceof Error ? error.message : String(error),
-                stack: error instanceof Error ? error.stack : undefined,
-                conversationId,
-                requestId,
-              });
-            },
-            experimental_generateMessageId: () => typeIdGenerator("message"),
-          });
-    
-          result.mergeIntoDataStream(dataStream);
-        }
-      });
+      // Send message using the agent and get the stream
+      const dataStream = await simpleAgent.sendMessage(userMessage);
 
       c.header("X-Vercel-AI-Data-Stream", "v1");
       c.header("Content-Type", "text/plain; charset=utf-8");

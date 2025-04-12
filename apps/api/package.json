@@ -31,6 +31,7 @@
     "logger": "workspace:*",
     "neverthrow": "^8.2.0",
     "service-registry": "workspace:*",
+    "ogrodje-client": "workspace:*",
     "typeid": "workspace:*",
     "viem": "^2.26.3",
     "zod": "^3.24.2",
