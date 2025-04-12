@@ -1,2 +1,4 @@
-forge-std/=node_modules/forge-std/src
+forge-std/=node_modules/forge-std/src/
 @openzeppelin/contracts/=node_modules/@openzeppelin/contracts/
+@prb/=node_modules/@prb/
+@uniswap/universal-router/=node_modules/@uniswap/universal-router
