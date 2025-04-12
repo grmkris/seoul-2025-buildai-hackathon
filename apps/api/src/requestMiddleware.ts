@@ -55,14 +55,14 @@ export const createRequestMiddleware = (props: {
       headers,
     });
 
-    const organizationRole = OrganizationRole.nullable().parse(member?.role);
+    const organizationRole = OrganizationRole.nullish().parse(member?.role);
     const sessionRole = SystemRole.parse(session.user.role);
     const sessionId = SessionId.parse(session.session.id);
     const organizationId = OrganizationId.nullable().parse(
       session.session.activeOrganizationId,
     );
     const userId = UserId.parse(session.user.id);
-    const memberId = MemberId.nullable().parse(member?.id);
+    const memberId = MemberId.nullish().parse(member?.id);
 
     const sessionData = {
       sessionId,

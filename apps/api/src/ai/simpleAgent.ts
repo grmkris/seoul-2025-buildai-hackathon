@@ -10,34 +10,51 @@ import { appendResponseMessages, createDataStream } from "ai";
 import { createOgrodjeClientTools } from "./ogrodjeAgentTools";
 import { createPaymentAgentTools } from "./paymentAgentTools";
 
-const system_prompt = `You are a helpful assistant. You can answer general questions, and you have access to several tools to help you. These include tools for getting information about events and meetups (ogrodje.events, ogrodje.meetups, ogrodje.meetupEvents, ogrodje.timeline) and tools for handling payments (payment.requestPayment, payment.validatePayment).
+const system_prompt = `You are a helpful assistant operating on a pay-per-question model. Your primary function is to assist users by answering questions and utilizing the tools available to you accurately and reliably, **after ensuring the user has paid for access**.
 
-**CRITICAL INSTRUCTIONS FOR HANDLING PAYMENTS:**
+**PAYMENT & QUESTION ACCESS RULES:**
 
-**1. Requesting a Payment:**
-    * When a user asks to make a payment or initiates an action requiring payment, you MUST identify the \`amount\`, \`currencySymbol\` (defaulting to 'xUSD' if not specified), and the \`reason\` for the payment from the user's request.
-    * **If any of these details (\`amount\`, \`reason\`, or non-default \`currencySymbol\`) are unclear or missing, you MUST ask the user for clarification BEFORE proceeding.** Do not guess or assume.
-    * Once you have the required details (\`amount\`, \`currencySymbol\`, \`reason\`), you **MUST ALWAYS** call the \`payment.requestPayment\` tool with these parameters.
-    * **Do NOT** simply state that you are initiating the payment request in your response *before* the tool call is made and successfully returns.
-    * **AFTER** the \`payment.requestPayment\` tool successfully executes and returns a \`paymentIntentId\`, your response to the user MUST include:
-        * Confirmation that the payment request was initiated.
-        * The exact \`amount\` and \`currencySymbol\`.
-        * The \`reason\` for the payment.
-        * The specific \`paymentIntentId\` provided by the tool.
-        * A clear instruction for the user to complete the payment via the UI and inform you when done.
+* **Payment Required:** Users **MUST** pay an access fee **BEFORE** asking questions.
+* **Cost & Quota:** The fee is **0.1 xUSD**, which grants the user **3 questions**.
+* **Operational Flow:**
+  * **STEP 1: ALWAYS check payment status first before answering ANY question**
+  * **STEP 2: If no valid payment exists, ALWAYS call tool to request payment**
+  * **STEP 3: Only after payment validation can you answer questions, and ALWAYS track the count**
 
-**2. Validating a Payment:**
-    * When the user indicates they have sent the transaction (often providing a link), you need to validate it.
-    * You **MUST** retrieve the correct \`paymentIntentId\` that *you* provided to the user in the previous step for *that specific* payment request. Check the conversation history carefully if needed. Do not use an ID from a different payment.
-    * You **MUST ALWAYS** call the \`payment.validatePayment\` tool, providing the correct \`paymentIntentId\`.
-    * **Do NOT** state that the payment is validated *before* the \`payment.validatePayment\` tool has successfully executed.
-    * **AFTER** the \`payment.validatePayment\` tool successfully executes, confirm the successful validation to the user, mentioning the payment it corresponds to (e.g., "the payment for the shoes"). If the tool indicates failure, report that accurately.
+**CRITICAL TOOL CALLING REQUIREMENTS:**
 
-**General Rule:** For any action involving requesting or validating a payment, the corresponding tool (\`payment.requestPayment\` or \`payment.validatePayment\`) **MUST** be called. Do not describe the action as done without the tool confirming its execution. Respond to the user *based on the actual outcome* of the tool call.
+* **MANDATORY TOOL USAGE:** You MUST EXECUTE tool calls using the proper function calling syntax. NEVER describe, simulate, or pretend to call tools.
+* **ZERO EXCEPTIONS:** There are NO scenarios where you should mention payments, validation, or Ogrodje data without calling the corresponding tool.
 
-Use the other Ogrodje tools (\`ogrodje.events\`, \`ogrodje.meetups\`, etc.) when the user asks for information about events or meetups.
+**PAYMENT FLOW SPECIFICS:**
+
+1. **Initial Payment Request:**
+   * When user first engages or asks a question without prior payment:
+   * **YOU MUST EXECUTE** requestPaymentTool with:
+     * **amount: 0.1**
+     * **currencySymbol: 'xUSD'**
+     * **reason: 'Question Access Fee'**
+   * After tool returns: "To ask questions, please complete the payment of 0.1 xUSD for 3 questions. Your Payment Intent ID is \`[paymentIntentId]\`. Let me know once you've paid."
+
+2. **Payment Validation:**
+   * When user indicates payment completion:
+   * **YOU MUST EXECUTE** validatePaymentTool with the paymentIntentId
+   * After successful validation: "Thank you! Payment confirmed. You now have 3 questions available. What would you like to ask?"
+
+3. **Question Tracking:**
+   * After each successful answer: "You have [X] questions remaining."
+   * When 3 questions have been used: "You've used all your questions. To continue, a new payment is required." THEN **IMMEDIATELY EXECUTE** requestPaymentTool again.
+
+**IMPORTANT BEHAVIOR RULES:**
+
+1. **Tool Results Are Authoritative:** Base responses ENTIRELY on tool output. Never fabricate information.
+2. **Clear Error Communication:** If a tool returns an error, convey it clearly to the user.
+3. **Context Awareness:** Always retrieve the paymentIntentId from previous responses; never ask the user for it.
+4. **Concise UI Integration:** Your text should be brief and let the renderers handle displaying detailed information.
 `;
-
+// You can now use the system_prompt variable in your JavaScript code.
+// Example usage:
+// console.log(system_prompt);
 // Optional: Log to console to verify
 // console.log(system_prompt);
 
@@ -47,6 +64,10 @@ export const createSimpleAgent = (props: {
   conversationId: ConversationId,
   userId: UserId,
   logger: Logger,
+  // TODO: Add state management for payment status and remaining questions
+  // e.g., getPaymentStatus: () => Promise<{ paid: boolean; questionsRemaining: number }>,
+  // e.g., decrementQuestionCount: () => Promise<void>,
+  // e.g., recordPaymentSuccess: () => Promise<void>,
 }) => {
   const { db, workspaceId, conversationId, userId, logger } = props;
 
@@ -67,6 +88,16 @@ export const createSimpleAgent = (props: {
   });
 
   const sendMessage = async (message: Message) => {
+    // TODO: Here, before calling the AI, you would ideally:
+    // 1. Check the user's current payment status and remaining questions for this conversation.
+    // 2. Potentially modify the message history or add a preliminary system message
+    //    based on the status, although the main prompt now handles the logic flow.
+    // Example:
+    // const { paid, questionsRemaining } = await props.getPaymentStatus();
+    // if (!paid && message.content /* implies a question */) {
+    //   // Maybe force the agent towards payment flow? Less ideal than prompt handling.
+    // }
+
     await chatHistoryService.addUserMessage(message);
 
     const history = await chatHistoryService.getConversationMessages();
@@ -80,10 +111,10 @@ export const createSimpleAgent = (props: {
     const dataStream = createDataStream({
       execute: async (dataStream) => {
         const result = aiClient.streamText({
-          maxSteps: 25,
+          maxSteps: 25, // May need adjustment if payment flow adds steps
           model: aiClient.getModel({
             provider: "google",
-            modelId: "gemini-2.5-pro-exp-03-25",
+            modelId: "gemini-2.5-pro-exp-03-25", // Consider potential cost/speed implications of more complex prompts
           }),
           tools: {
             ...createOgrodjeClientTools({ logger }),
@@ -92,11 +123,16 @@ export const createSimpleAgent = (props: {
           system: system_prompt,
           messages: messagesFromDb,
           toolCallStreaming: true,
-          onFinish: () => {
+          onFinish: (resultContext) => {
             logger.debug({
               msg: "Agent finished",
               conversationId,
             });
+            // TODO: If the last step involved answering a question, decrement count here
+            // This requires analyzing resultContext.text or tool calls.
+            // if (/* answered a question successfully */) {
+            //    await props.decrementQuestionCount();
+            // }
           },
           onStepFinish: async (result) => {
             logger.debug({
@@ -104,6 +140,13 @@ export const createSimpleAgent = (props: {
               conversationId,
               result,
             });
+
+            // TODO: If a payment validation step was successful, record it and set initial question count
+            // This requires analyzing result.toolResults or result.response messages.
+            // if (/* payment validated successfully */) {
+            //    await props.recordPaymentSuccess(); // Sets questions to 3
+            // }
+
             const newMessagesAndOld = appendResponseMessages({
               messages: messagesFromDb,
               responseMessages: result.response.messages,

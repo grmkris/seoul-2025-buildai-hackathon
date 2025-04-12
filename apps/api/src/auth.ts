@@ -25,7 +25,7 @@ export const createAuth = (props: {
     basePath: "/api/auth",
     trustedOrigins: [
       SERVICE_URLS[env.APP_ENV].frontend,
-      SERVICE_URLS[env.APP_ENV].api,
+      SERVICE_URLS[env.APP_ENV].admin,
     ],
     database: drizzleAdapter(props.db, {
       provider: "pg", // or "mysql", "sqlite"
