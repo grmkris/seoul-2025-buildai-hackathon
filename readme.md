@@ -38,6 +38,8 @@ Built in 48 hours at Seoul BuildAI 2025, it's a drop-in framework for:
 
 ### 🔗 Tech Stack
 
+![AgentForge Infra](image2.png)
+
 - **Frontend:** Next.js (App Router), Tailwind CSS, shadcn/ui, Wagmi
 - **Backend:** Hono, Bun, PostgreSQL, Drizzle ORM
 - **AI:** AI SDK (@ai-sdk/react, @ai-sdk/google, etc)
